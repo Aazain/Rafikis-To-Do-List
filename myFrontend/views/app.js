@@ -1,6 +1,6 @@
 const list = document.getElementById("todolist");
 
-const todolist = data.map((items) => {
+const todolist = data.map((Items) => {
     return "<div></div>"
 })
 

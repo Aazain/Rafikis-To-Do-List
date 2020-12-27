@@ -10,7 +10,6 @@ require('../myBackend/node_modules/dotenv/config')
 mongoose.connect(process.env.DB_PASS, {useNewUrlParser: true, useUnifiedTopology: true}, function(req,res){console.log("Connected to DB...")});
 
 todoController(app);
-todoModel(app);
 
 app.listen(3000, function(req,res){
     console.log("Server started on port 3000")
