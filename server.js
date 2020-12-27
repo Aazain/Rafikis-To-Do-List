@@ -11,6 +11,7 @@ mongoose.connect(process.env.DB_PASS, {useNewUrlParser: true, useUnifiedTopology
 
 todoController(app);
 
+
 app.listen(3000, function(req,res){
     console.log("Server started on port 3000")
 })
