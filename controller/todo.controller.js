@@ -1,6 +1,7 @@
 const Items = require("../model/todo.model")
 
 module.exports = (app) => {
+
     app.get("/todo", function(req,res){
         const findData = Items.find(function(err,foundData){
             if (err) {
@@ -13,8 +14,10 @@ module.exports = (app) => {
         });  
     
     app.delete("/todo/:id", function(req,res){
+        const {id} = req.params
+        console.log(id)
         Items.findByIdAndRemove(
-            {_id: ""},
+            {_id: id},
         function(err){
             if (!err){
                 res.send("Successfully Deleted Task")
@@ -56,15 +59,3 @@ module.exports = (app) => {
 
 
 
-// app.get("/todo/:id", function(req,res){
-//     const {id} = req.params;
-//     console.log(id);
-//     const findData = Items.find(function(err,foundData){
-//         if (err) {
-//             res.status(400).send({message: "Error getting todo list"})
-//         }
-//         return res.send({
-//             foundData
-//         })
-//      })
-//     });  
