@@ -43,7 +43,7 @@ module.exports = (app) => {
                 if (!err) {
                     res.send("Successfully Deleted Task")
                 } else {
-                    res.status(500).send("Unable to delete task, ")
+                    res.status(500).send("Unable to delete task")
                 }
             })
     });
@@ -81,6 +81,7 @@ module.exports = (app) => {
                     res.send("Successfully edited Task")
                 } else {
                     res.send("Failed to edit task")
+                    res.status(400)
                 }
             }
         )
