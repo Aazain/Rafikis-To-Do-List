@@ -1,8 +1,3 @@
-const list = document.getElementById("todolist");
-
-const todolist = data.map((Items) => {
-    return "<div></div>"
-})
-
-list.innerHTML = todolist;
-
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+  .then(response => response.json())
+  .then(data => console.log(data))
