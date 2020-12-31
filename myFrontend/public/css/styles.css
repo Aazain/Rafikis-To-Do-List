@@ -15,7 +15,7 @@ body {
 }
 
 
-.listArea{
+#listArea{
     background-color: white;;
     margin-top: 1em;
     padding-bottom: 2em;
@@ -70,3 +70,6 @@ ul{
     color: white;
 }
 
+li{
+    margin-bottom: 1em;
+}

@@ -9,6 +9,7 @@ app.use(bodyparser.urlencoded({
     extended: false
 }))
 require('../myBackend/node_modules/dotenv/config')
+
 mongoose.connect(process.env.DB_PASS, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -16,6 +17,15 @@ mongoose.connect(process.env.DB_PASS, {
 }, function(req, res) {
     console.log("Connected to DB...")
 });
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    if (req.method === 'OPTIONS',next()){
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
+        return res.status(200).json({})
+    }
+})
 
 todoController(app);
 
