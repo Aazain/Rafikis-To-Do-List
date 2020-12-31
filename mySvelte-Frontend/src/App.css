@@ -15,7 +15,7 @@ body {
 }
 
 
-#listArea{
+.listArea{
     background-color: white;;
     margin-top: 1em;
     padding-bottom: 2em;
@@ -68,8 +68,4 @@ ul{
 .saveChange{
     background-color: rgb(175, 126, 235);
     color: white;
-}
-
-li{
-    margin-bottom: 1em;
 }

@@ -8,7 +8,7 @@ app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({
     extended: false
 }))
-require('../myBackend/node_modules/dotenv/config')
+require('dotenv/config')
 
 mongoose.connect(process.env.DB_PASS, {
     useNewUrlParser: true,
