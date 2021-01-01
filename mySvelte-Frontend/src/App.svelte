@@ -5,7 +5,6 @@
 
 
   let listData = [];
-  let textValue = ""
 
 
    fetch('http://localhost:3000/todo/')
@@ -16,6 +15,7 @@
 
 	function postToList() {
     var create = document.getElementById("createTask").value
+    var reset = document.getElementById("createTask").value = "";
     const listOBJ = {
       name: create,
       status: false
@@ -35,6 +35,7 @@
       status: false
     })
   }).then(res => {
+    reset
     return res.json()
   })}
 }
@@ -146,6 +147,6 @@
     <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
       
 		<div class="footer fixed-bottom">
-			<input autocomplete="off" class="addList textInput" bind:value={textValue} type="text" id="createTask" name="newItem" placeholder="Type Here">
+			<input autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
 		</div>
 
