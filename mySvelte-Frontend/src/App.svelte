@@ -2,17 +2,28 @@
 
 <script>
 
+
+
   let listData = [];
+  let textValue = ""
+
 
    fetch('http://localhost:3000/todo/')
   .then(response => response.json())
   .then(data =>{
      listData = data;
   })
-	
-	
+
 	function postToList() {
-  var create = document.getElementById("newTask").value
+    var create = document.getElementById("createTask").value
+    const listOBJ = {
+      name: create,
+      status: false
+    }
+    if(create === ""){
+      swal('Error', 'Please enter a task', 'error')
+    }else{
+  listData=[...listData, listOBJ]
   fetch('http://localhost:3000/todo', {
     method: 'POST',
     headers:{
@@ -20,11 +31,12 @@
       'Accept': 'application/json'
     },
     body: JSON.stringify({
-      name: create
+      name: create,
+      status: false
     })
   }).then(res => {
     return res.json()
-  })
+  })}
 }
 
 </script>
@@ -39,7 +51,6 @@
    box-shadow: 0px 0px 15px gray; 
 }
 
-
 .title{
     background-color: rgb(175, 126, 235);
     color: white;
@@ -47,18 +58,22 @@
     box-shadow: 0px 0px 10px rgb(175, 126, 235); 
 }
 
-ul{
-    padding: 1em;
-    margin: 0;
-    list-style-type: none;
-}
-
 .addbtn{
+  color: white;
     margin-top: -1em;
     background-color: rgb(175, 126, 235);
     outline: none;
     border-radius: 2em;
     box-shadow: 0px 0px 10px rgb(175, 126, 235); 
+}
+
+.addbtn:hover{
+  background-color: black;
+}
+
+.removeButton:hover,.editbtn:hover{
+  transition-duration: 0.2s;
+  background-color: gray;
 }
 
 .taskComplete{
@@ -83,6 +98,9 @@ ul{
     background-color: rgb(175, 126, 235);
     color: white;
 }
+
+
+
 </style>
 
 
@@ -90,31 +108,44 @@ ul{
 	
 
     <h1 class="title"> To Do List</h1>
-
 			<div id="listArea">
-					<ul id="cool">
+					<ul>
             {#each listData as item}
                                           <div class="item">
                                             <li class="taskName">
                                                 <input type="checkbox" name="taskCheck" class="taskComplete">
                                                 <button class="btn btn removeButton pull-right"><i class="fa fa-trash w3-medium"></i></button>
-                                                <button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-edit w3-medium"></i></button>
-                                                <label for="taskCheck" class="taskStats"><p class="taskItem">{item.name}</p></label>
+                                                <button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal"><i class="fa fa-edit w3-medium"></i></button>
+                                                <p class="taskItem">{item.name}</p>
                                             </li>
+                                        </div>
+                                                <!-- Modal -->
+                                        <div class="modal fade" id="editorModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">TaskEditor</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div class="modal-body">
+                                                <input type="text" placeholder="Make changes">
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn saveChange">Save changes</button>
+                                              </div>
+                                            </div>
+                                          </div>
                                         </div>
             {/each}
 					</ul>
 			</div>
 
-    <button type="submit" onclick="postToList()" class="addbtn btn btn">+ New Task</button> 
+    <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
       
 		<div class="footer fixed-bottom">
-			<input autocomplete="off" class="addList textInput" type="text" id="newTask" name="newItem" placeholder="Type Here">
+			<input autocomplete="off" class="addList textInput" bind:value={textValue} type="text" id="createTask" name="newItem" placeholder="Type Here">
 		</div>
 
-
-
-    <!-- {#each listData as item}
-    <li>{item.name} x {item._id}</li>
-    <button on:click={chante(item._id)}>my unique button</button>
-    {/each} -->
