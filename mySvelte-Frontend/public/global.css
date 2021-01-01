@@ -4,6 +4,7 @@
 *{font-family: 'Montserrat', sans-serif;}
 
 html{
+    height: 110%;
     margin-top: 10vw;
     margin-right: calc(-7em + 38vw);
     margin-left: calc(-8.5em + 38vw);
