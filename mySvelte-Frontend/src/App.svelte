@@ -9,7 +9,6 @@ import {createTodo, retrieveListData, removeTodo, editTodo} from "./services/tod
 
   let todoName = "";
   let todoEdit = "";
-  let todoStat = true
 
   onMount(async () => {
       listData = await retrieveListData();
@@ -45,12 +44,18 @@ function removeFromList(id){
 }
 
 function editList(id){
+  const todoItem = null;
+  listData.forEach((listItem) => {
+    if (listItem._id === id) {
+      todoItem = listItem;
+    }
+  });
   if(!id || id === ""){
     swal('Error', 'Please enter a task', 'error')
   }else if(!todoEdit || todoEdit === ""){
     swal('Error', 'Please edit the task', 'error')
   }else{
-    editTodo(id, todoEdit)
+    editTodo(id, todoItem.name, todoItem.status)
     .then(async () => {
         listData = await retrieveListData();
         resetInputs();
@@ -122,6 +127,7 @@ function editList(id){
 
 
 
+
 </style>
 
 
@@ -133,10 +139,10 @@ function editList(id){
             {#each listData as item}
                                           <div class="item">
                                             <li class="taskName">
-                                                <input type="checkbox" name="taskCheck" class="taskComplete">
+                                                <input type="checkbox" bind:checked={item.status} on:change={editList} id="taskStatus{item._id}"  name="taskCheck" class="taskComplete">
                                                 <button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
-                                                <button class="editbtn btn btn pull-right" on:click={console.log(item._id)} data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
-                                                <p class="taskItem">{item.name}</p>
+                                                <button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
+                                                <label for="taskComplete" class="strike"><p class="taskItem">{item.name}</p></label>
                                                 <div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                   <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -150,8 +156,8 @@ function editList(id){
                                                         <input bind:value={todoEdit} type="text" placeholder="Make changes">
                                                       </div>
                                                       <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" on:click={resetInputs} on:click={console.log(item._id)} data-dismiss="modal">Cancel</button>
-                                                        <button type="button" on:click={()=>editList(item._id)} on:click={console.log(item._id)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
+                                                        <button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
+                                                        <button type="button" on:click={()=>editList(item._id)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
                                                       </div>
                                                     </div>
                                                   </div>
