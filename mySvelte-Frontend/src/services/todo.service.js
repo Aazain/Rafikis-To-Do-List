@@ -45,14 +45,18 @@ export function createTodo(name) {
  }
 
 
- export function editTodo(id){
+ export function editTodo(id, edit){
+     
 
     return fetch(`${env()}/todo/${id}`, {
         method: 'PATCH',
         headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+            name: edit
+            })
       }).then( res => {
           return res
       })
@@ -60,4 +64,5 @@ export function createTodo(name) {
 
 
  }
+
  
