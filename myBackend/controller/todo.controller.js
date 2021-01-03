@@ -1,3 +1,4 @@
+const e = require("express");
 const Items = require("../model/todo.model")
 
 module.exports = (app) => {
@@ -70,11 +71,31 @@ module.exports = (app) => {
             status
         } = req.body;
         console.log(id);
-        Items.updateOne({
+        console.log(name)
+        console.log(status)
+
+        if(!status){
+            Items.updateOne({
                 _id: id
             }, {
                 $set: {
-                    name,
+                    name
+                }
+            },
+            function(err) {
+                if (!err) {
+                    res.send("Successfully edited Task")
+                } else {
+                    res.send("Failed to edit task")
+                    res.status(400)
+                }
+            }
+        )
+        }else if(1===1){
+            Items.updateOne({
+                _id: id
+            }, {
+                $set: {
                     status
                 }
             },
@@ -87,6 +108,36 @@ module.exports = (app) => {
                 }
             }
         )
-
+        }
     })
 }
+
+// app.patch("/todo/:id", function(req, res) {
+//     const {
+//         id
+//     } = req.params;
+//     const {
+//         name,
+//         status
+//     } = req.body;
+//     console.log(id);
+//     Items.updateOne({
+//             _id: id
+//         }, {
+//             $set: {
+//                 name,
+//                 status
+//             }
+//         },
+//         function(err) {
+//             if (!err) {
+//                 res.send("Successfully edited Task")
+//             } else {
+//                 res.send("Failed to edit task")
+//                 res.status(400)
+//             }
+//         }
+//     )
+
+// })
+// }

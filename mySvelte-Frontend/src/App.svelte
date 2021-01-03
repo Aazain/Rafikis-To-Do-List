@@ -11,6 +11,7 @@ import {createTodo, retrieveListData, removeTodo, editTodo} from "./services/tod
   let todoEdit = "";
 
 
+
   onMount(async () => {
       listData = await retrieveListData();
 	});
@@ -45,19 +46,28 @@ function removeFromList(id){
 }
 
 function editList(id){
-  listData.forEach((listItem) => {
-  });
   if(!id || id === ""){
     swal('Error', 'The edit field cannot be empty', 'error')
   // }else if(!todoEdit || todoEdit === ""){
   //   swal('Error', 'The edit field cannot be empty', 'error')
-  // }
-  }else{
-    editTodo(id, todoEdit,)
+  }
+  else{
+    editTodo(id, todoEdit)
     .then(async () => {6
         listData = await retrieveListData();
         resetInputs();
       });
+  }
+}
+
+function editStatus(id){
+  let editedListData = null
+  for(let i = 0; i<listData.length; i++){
+    const currentListData = listData[i]
+    if(currentListData._id === id){
+      editedListData=currentListData
+      editTodo(id, todoEdit, editedListData.status)
+    }
   }
 }
 
@@ -123,6 +133,9 @@ function editList(id){
     color: white;
 }
 
+.checked{
+  text-decoration: line-through;
+}
 
 
 
@@ -137,10 +150,10 @@ function editList(id){
             {#each listData as item}
                                           <div class="item">
                                             <li class="taskName">
-                                                <input type="checkbox" bind:checked={item.status} on:change={editList} name="taskCheck" class="taskComplete">
+                                                <input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id)}  name="taskCheck" class="taskComplete">
                                                 <button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
                                                 <button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
-                                                <label for="taskComplete" class="strike"><p class="taskItem">{item.name}</p></label>
+                                              <span class:checked={item.status}>  <p class="taskItem">{item.name}</p></span>
                                                 <div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                   <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
