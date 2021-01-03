@@ -10,6 +10,7 @@ import {createTodo, retrieveListData, removeTodo, editTodo} from "./services/tod
   let todoName = "";
   let todoEdit = "";
 
+
   onMount(async () => {
       listData = await retrieveListData();
 	});
@@ -44,19 +45,15 @@ function removeFromList(id){
 }
 
 function editList(id){
-  const todoItem = null;
   listData.forEach((listItem) => {
-    if (listItem._id === id) {
-      todoItem = listItem;
-    }
   });
   if(!id || id === ""){
-    swal('Error', 'Please enter a task', 'error')
+    swal('Error', 'The edit field cannot be empty', 'error')
   }else if(!todoEdit || todoEdit === ""){
-    swal('Error', 'Please edit the task', 'error')
+    swal('Error', 'The edit field cannot be empty', 'error')
   }else{
-    editTodo(id, todoItem.name, todoItem.status)
-    .then(async () => {
+    editTodo(id, todoEdit)
+    .then(async () => {6
         listData = await retrieveListData();
         resetInputs();
       });
