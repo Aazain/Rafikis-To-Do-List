@@ -48,8 +48,8 @@ function removeFromList(id){
 function editList(id){
   if(!id || id === ""){
     swal('Error', 'The edit field cannot be empty', 'error')
-  // }else if(!todoEdit || todoEdit === ""){
-  //   swal('Error', 'The edit field cannot be empty', 'error')
+  }else if(!todoEdit || todoEdit === ""){
+    swal('Error', 'The edit field cannot be empty', 'error')
   }
   else{
     editTodo(id, todoEdit)
@@ -60,15 +60,23 @@ function editList(id){
   }
 }
 
-function editStatus(id){
+function editStatus(id, name){
   let editedListData = null
   for(let i = 0; i<listData.length; i++){
     const currentListData = listData[i]
     if(currentListData._id === id){
       editedListData=currentListData
-      editTodo(id, todoEdit, editedListData.status)
+      break;
     }
   }
+
+  if (!editedListData) {
+    throw new Error("error")
+  }
+  editTodo(id, name, editedListData.status)
+  .then(async () => {
+    listData = await retrieveListData();
+  })
 }
 
 
@@ -150,7 +158,7 @@ function editStatus(id){
             {#each listData as item}
                                           <div class="item">
                                             <li class="taskName">
-                                                <input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id)}  name="taskCheck" class="taskComplete">
+                                                <input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)}  name="taskCheck" class="taskComplete">
                                                 <button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
                                                 <button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
                                               <span class:checked={item.status}>  <p class="taskItem">{item.name}</p></span>
