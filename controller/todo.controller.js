@@ -61,83 +61,33 @@ module.exports = (app) => {
                 res.status(500)
             })
     })
-
-    app.patch("/todo/:id", function(req, res) {
-        const {
-            id
-        } = req.params;
-        const {
-            name,
-            status
-        } = req.body;
-        console.log(id);
-        console.log(name)
-        console.log(status)
-
-        if(!status){
-            Items.updateOne({
-                _id: id
-            }, {
-                $set: {
-                    name
-                }
-            },
-            function(err) {
-                if (!err) {
-                    res.send("Successfully edited Task")
-                } else {
-                    res.send("Failed to edit task")
-                    res.status(400)
-                }
+        
+app.patch("/todo/:id", function(req, res) {
+    const {
+        id
+    } = req.params;
+    const {
+        name,
+        status
+    } = req.body;
+    console.log(id);
+    Items.updateOne({
+            _id: id
+        }, {
+            $set: {
+                name,
+                status
             }
-        )
-        }else if(1===1){
-            Items.updateOne({
-                _id: id
-            }, {
-                $set: {
-                    status
-                }
-            },
-            function(err) {
-                if (!err) {
-                    res.send("Successfully edited Task")
-                } else {
-                    res.send("Failed to edit task")
-                    res.status(400)
-                }
+        },
+        function(err) {
+            if (!err) {
+                res.send("Successfully edited Task")
+            } else {
+                res.send("Failed to edit task")
+                res.status(400)
             }
-        )
         }
-    })
+    )
+
+})
 }
-
-// app.patch("/todo/:id", function(req, res) {
-//     const {
-//         id
-//     } = req.params;
-//     const {
-//         name,
-//         status
-//     } = req.body;
-//     console.log(id);
-//     Items.updateOne({
-//             _id: id
-//         }, {
-//             $set: {
-//                 name,
-//                 status
-//             }
-//         },
-//         function(err) {
-//             if (!err) {
-//                 res.send("Successfully edited Task")
-//             } else {
-//                 res.send("Failed to edit task")
-//                 res.status(400)
-//             }
-//         }
-//     )
-
-// })
-// }
