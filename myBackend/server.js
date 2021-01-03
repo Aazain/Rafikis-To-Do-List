@@ -30,7 +30,7 @@ todoController(app);
 
 let port = process.env.PORT;
 if (port == null || port == ""){
-    port = 3010
+    port = 3000
 }
 app.listen(port, function(req,res){
     console.log("Server started successfully")  

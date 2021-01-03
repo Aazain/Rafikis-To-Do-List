@@ -60,6 +60,4 @@ export function createTodo(name) {
           return res
       })
       .catch((err) => console.log(err))
-
-
  }

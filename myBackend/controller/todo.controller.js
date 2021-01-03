@@ -66,14 +66,16 @@ module.exports = (app) => {
             id
         } = req.params;
         const {
-            name
+            name,
+            status
         } = req.body;
         console.log(id);
         Items.updateOne({
                 _id: id
             }, {
                 $set: {
-                    name
+                    name,
+                    status
                 }
             },
             function(err) {

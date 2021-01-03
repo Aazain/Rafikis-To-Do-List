@@ -49,10 +49,11 @@ function editList(id){
   });
   if(!id || id === ""){
     swal('Error', 'The edit field cannot be empty', 'error')
-  }else if(!todoEdit || todoEdit === ""){
-    swal('Error', 'The edit field cannot be empty', 'error')
+  // }else if(!todoEdit || todoEdit === ""){
+  //   swal('Error', 'The edit field cannot be empty', 'error')
+  // }
   }else{
-    editTodo(id, todoEdit)
+    editTodo(id, todoEdit,)
     .then(async () => {6
         listData = await retrieveListData();
         resetInputs();
@@ -136,7 +137,7 @@ function editList(id){
             {#each listData as item}
                                           <div class="item">
                                             <li class="taskName">
-                                                <input type="checkbox" bind:checked={item.status} on:change={editList} id="taskStatus{item._id}"  name="taskCheck" class="taskComplete">
+                                                <input type="checkbox" bind:checked={item.status} on:change={editList} name="taskCheck" class="taskComplete">
                                                 <button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
                                                 <button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
                                                 <label for="taskComplete" class="strike"><p class="taskItem">{item.name}</p></label>
