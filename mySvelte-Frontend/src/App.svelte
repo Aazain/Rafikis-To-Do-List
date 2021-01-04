@@ -101,17 +101,21 @@ function editStatus(id, name){
 }
 
 .addbtn{
-  color: white;
-    margin-top: -1em;
+    color: white;
+    margin-top: -1.5em;
     background-color: rgb(175, 126, 235);
     outline: none;
     border-radius: 2em;
     box-shadow: 0px 0px 10px rgb(175, 126, 235); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    color: white;
+    cursor: pointer;
+    font-size: calc(0.6em + 0.4vw);
 }
 
-.addbtn:hover{
-  background-color: black;
-}
 
 .removeButton:hover,.editbtn:hover{
   transition-duration: 0.2s;
@@ -127,7 +131,7 @@ function editStatus(id, name){
 
 .taskItem{
     margin-bottom: 0;
-    margin-right: 8em;
+    margin-right: 4em;
     word-wrap: break-word;
     text-align: center;
 }
@@ -143,16 +147,71 @@ function editStatus(id, name){
 
 .checked{
   text-decoration: line-through;
+  color: #d3d3d3;
 }
 
+a{
+  font-size: calc(0.5em + 0.8vw);
+  margin-right: -2em;
+  color: white;
+  text-decoration: none;
+}
 
+.footer:hover > .addList {
+ width: 120px;
+ padding: 0 6px;
+}
+
+.footer:hover > .addbtn {
+ background: black;
+ box-shadow: 0px 0px 10px black;
+ color: white;
+}
+
+.footer:hover > .addList{
+  background-color: black;
+  box-shadow: 0px 0px 10px black;
+  border-radius: 20em;
+}
+
+.addList{
+border: none;
+ background: none;
+ outline: none;
+ float: left;
+ color: white;
+ font-size: calc(0.6em + 0.4vw);
+ transition: 0.2s;
+ line-height: 40px;
+ width: 0px;
+ font-weight: bold;
+}
+
+.footer{
+  margin-left: calc(4em + 11vw);
+}
+ .taskComplete{
+  width: 0.9em;
+    height: 0.9em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    border-width: 0.2em;
+ }
+
+ .taskComplete:checked {
+    background-color:  rgb(175, 126, 235);
+}
 
 </style>
 
 
 <!-- 	BODY -->
-
-    <h1 class="title"> To Do List</h1>
+    <h1 class="title"> <a href=""><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
 			<div id="listArea">
 					<ul>
             {#each listData as item}
@@ -172,7 +231,7 @@ function editStatus(id, name){
                                                         </button>
                                                       </div>
                                                       <div class="modal-body">
-                                                        <input bind:value={todoEdit} type="text" placeholder="Make changes">
+                                                        <input bind:value={todoEdit} type="text" placeholder={item.name}>
                                                       </div>
                                                       <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
@@ -186,10 +245,13 @@ function editStatus(id, name){
                                        
             {/each}       
 					</ul>
-			</div>
+      </div>
+      
 
-    <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
-		<div class="footer fixed-bottom">
-			<input bind:value={todoName} autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
-    </div>
+      <div class="footer">
+        <input bind:value={todoName} autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
+          <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
+      </div>
 
+
+    
