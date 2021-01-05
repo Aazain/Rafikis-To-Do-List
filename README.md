@@ -14,6 +14,7 @@ To successfully run this code, you need to make sure that you have NodeJS instal
 -Svelte
 -Cors
 
+To actually run the frontend client, cd into the mySvelteFrontend folder and type in `npm run dev` in the terminal and it should start on localhost port 5000.
 It is recommended to install nodemon if you decide to edit the files. Nodemon restarts the server everytime you apply a save to the JS file so that you dont need to type in node server.js everytime you make a change to the file.
 
 V1 Live Website: https://rafikis-to-do-list.herokuapp.com/
