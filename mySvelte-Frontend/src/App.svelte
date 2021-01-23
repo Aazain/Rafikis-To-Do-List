@@ -207,11 +207,48 @@ border: none;
     background-color:  rgb(175, 126, 235);
 }
 
+.loginBtn{
+  background-color:  rgb(175, 126, 235);
+}
+
+.loginBtn:hover{
+  background-color: transparent;
+  color: black;
+}
+
+.signUpBtn{
+  background-color: transparent;
+  border-color: rgb(175, 126, 235);
+  margin-left: -0.3vw;
+}
+
+.signUpBtn:hover{
+  background-color: rgb(175, 126, 235);
+  border-color: black;
+  color: white;
+}
+
+.loginBtn, .signUpBtn{
+  margin-top: -10vw;
+  margin-bottom: unset;
+  font-size: calc(0.5em + 0.5vw);
+}
+
+.registrationBtn{
+  margin-right: calc(-6.5em + -22vw);
+  border-color: red;
+}
+
+
 </style>
 
 
 <!-- 	BODY -->
-    <h1 class="title"> <a href=""><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
+<div class="registrationBtn">
+    <input type="button" class="loginBtn btn btn-dark" value="Login">
+    <input type="button" class="signUpBtn btn btn-light" value="SignUp">
+</div>
+    <h1 class="title"> <a href="" class="listSelect"><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
 			<div id="listArea">
 					<ul>
             {#each listData as item}
