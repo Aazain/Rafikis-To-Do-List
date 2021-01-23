@@ -7,7 +7,6 @@ module.exports = (app) => {
         const {
             id
         } = req.params;
-        console.log(id)
         Items.findById(id, function(err, foundData) {
             if (err) {
                 res.status(404)
@@ -36,7 +35,6 @@ module.exports = (app) => {
         const {
             id
         } = req.params
-        console.log(id)
         Items.findByIdAndRemove({
                 _id: id
             },
@@ -70,7 +68,6 @@ app.patch("/todo/:id", function(req, res) {
         name,
         status
     } = req.body;
-    console.log(id);
     Items.updateOne({
             _id: id
         }, {
