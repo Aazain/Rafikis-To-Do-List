@@ -1,4 +1,4 @@
-const e = require("express");
+
 const Items = require("../model/todo.model")
 
 module.exports = (app) => {
