@@ -3,8 +3,6 @@ const app = express();
 const bodyparser = require("body-parser")
 const todoController = require("./controller/todo.controller");
 const userController = require("./controller/users.controller");
-const todoModel = require("./model/todo.model")
-const userModel = require("./model/users.model")
 const mongoose = require('mongoose');
 const usersController = require("./controller/users.controller");
 app.use(bodyparser.json())
