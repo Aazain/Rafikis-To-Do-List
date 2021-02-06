@@ -2,8 +2,11 @@ const express = require("express");
 const app = express();
 const bodyparser = require("body-parser")
 const todoController = require("./controller/todo.controller");
+const userController = require("./controller/users.controller");
 const todoModel = require("./model/todo.model")
+const userModel = require("./model/users.model")
 const mongoose = require('mongoose');
+const usersController = require("./controller/users.controller");
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({
     extended: false
@@ -26,6 +29,8 @@ app.use((req, res, next) => {
 })
 
 todoController(app);
+usersController(app);
+
 
 
 let port = process.env.PORT;
