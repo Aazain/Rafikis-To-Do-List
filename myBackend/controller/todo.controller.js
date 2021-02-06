@@ -1,4 +1,5 @@
-
+const express = require("express");
+const app = express();
 const Items = require("../model/todo.model")
 
 module.exports = (app) => {
@@ -60,31 +61,31 @@ module.exports = (app) => {
             })
     })
         
-app.patch("/todo/:id", function(req, res) {
-    const {
-        id
-    } = req.params;
-    const {
-        name,
-        status
-    } = req.body;
-    Items.updateOne({
-            _id: id
-        }, {
-            $set: {
-                name,
-                status
+    app.patch("/todo/:id", function(req, res) {
+        const {
+            id
+        } = req.params;
+        const {
+            name,
+            status
+        } = req.body;
+        Items.updateOne({
+                _id: id
+            }, {
+                $set: {
+                    name,
+                    status
+                }
+            },
+            function(err) {
+                if (!err) {
+                    res.send("Successfully edited Task")
+                } else {
+                    res.send("Failed to edit task")
+                    res.status(400)
+                }
             }
-        },
-        function(err) {
-            if (!err) {
-                res.send("Successfully edited Task")
-            } else {
-                res.send("Failed to edit task")
-                res.status(400)
-            }
-        }
-    )
+        )
 
-})
+    })
 }
