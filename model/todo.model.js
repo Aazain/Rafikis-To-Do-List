@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
+
 const listSchema = new mongoose.Schema({
+    user: String,
     name: String,
     status: Boolean
 }, {

@@ -11,7 +11,6 @@ app.use(express.json());
 module.exports = (app)=>{
 
     app.get("/users", function(req, res) {
-        //Find all users and then return them
         const findUsers = Users.find(function(err, foundUsers) {
             if (err) {
                 res.status(400).send({
@@ -24,51 +23,89 @@ module.exports = (app)=>{
         })
     });
 
-    app.post("/users", async function(req, res){
+
+    app.post("/users/signup", async function(req, res){
         try{
-            //Hashes Password from password body
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
             const userList = new Users({
                 email: req.body.email,
                 password: hashedPassword
             });
-            //Saves Hashed password
-            userList.save()
+            if(req.body.email == null || req.body.email == "" || req.body.password == null || req.body.password == ""){
+                res.status(400).send("Enter Email and Password")
+            }else{
+                userList.save()
+            }
             return res.status(201).send("Successfully added user");
             }
             catch{
-                res.status(500).send();
+                if (res.status == !400 || res.status == !201){
+                    res.status(500).send("Error");
+                }
             }
     })
 
-   
-    const poster = app.post("/users/login", async function(req, res){
+    
 
-        const currentUser = req.body.email;
+    app.post("/users/login", async function(req, res){
+
+        const currentUser = req.body;
         let user;
-        // Looks to see if user input exists in database
-             user = await Users.findOne({
-                email: req.body.email
-            })
-            
-
-        //if user does not exist, return error code
+        user = await Users.findOne({
+            email: req.body.email
+        })
         if(user == null){
             return res.status(400).send("Incorrect Email or Password")
         }
-
-        //Bycrypt compares password input to hashed password and if it matches, login is successfull
-            return bcrypt.compare(req.body.password, user.password, function (err, result) {
-                if (!result) {
-                    res.status(203).send("Incorrect Email or Password") 
-                } else {
-                    const accessToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET)
-                    res.json({accessToken: accessToken})
-                }
-            })
-         
+        return bcrypt.compare(req.body.password, user.password, function (err, result) {
+            if (!result || err) {
+                res.status(203).send("Incorrect Email or Password") 
+            } else {
+                const accessToken = newToken(currentUser);
+                const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
+                    if(err){res.status(401)}
+                    res.send({accessToken: accessToken, refreshToken: regenToken})
+                })
+            }
+        }) 
     })
+
+
+
+    app.delete("/logout", function (req, res){
+
+
+
+    })
+
+
+
+    app.post("/newToken", (req,res)=>{
+
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1];
+        res.json({token})
+
+    })
+
+
+    function newToken(currentUser){
+        return jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "20s"})
+    }
+
+    function tokenAuth(req,res,next){
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1];
+        if(token == null) return res.sendStatus(401)
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) return res.status(403).send("Forbidden")
+            req.user = user
+            next();
+        })
+    }
 }
+
+
 
 
 
@@ -91,41 +128,49 @@ module.exports = (app)=>{
 //This code is functional. It takes the JWT and checks if any array items have the same
 // {email:} as the email of the JWT and then it renders the array items that include it.
 
+    // function tokenAuth(req,res,next){
+    //     const authHeader = req.headers['authorization']
+    //     const token = authHeader && authHeader.split(' ')[1];
+    //     if(token == null) return res.sendStatus(401)
+    //     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    //         if (err) return res.status(403).send("Forbidden")
+    //         req.user = user
+    //         next();
+    //     })
+    // }
 
-// function tokenAuth(req,res,next){
-//     const authHeader = req.headers['authorization']
-//     const token = authHeader && authHeader.split(' ')[1];
-//     if(token == null) return res.sendStatus(401)
-//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-//         if (err) return res.status(403)
-//         req.user = user
-//         next();
-//     })}
+    //     app.get("/test", tokenAuth, function(req, res){
+    //     res.json(post.filter(post => post.email === req.user.email))
+    // })
 
-//     app.get("/test", tokenAuth, function(req, res){
-//         res.json(post.filter(post => post.email === req.user ))
-//     })
 
-//     const post = [
-//         {
-//             email: "aazain@gmail.com",
-//             title: "cool"
-//         },
-//         {
-//             email:"aazainman@gmail.com",
-//             title:"good job"
-//         },
-//         {
-//             email:"aazainman@gmail.com",
-//             title:"good job"
-//         },
-//         {
-//             email:"aazainman@gmail.com",
-//             title:"good job"
-//         },
-//         {
-//             email:"aazainman@gmail.com",
-//             title:"good job"
-//         }
+
+
+
+
+
+    
+
+    // const post = [
+    //     {
+    //         email: "aazain@gmail.com",
+    //         title: "cool"
+    //     },
+    //     {
+    //         email:"aazainman@gmail.com",
+    //         title:"good job"
+    //     },
+    //     {
+    //         email:"aazainman@gmail.com",
+    //         title:"good job"
+    //     },
+    //     {
+    //         email:"aazainman@gmail.com",
+    //         title:"good job"
+    //     },
+    //     {
+    //         email:"aazainman@gmail.com",
+    //         title:"good job"
+    //     }
         
-//     ];
+    // ];
