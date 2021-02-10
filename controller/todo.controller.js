@@ -4,6 +4,18 @@ const Items = require("../model/todo.model")
 const jwt = require("jsonwebtoken");
 module.exports = (app) => {
 
+    function tokenAuth(req,res,next){
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1];
+        if(token == null) return res.sendStatus(401)
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) return res.status(403).send("Forbidden")
+            req.user = user;
+            next();
+        })
+    }
+    
+
     app.get("/todo/:id", function(req, res) {
         const {
             id
@@ -19,28 +31,18 @@ module.exports = (app) => {
 
     });
 
-    function tokenAuth(req,res,next){
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1];
-        if(token == null) return res.sendStatus(401)
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-            if (err) return res.status(403).send("Forbidden")
-            req.user = user
-            next();
-        })
-    }
-
     app.get("/todo", tokenAuth, function(req, res) {
-        const findData = Items.find(function(err, foundData) {
+        const currentUser = req.user.email;
+        const findData = Items.find({user: currentUser},function(err, foundData) {
             if (err) {
                 res.status(400).send({
                     message: "Error getting todo list"
-                })
+                });
             }
             return res.send([
                 ...foundData
-            ])
-        })
+            ]);
+        });
     });
 
     app.delete("/todo/:id", function(req, res) {
