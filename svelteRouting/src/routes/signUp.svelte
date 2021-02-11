@@ -1,4 +1,27 @@
 <script>
+	import {createNewUser} from "../services/users.service"
+	import {env} from "../../config/env"
+	
+	let email = "";
+	let password = "";
+
+	function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+	function signUpUser() {
+		if(!email || email === "" || !password || password === "" || !validateEmail(email)){
+		  swal('Error', 'Please enter your email and password', 'error')
+		  resetInputs();
+		}else{
+		  createNewUser(email, password)
+		  swal('Success', 'Successfully Signed Up! Please Log In', 'success')
+		  .then(function() {
+			window.location = `http://localhost:3000/login`;
+		  });
+		}
+	}
 
 
 </script>
@@ -50,26 +73,27 @@ h1{
 }
 
 </style>
+<div class="container">
+	<a class="home" href=".">Rafiki's To Do List</a>
+	<h1 class="welcome">Welcome</h1>
 
-<a class="home" href=".">Rafiki's To Do List</a>
-<h1 class="welcome">Welcome</h1>
+	<hr>
 
-<hr>
+	<label for="signupEmail">Email Address
+		<input type="text" bind:value={email} name="signupEmail">
+	</label>
 
-<label for="loginEmail">Email Address
-	<input type="text" name="loginEmail">
-</label>
+	<hr class="noHr">
 
-<hr class="noHr">
+	<label for="signupEmail">Password
+		<input type="text" bind:value={password} name="signupPassword">
+	</label>
 
-<label for="loginEmail">Password
-	<input type="text" name="loginPassword">
-</label>
+	<hr class="noHr">
 
-<hr class="noHr">
+	<button type="button" on:click={signUpUser} class=" enterSignUp btn btn-dark">SignUp</button>
 
-<button type="button" class=" enterSignUp btn btn-dark">SignUp</button>
+	<hr>
 
-<hr>
-
-<p>Already have an account? <a href="login" class="logInLink">Log In</a></p>
+	<p>Already have an account? <a href="login" class="logInLink">Log In</a></p>
+</div>

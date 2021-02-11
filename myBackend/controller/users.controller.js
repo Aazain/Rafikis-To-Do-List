@@ -74,23 +74,21 @@ module.exports = (app)=>{
 
     app.delete("/logout", function (req, res){
 
-
+        
 
     })
 
 
 
     app.post("/newToken", (req,res)=>{
-
         const authHeader = req.headers['authorization']
         const token = authHeader && authHeader.split(' ')[1];
         res.json({token})
-
     })
 
 
     function newToken(currentUser){
-        return jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "30s"})
+        return jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "100s"})
     }
 
 
