@@ -15,7 +15,6 @@ module.exports = (app) => {
         })
     }
     
-
     app.get("/todo/:id", function(req, res) {
         const {
             id
@@ -28,7 +27,6 @@ module.exports = (app) => {
                 res.send(foundData)
             }
         })
-
     });
 
     app.get("/todo", tokenAuth, function(req, res) {
@@ -61,8 +59,9 @@ module.exports = (app) => {
             })
     });
 
-    app.post("/todo", function(req, res) {
+    app.post("/todo", tokenAuth,function(req, res) {
         const itemList = new Items({
+            user: req.user.email,
             name: req.body.name,
             status: req.body.status
         })
@@ -99,6 +98,5 @@ module.exports = (app) => {
                 }
             }
         )
-
     })
 }
