@@ -36,7 +36,7 @@ if (port == null || port == ""){
     port = 4000
 }
 app.listen(port, function(req,res){
-    console.log("Server started successfully")  
+    console.log("Server started successfully on port 4000")  
 })
     
 

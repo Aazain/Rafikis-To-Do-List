@@ -10,6 +10,8 @@ app.use(express.json());
 
 module.exports = (app)=>{
 
+    let refreshTokens = [];
+
     app.get("/users", function(req, res) {
         const findUsers = Users.find(function(err, foundUsers) {
             if (err) {
@@ -64,6 +66,7 @@ module.exports = (app)=>{
                 const accessToken = newToken(currentUser);
                 const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
                     if(err){res.status(401)}
+                    refreshTokens.push(regenToken)
                     res.send({accessToken: accessToken, refreshToken: regenToken})
                 })
             }
@@ -73,23 +76,30 @@ module.exports = (app)=>{
 
 
     app.delete("/logout", function (req, res){
-
-        
-
+        const authHeader = req.headers['authorization']
+        const refreshToken = authHeader && authHeader.split(' ')[1];
+        refreshTokens = refreshTokens.filter(accessToken => accessToken !== refreshToken)
+        res.sendStatus(204)
     })
 
 
 
     app.post("/newToken", (req,res)=>{
         const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1];
-        res.json({token})
+        const refreshToken = authHeader && authHeader.split(' ')[1];
+        if(refreshToken == null) return res.sendStatus(401)
+        if(!refreshTokens.includes(refreshToken))return res.sendStatus(403)
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if (err) return res.sendStatus(403)
+            const accessToken = newToken(user.email)
+            res.json({accessToken: accessToken})
+        })
     })
 
-
     function newToken(currentUser){
-        return jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "100s"})
+        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "10s"})
     }
+
 
 
 }
