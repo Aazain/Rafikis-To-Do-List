@@ -57,16 +57,17 @@ module.exports = (app)=>{
             email: req.body.email
         })
         if(user == null){
-            return res.status(400).send("Incorrect Email or Password")
+            return res.status(400).send({message: "Incorrect Email or Password"})
         }
         return bcrypt.compare(req.body.password, user.password, function (err, result) {
             if (!result || err) {
-                res.status(203).send("Incorrect Email or Password") 
+                return res.status(203).send({message: "Incorrect Email or Password"}) 
             } else {
                 const accessToken = newToken(currentUser);
                 const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
                     if(err){res.status(401)}
                     refreshTokens.push(regenToken)
+                    console.log(req.body, accessToken, regenToken)
                     res.send({accessToken: accessToken, refreshToken: regenToken})
                 })
             }
