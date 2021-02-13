@@ -1,7 +1,26 @@
 <script>
+	import{loginUser} from "../services/users.service"
+
+	let userEmail = "";
+	let userPassword = "";
 
 
-</script>
+	function validateEmail(userEmail) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(userEmail).toLowerCase())};
+
+	function userLogin(){
+		if(!userEmail || userEmail === "" || !userPassword || userPassword === "" || !validateEmail(userEmail)){
+		  swal('Error', 'Please enter an email and password', 'error')
+		}else{
+		  loginUser(userEmail, userPassword)
+		  .then(function() {
+		  });
+		}
+	}
+
+
+</script> 
 
 
 <style>
@@ -57,18 +76,18 @@ h1{
 <hr>
 
 <label for="loginEmail">Email Address
-	<input type="text" name="loginEmail">
+	<input type="text" bind:value={userEmail} name="loginEmail">
 </label>
 
 <hr class="noHr">
 
-<label for="loginEmail">Password
-	<input type="text" name="loginPassword">
+<label for="loginPassword">Password
+	<input type="text" bind:value={userPassword} name="loginPassword">
 </label>
 
 <hr class="noHr">
 
-<button type="button" class="enterLogIn btn btn-dark">Login</button>
+<button type="button" on:click={userLogin} class="enterLogIn btn btn-dark">Login</button>
 
 <hr>
 

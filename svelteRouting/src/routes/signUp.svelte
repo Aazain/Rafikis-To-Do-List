@@ -1,6 +1,5 @@
 <script>
 	import {createNewUser} from "../services/users.service"
-	import {env} from "../../config/env"
 	
 	let email = "";
 	let password = "";
@@ -13,12 +12,11 @@
 	function signUpUser() {
 		if(!email || email === "" || !password || password === "" || !validateEmail(email)){
 		  swal('Error', 'Please enter your email and password', 'error')
-		  resetInputs();
 		}else{
 		  createNewUser(email, password)
 		  swal('Success', 'Successfully Signed Up! Please Log In', 'success')
 		  .then(function() {
-			window.location = `http://localhost:3000/login`;
+			window.location.href = `/login`;
 		  });
 		}
 	}

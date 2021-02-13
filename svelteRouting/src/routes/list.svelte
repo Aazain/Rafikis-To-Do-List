@@ -22,7 +22,7 @@
 	  todoEdit = "";
 	}
 	
-		function postToList() {
+	function postToList() {
 		if(!todoName || todoName === ""){
 		  swal('Error', 'Please enter a task', 'error')
 		}else{
