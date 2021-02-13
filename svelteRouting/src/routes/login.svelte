@@ -14,8 +14,6 @@
 		  swal('Error', 'Please enter an email and password', 'error')
 		}else{
 		  loginUser(userEmail, userPassword)
-		  .then(function() {
-		  });
 		}
 	}
 

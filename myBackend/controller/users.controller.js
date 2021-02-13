@@ -50,7 +50,7 @@ module.exports = (app)=>{
     
 
     app.post("/users/login", async function(req, res){
-
+        console.log(req.headers)
         const currentUser = req.body;
         let user;
         user = await Users.findOne({
@@ -67,7 +67,6 @@ module.exports = (app)=>{
                 const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
                     if(err){res.status(401)}
                     refreshTokens.push(regenToken)
-                    console.log(req.body, accessToken, regenToken)
                     res.send({accessToken: accessToken, refreshToken: regenToken})
                 })
             }
@@ -98,7 +97,7 @@ module.exports = (app)=>{
     })
 
     function newToken(currentUser){
-        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "10s"})
+        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1000s"})
     }
 
 

@@ -286,8 +286,8 @@ li{
 	
 	<!-- 	BODY -->
 	<div class="registrationBtn">
-		<a href="login" class="loginBtn btn btn-dark" value="Login">Login</a>
-		<a href="signUp" class="signUpBtn btn btn-light" value="SignUp">Sign Up</a>
+		<a href="/login" class="loginBtn btn btn-dark" value="Login">Login</a>
+		<a href="/signUp" class="signUpBtn btn btn-light" value="SignUp">Sign Up</a>
 	</div>
 		<h1 class="title"> <a href="." class="listSelect"><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
 				<div id="listArea">

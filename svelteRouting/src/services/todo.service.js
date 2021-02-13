@@ -6,7 +6,8 @@ export function createTodo(name) {
       method: 'POST',
       headers:{
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
       },
       body: JSON.stringify({
         name,
@@ -17,14 +18,29 @@ export function createTodo(name) {
     })
     .catch((err) => console.log(err))
   }
-  
+
+
 
   export function retrieveListData(){
-    return fetch(`${env()}/todo`)
-   .then(response => response.json())
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+    console.log(accessToken)
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    })
+
+    fetch(`${env()}/todo`, {
+      method: 'GET',
+      headers
+    })
+    .then(
+      (res) => res.json()
+    )
    .then(data =>{
-      return data;
+      return data
    })
+   .catch((err) => console.log(err))
  };
 
 

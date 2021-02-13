@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 module.exports = (app) => {
 
     function tokenAuth(req,res,next){
-        const authHeader = req.headers['authorization']
+        const authHeader = req.headers['Authorization'] || req.headers["authorization"]
         const token = authHeader && authHeader.split(' ')[1];
         if(token == null) return res.sendStatus(401)
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
@@ -31,7 +31,7 @@ module.exports = (app) => {
 
     app.get("/todo", tokenAuth, function(req, res) {
         const currentUser = req.user.email;
-        const findData = Items.find({user: currentUser},function(err, foundData) {
+        const findData = Items.find(function(err, foundData) {
             if (err) {
                 res.status(400).send({
                     message: "Error getting todo list"

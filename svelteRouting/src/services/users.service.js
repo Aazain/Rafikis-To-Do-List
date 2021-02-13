@@ -18,27 +18,29 @@ export function createNewUser(email, password) {
     .catch((err) => console.log(err))
   }
 
-  export async function loginUser(email, password) {
-     fetch(`${env()}/users/login`, {
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    }).then(
-      (res) => res.json()
-    )
-    .then(
-      (data) => console.log(data)
-    )
-    .catch((err) => (console.log(err)))
-  }
+    export function loginUser(email, password) {
+    fetch(`${env()}/users/login`, {
+     method: 'POST',
+     headers:{
+       'Content-Type': 'application/json',
+       'Accept': 'application/json',
+     },
+     body: JSON.stringify({
+       email,
+       password
+     })
+   }).then(
+     (res) => res.json()
+   )
+   .then(
+     (data)=> localStorage.setItem("refreshToken", JSON.stringify(data.refreshToken),
+     localStorage.setItem("accessToken", JSON.stringify(data.accessToken)))
+   )
+   .then(() => loginSuccess())
+   .catch((err) => (console.log(err)))
+ }
 
   function loginSuccess(){
-    window.location.href = '/list'
+    window.location.href = "/list"
   }
   
