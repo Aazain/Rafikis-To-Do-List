@@ -13,7 +13,8 @@ export function createTodo(name) {
         name,
         status: false
       })
-    }).then( res => {
+    })
+    .then( res => {
         return res
     })
     .catch((err) => console.log(err))

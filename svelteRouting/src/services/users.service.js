@@ -36,7 +36,14 @@ export function createNewUser(email, password) {
      (data)=> localStorage.setItem("refreshToken", JSON.stringify(data.refreshToken),
      localStorage.setItem("accessToken", JSON.stringify(data.accessToken)))
    )
-   .then(() => loginSuccess())
+   .then(
+     function (res){
+       if (localStorage.getItem("refreshToken") == "undefined" || localStorage.getItem("accessToken") == "undefined"){
+        swal('Error', 'Incorrect Email or Password', 'error')
+       }else{
+         loginSuccess()
+       }
+     })
    .catch((err) => (console.log(err)))
  }
 
