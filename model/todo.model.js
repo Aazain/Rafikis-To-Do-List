@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 const listSchema = new mongoose.Schema({
-    user: String,
+    userId: String,
     name: String,
     status: Boolean
 }, {

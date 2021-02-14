@@ -30,8 +30,8 @@ module.exports = (app) => {
     });
 
     app.get("/todo", tokenAuth, function(req, res) {
-        const currentUser = req.user.email;
-        const findData = Items.find(function(err, foundData) {
+        const currentUser = req.user;
+        const findData = Items.find({userId: currentUser.user._id},function(err, foundData) {
             if (err) {
                 res.status(400).send({
                     message: "Error getting todo list"
@@ -59,9 +59,10 @@ module.exports = (app) => {
             })
     });
 
-    app.post("/todo", tokenAuth,function(req, res) {
+    app.post("/todo", function(req, res) {
+        console.log(req.user.user._id,)
         const itemList = new Items({
-            user: req.user.email,
+            user: req.user.user._id,
             name: req.body.name,
             status: req.body.status
         })

@@ -13,7 +13,7 @@ module.exports = (app)=>{
     let refreshTokens = [];
 
     app.get("/users", function(req, res) {
-        const findUsers = Users.find(function(err, foundUsers) {
+        const findUsers = Users.find({},function(err, foundUsers) {
             if (err) {
                 res.status(400).send({
                     message: "Error getting users"
@@ -52,6 +52,7 @@ module.exports = (app)=>{
     app.post("/users/login", async function(req, res){
         const currentUser = req.body;
         let user;
+        // check user gave a username and password
         user = await Users.findOne({
             email: req.body.email
         })
@@ -62,7 +63,7 @@ module.exports = (app)=>{
             if (!result || err) {
                 return res.status(203).send({message: "Incorrect Email or Password"}) 
             } else {
-                const accessToken = newToken(currentUser);
+                const accessToken = newToken({_id: user._id, email: user.email});
                 const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
                     if(err){res.status(401)}
                     refreshTokens.push(regenToken)
