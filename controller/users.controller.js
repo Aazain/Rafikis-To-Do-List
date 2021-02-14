@@ -50,7 +50,6 @@ module.exports = (app)=>{
     
 
     app.post("/users/login", async function(req, res){
-        console.log(req.headers)
         const currentUser = req.body;
         let user;
         user = await Users.findOne({
