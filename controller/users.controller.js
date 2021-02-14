@@ -74,15 +74,6 @@ module.exports = (app)=>{
 
 
 
-    app.delete("/logout", function (req, res){
-        const authHeader = req.headers['authorization']
-        const refreshToken = authHeader && authHeader.split(' ')[1];
-        refreshTokens = refreshTokens.filter(accessToken => accessToken !== refreshToken)
-        res.send({accessToken: "undefined", refreshToken: "undefined"})
-    })
-
-
-
     app.post("/newToken", (req,res)=>{
         const authHeader = req.headers['authorization']
         const refreshToken = authHeader && authHeader.split(' ')[1];
