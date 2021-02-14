@@ -47,29 +47,33 @@ export function createTodo(name) {
 
 
  export function removeTodo(id){
+  const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  })
 
     return fetch(`${env()}/todo/${id}`, {
         method: 'DELETE',
-        headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-
+        headers
       }).then( res => {
           return res
       })
       .catch((err) => console.log(err))
-
  }
 
 
  export function editTodo(id, edit, stat){
+  const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  })
     return fetch(`${env()}/todo/${id}`, {
         method: 'PATCH',
-        headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
+        headers,
         body: JSON.stringify({
             name: edit,
             status: stat

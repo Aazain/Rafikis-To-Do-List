@@ -3,7 +3,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import {createTodo, retrieveListData, removeTodo, editTodo} from "../services/todo.service"
-	
+	import {logOutUser} from "../services/users.service"
+	    //STILL NEED TO HANDLE REFRESH TOKENS AND LOGOUT
 	  let listData = [];
 
 	
@@ -19,6 +20,10 @@
 	function resetInputs() {
 	  todoName = "";
 	  todoEdit = "";
+	}
+
+	function logOut(){
+		logOutUser();
 	}
 	
 	function postToList() {
@@ -255,19 +260,10 @@ li{
 	  color: black;
 	}
 	
-	.signUpBtn{
-	  background-color: transparent;
-	  border-color: rgb(175, 126, 235);
-	  margin-left: -0.3vw;
-	}
+
+
 	
-	.signUpBtn:hover{
-	  background-color: rgb(175, 126, 235);
-	  border-color: black;
-	  color: white;
-	}
-	
-	.loginBtn, .signUpBtn{
+	.loginBtn{
 		font-family: 'Montserrat', sans-serif;
 	  margin-top: -10vw;
 	  margin-bottom: unset;
@@ -285,8 +281,7 @@ li{
 	
 	<!-- 	BODY -->
 	<div class="registrationBtn">
-		<a href="/login" class="loginBtn btn btn-dark" value="Login">Login</a>
-		<a href="/signUp" class="signUpBtn btn btn-light" value="SignUp">Sign Up</a>
+		<a href="/" on:click={logOut} class="loginBtn btn btn-dark" value="Login">Log Out</a>
 	</div>
 		<h1 class="title"> <a href="." class="listSelect"><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
 				<div id="listArea">

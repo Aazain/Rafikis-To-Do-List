@@ -50,4 +50,14 @@ export function createNewUser(email, password) {
   function loginSuccess(){
     window.location.href = "/list"
   }
+
+
+  export function logOutUser (){
+    localStorage.setItem("refreshToken", JSON.stringify("undefined"),
+    localStorage.setItem("accessToken", JSON.stringify("undefined")))
+   }
+
+
+
+
   
