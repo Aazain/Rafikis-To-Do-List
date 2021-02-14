@@ -2,13 +2,15 @@
 import {env} from "../../config/env"
 
 export function createTodo(name) {
+  const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  })
     return fetch(`${env()}/todo`, {
       method: 'POST',
-      headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-      },
+      headers,
       body: JSON.stringify({
         name,
         status: false
