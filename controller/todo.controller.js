@@ -59,10 +59,10 @@ module.exports = (app) => {
             })
     });
 
-    app.post("/todo", function(req, res) {
-        console.log(req.user.user._id,)
+    app.post("/todo", tokenAuth,function(req, res) {
+        const currentUser = req.user;
         const itemList = new Items({
-            user: req.user.user._id,
+            userId: currentUser.user._id,
             name: req.body.name,
             status: req.body.status
         })
