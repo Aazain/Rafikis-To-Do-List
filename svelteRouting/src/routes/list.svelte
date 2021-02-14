@@ -4,13 +4,12 @@
 	import { onMount } from 'svelte';
 	import {createTodo, retrieveListData, removeTodo, editTodo} from "../services/todo.service"
 	
-	
 	  let listData = [];
+
 	
 	  let todoName = "";
 	  let todoEdit = "";
-	
-	
+
 	
 	  onMount(async () => {
 		  listData = await retrieveListData();

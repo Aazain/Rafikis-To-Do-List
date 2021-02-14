@@ -80,7 +80,7 @@ h1{
 <hr class="noHr">
 
 <label for="loginPassword">Password
-	<input type="text" bind:value={userPassword} name="loginPassword">
+	<input type="password" bind:value={userPassword} name="loginPassword">
 </label>
 
 <hr class="noHr">

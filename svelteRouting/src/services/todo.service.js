@@ -24,14 +24,13 @@ export function createTodo(name) {
 
   export function retrieveListData(){
     const accessToken = JSON.parse(localStorage.getItem('accessToken'));
-    console.log(accessToken)
     const headers = new Headers({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': `Bearer ${accessToken}`
     })
 
-    fetch(`${env()}/todo`, {
+    return fetch(`${env()}/todo`, {
       method: 'GET',
       headers
     })
