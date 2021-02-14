@@ -4,6 +4,8 @@ const Items = require("../model/todo.model")
 const jwt = require("jsonwebtoken");
 module.exports = (app) => {
 
+    //STILL NEED TO HANDLE REFRESH TOKENS AND LOGOUT
+
     function tokenAuth(req,res,next){
         const authHeader = req.headers['Authorization'] || req.headers["authorization"]
         const token = authHeader && authHeader.split(' ')[1];
@@ -36,6 +38,8 @@ module.exports = (app) => {
                 res.status(400).send({
                     message: "Error getting todo list"
                 });
+            }else if (res.status == 403){
+                
             }
             return res.send([
                 ...foundData
@@ -43,7 +47,7 @@ module.exports = (app) => {
         });
     });
 
-    app.delete("/todo/:id", function(req, res) {
+    app.delete("/todo/:id", tokenAuth,function(req, res) {
         const {
             id
         } = req.params
@@ -74,7 +78,7 @@ module.exports = (app) => {
             })
     })
         
-    app.patch("/todo/:id", function(req, res) {
+    app.patch("/todo/:id", tokenAuth,function(req, res) {
         const {
             id
         } = req.params;

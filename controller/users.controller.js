@@ -50,7 +50,6 @@ module.exports = (app)=>{
     
 
     app.post("/users/login", async function(req, res){
-        const currentUser = req.body;
         let user;
         // check user gave a username and password
         user = await Users.findOne({
@@ -64,7 +63,7 @@ module.exports = (app)=>{
                 return res.status(203).send({message: "Incorrect Email or Password"}) 
             } else {
                 const accessToken = newToken({_id: user._id, email: user.email});
-                const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
+                const refreshToken = jwt.sign({_id: user._id, email: user.email}, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
                     if(err){res.status(401)}
                     refreshTokens.push(regenToken)
                     res.send({accessToken: accessToken, refreshToken: regenToken})
@@ -79,7 +78,7 @@ module.exports = (app)=>{
         const authHeader = req.headers['authorization']
         const refreshToken = authHeader && authHeader.split(' ')[1];
         refreshTokens = refreshTokens.filter(accessToken => accessToken !== refreshToken)
-        res.sendStatus(204)
+        res.send({accessToken: "undefined", refreshToken: "undefined"})
     })
 
 
@@ -97,79 +96,9 @@ module.exports = (app)=>{
     })
 
     function newToken(currentUser){
-        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "1000s"})
+        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "100s"})
     }
 
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//This code is functional. It takes the JWT and checks if any array items have the same
-// {email:} as the email of the JWT and then it renders the array items that include it.
-
-    // function tokenAuth(req,res,next){
-    //     const authHeader = req.headers['authorization']
-    //     const token = authHeader && authHeader.split(' ')[1];
-    //     if(token == null) return res.sendStatus(401)
-    //     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    //         if (err) return res.status(403).send("Forbidden")
-    //         req.user = user
-    //         next();
-    //     })
-    // }
-
-    //     app.get("/test", tokenAuth, function(req, res){
-    //     res.json(post.filter(post => post.email === req.user.email))
-    // })
-
-
-
-
-
-
-
-    
-
-    // const post = [
-    //     {
-    //         email: "aazain@gmail.com",
-    //         title: "cool"
-    //     },
-    //     {
-    //         email:"aazainman@gmail.com",
-    //         title:"good job"
-    //     },
-    //     {
-    //         email:"aazainman@gmail.com",
-    //         title:"good job"
-    //     },
-    //     {
-    //         email:"aazainman@gmail.com",
-    //         title:"good job"
-    //     },
-    //     {
-    //         email:"aazainman@gmail.com",
-    //         title:"good job"
-    //     }
-        
-    // ];
