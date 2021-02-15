@@ -4,17 +4,16 @@
 	import { onMount } from 'svelte';
 	import {createTodo, retrieveListData, removeTodo, editTodo} from "../services/todo.service"
 	import {logOutUser} from "../services/users.service"
-	    //STILL NEED TO HANDLE REFRESH TOKENS AND LOGOUT
-	  let listData = [];
+	let listData = [];
 
 	
-	  let todoName = "";
-	  let todoEdit = "";
+	let todoName = "";
+	let todoEdit = "";
 
 	
-	  onMount(async () => {
-		  listData = await retrieveListData();
-		});
+	onMount(async () => {
+		listData = await retrieveListData();
+	});
 	
 	
 	function resetInputs() {
@@ -33,7 +32,7 @@
 		  createTodo(todoName)
 		  .then(async () => {
 			listData = await retrieveListData();
-			 resetInputs();
+			resetInputs();
 		  });
 		}
 	}
@@ -45,7 +44,7 @@
 		removeTodo(id)
 		.then(async () => {
 			listData = await retrieveListData();
-		  });
+		});
 	  }
 	}
 	
@@ -60,7 +59,7 @@
 		.then(async () => {6
 			listData = await retrieveListData();
 			resetInputs();
-		  });
+		});
 	  }
 	}
 	
@@ -83,49 +82,45 @@
 	  })
 	}
 	
+</script>
 	
-	
-	</script>
-	
-	<style>
-
-		
+<style>
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-:global()html{
-    height: 110%;
-    margin-top: 10vw;
-    margin-right: calc(-7em + 38vw);
-    margin-left: calc(-8.5em + 38vw);
-}
+	.list-container{
+		height: 150vh;
+		width: 100vw;
+		background-color: rgb(227,233,255);
+		text-align: center;
+	}
 
-:global()body {
-    background-color: rgb(227,233,255);
-    height: auto;
-    text-align: center;
-}
+	.list-content {
+		padding-top: 8vw;
+		margin-right: calc(-7em + 40vw);
+		margin-left: calc(-8.5em + 40vw);
+	}
 
-h1{
-	font-family: 'Montserrat', sans-serif;
-	text-shadow: 2px 2px 8px white
-}
+	h1{
+		font-family: 'Montserrat', sans-serif;
+		text-shadow: 2px 2px 8px white
+	}
 
-ul{
-    padding: 1em;
-    margin: 0;
-    list-style-type: none;
-}
+	ul{
+		padding: 1em;
+		margin: 0;
+		list-style-type: none;
+	}
 
-input[type=checkbox] {
-    transform: scale(0.8);
-}
+	input[type=checkbox] {
+		transform: scale(0.8);
+	}
 
-li{
-	font-family: 'Montserrat', sans-serif;
-	margin-bottom: 1.8em;
-	font-size: calc(0.7em + 0.3vw);
-  }
+	li{
+		font-family: 'Montserrat', sans-serif;
+		margin-bottom: 1.8em;
+		font-size: calc(0.7em + 0.3vw);
+	}
 
 	
 	#listArea{
@@ -204,21 +199,23 @@ li{
 	}
 	
 	.footer:hover > .addList {
- width: 120px;
- padding: 0 6px;
-}
-.footer:hover > .addbtn {
- background: black;
- box-shadow: 0px 0px 10px black;
- color: white;
-}
-.footer:hover > .addList{
-  background-color: black;
-  box-shadow: 0px 0px 10px black;
-  border-radius: 20em;
-}
+	width: 120px;
+	padding: 0 6px;
+	}
+
+	.footer:hover > .addbtn {
+	background: black;
+	box-shadow: 0px 0px 10px black;
+	color: white;
+	}
+
+	.footer:hover > .addList{
+	background-color: black;
+	box-shadow: 0px 0px 10px black;
+	border-radius: 20em;
+	}
 	
-	:global(.addList){
+	.addList{
 	 border: none;
 	 background: none;
 	 outline: none;
@@ -232,7 +229,7 @@ li{
 	}
 	
 	.footer{
-	  margin-left: calc(4em + 11vw);
+	  margin-left: calc(4em + 9vw);
 	}
 	 .taskComplete{
 	  width: 0.9em;
@@ -251,79 +248,76 @@ li{
 		background-color:  rgb(175, 126, 235);
 	}
 	
-	.loginBtn{
+	.logout{
 	  background-color:  rgb(175, 126, 235);
 	}
 	
-	.loginBtn:hover{
+	.logout:hover{
 	  background-color: transparent;
 	  color: black;
 	}
 	
-
-
-	
-	.loginBtn{
+	.logout{
 		font-family: 'Montserrat', sans-serif;
-	  margin-top: -10vw;
 	  margin-bottom: unset;
 	  font-size: calc(0.5em + 0.5vw);
 	}
 	
 	.registrationBtn{
+		margin-bottom: 2em;
 	  margin-right: calc(-6.5em + -22vw);
 	  border-color: red;
 	}
 
-
-	</style>
+</style>
 	
 	
 	<!-- 	BODY -->
-	<div class="registrationBtn">
-		<a href="/" on:click={logOut} class="loginBtn btn btn-dark" value="Login">Log Out</a>
-	</div>
+<div class="list-container">
+	<div class="list-content">
+		<div class="registrationBtn">
+			<a href="/" on:click={logOut} class="logout btn btn-dark">Log Out</a>
+		</div>
+
 		<h1 class="title"> <a href="." class="listSelect"><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
-				<div id="listArea">
-						<ul>
-				{#each listData as item}
-											  <div class="item">
-												<li class="taskName">
-													<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
-													<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
-													<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
-												  <span class:checked={item.status}>  <p class="taskItem">{item.name}</p></span>
-													<div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-													  <div class="modal-dialog" role="document">
-														<div class="modal-content">
-														  <div class="modal-header">
-															<h5 class="modal-title" id="editModalLabel">TaskEditor</h5>
-															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-															  <span aria-hidden="true">&times;</span>
-															</button>
-														  </div>
-														  <div class="modal-body">
-															<input bind:value={todoEdit} type="text" placeholder={item.name}>
-														  </div>
-														  <div class="modal-footer">
-															<button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
-															<button type="button" on:click={()=>editList(item._id)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
-														  </div>
-														</div>
-													  </div>
-													</div>
-												</li>
-											</div>
-										   
-				{/each}       
-						</ul>
-		  </div>
-		  
-	
-		  <div class="footer">
-            <input bind:value={todoName} autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
-			  <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
-		  </div>
+
+			<div id="listArea">
+				<ul>
+					{#each listData as item}
+						<div class="item">
+							<li class="taskName">
+								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
+								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
+								<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
+								<span class:checked={item.status}>  <p class="taskItem">{item.name}</p></span>
+								<div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="editModalLabel">TaskEditor</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<input bind:value={todoEdit} type="text" placeholder={item.name}>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
+										<button type="button" on:click={()=>editList(item._id)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
+								</div>
+							</li>
+						</div>								
+					{/each}       
+				</ul>
+			</div>
+			  
+			  <div class="footer">
+				<input bind:value={todoName} autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
+				  <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
+			  </div>
+	</div>
+</div>
 	
 	
 		

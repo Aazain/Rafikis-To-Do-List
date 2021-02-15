@@ -17,25 +17,24 @@
 		}
 	}
 
-
 </script> 
 
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-:global()body {
-	background-color: rgb(227,233,255);
-    height: auto;
-    text-align: center;
-}
+.list-container{
+		height: 100vh;
+		width: 100vw;
+		background-color: rgb(227,233,255);
+		text-align: center;
+	}
 
-:global()html{
-    height: 110%;
-    margin-top: 10vw;
-    margin-right: calc(-7em + 38vw);
-    margin-left: calc(-8.5em + 38vw);
-}
+	.list-content {
+		padding-top: 8vw;
+		margin-right: calc(-7em + 40vw);
+		margin-left: calc(-8.5em + 40vw);
+	}
 
 .home{
 	font-family: 'Montserrat', sans-serif;
@@ -68,25 +67,31 @@ h1{
 
 </style>
 
-<a class="home" href=".">Rafiki's To Do List</a>
-<h1 class="welcome">Welcome Back</h1>
+<div class="list-container">
+	<div class="list-content">
 
-<hr>
+		<a class="home" href=".">Rafiki's To Do List</a>
+		<h1 class="welcome">Welcome Back</h1>
 
-<label for="loginEmail">Email Address
-	<input type="text" bind:value={userEmail} name="loginEmail">
-</label>
+		<hr>
 
-<hr class="noHr">
+		<label for="loginEmail">Email Address
+			<input type="text" bind:value={userEmail} name="loginEmail">
+		</label>
 
-<label for="loginPassword">Password
-	<input type="password" bind:value={userPassword} name="loginPassword">
-</label>
+		<hr class="noHr">
 
-<hr class="noHr">
+		<label for="loginPassword">Password
+			<input type="password" bind:value={userPassword} name="loginPassword">
+		</label>
 
-<button type="button" on:click={userLogin} class="enterLogIn btn btn-dark">Login</button>
+		<hr class="noHr">
 
-<hr>
+		<button type="button" on:click={userLogin} class="enterLogIn btn btn-dark">Login</button>
 
-<p>Don't have an account? <a href="signUp" class="signUpLink">Sign Up</a></p>
+		<hr>
+
+		<p>Don't have an account? <a href="signUp" class="signUpLink">Sign Up</a></p>
+
+	</div>
+</div>

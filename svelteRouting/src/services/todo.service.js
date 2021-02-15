@@ -42,7 +42,16 @@ export function createTodo(name) {
    .then(data =>{
       return data
    })
-   .catch((err) => console.log(err))
+   .catch(function listError(err){
+      if(err){
+        console.log(err)
+        swal('Error', 'Session Expired', 'error').then(
+          function(){
+            window.location.href = `/`
+          }
+        )
+      }
+   })
  };
 
 

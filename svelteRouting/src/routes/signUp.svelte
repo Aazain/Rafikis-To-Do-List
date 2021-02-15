@@ -28,18 +28,18 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-:global()body {
-	background-color: rgb(227,233,255);
-    height: auto;
-    text-align: center;
-}
+.list-container{
+		height: 100vh;
+		width: 100vw;
+		background-color: rgb(227,233,255);
+		text-align: center;
+	}
 
-:global()html{
-    height: 110%;
-    margin-top: 10vw;
-    margin-right: calc(-7em + 38vw);
-    margin-left: calc(-8.5em + 38vw);
-}
+	.list-content {
+		padding-top: 8vw;
+		margin-right: calc(-7em + 40vw);
+		margin-left: calc(-8.5em + 40vw);
+	}
 
 .home{
 	font-family: 'Montserrat', sans-serif;
@@ -71,27 +71,33 @@ h1{
 }
 
 </style>
-<div class="container">
-	<a class="home" href=".">Rafiki's To Do List</a>
-	<h1 class="welcome">Welcome</h1>
+<div class="list-container">
 
-	<hr>
+	<div class="list-content">
 
-	<label for="signupEmail">Email Address
-		<input type="text" bind:value={email} name="signupEmail">
-	</label>
+			<a class="home" href=".">Rafiki's To Do List</a>
+			<h1 class="welcome">Welcome</h1>
 
-	<hr class="noHr">
+		<hr>
 
-	<label for="signupEmail">Password
-		<input type="text" bind:value={password} name="signupPassword">
-	</label>
+			<label for="signupEmail">Email Address
+				<input type="text" bind:value={email} name="signupEmail">
+			</label>
 
-	<hr class="noHr">
+		<hr class="noHr">
 
-	<button type="button" on:click={signUpUser} class=" enterSignUp btn btn-dark">SignUp</button>
+			<label for="signupEmail">Password
+				<input type="text" bind:value={password} name="signupPassword">
+			</label>
 
-	<hr>
+		<hr class="noHr">
 
-	<p>Already have an account? <a href="login" class="logInLink">Log In</a></p>
+			<button type="button" on:click={signUpUser} class=" enterSignUp btn btn-dark">SignUp</button>
+
+		<hr>
+
+		<p>Already have an account? <a href="login" class="logInLink">Log In</a></p>
+		
+	</div>
+
 </div>
