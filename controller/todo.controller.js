@@ -4,7 +4,7 @@ const Items = require("../model/todo.model")
 const jwt = require("jsonwebtoken");
 module.exports = (app) => {
 
-    //STILL NEED TO HANDLE REFRESH TOKENS AND LOGOUT
+
 
     function tokenAuth(req,res,next){
         const authHeader = req.headers['Authorization'] || req.headers["authorization"]
@@ -36,7 +36,7 @@ module.exports = (app) => {
         const findData = Items.find({userId: currentUser.user._id},function(err, foundData) {
             if (err) {
                 res.status(400).send({
-                    message: "Error getting todo list"
+                    message: "Error getting to-do list"
                 });
             }else if (res.status == 403){
                 
