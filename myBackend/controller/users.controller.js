@@ -63,7 +63,7 @@ module.exports = (app)=>{
                 return res.status(203).send({message: "Incorrect Email or Password"}) 
             } else {
                 const accessToken = newToken({_id: user._id, email: user.email});
-                const refreshToken = jwt.sign({_id: user._id, email: user.email}, process.env.REFRESH_TOKEN_SECRET, (err, regenToken) => {
+                const refreshToken = jwt.sign({_id: user._id, email: user.email}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "172800s"},(err, regenToken) => {
                     if(err){res.status(401)}
                     refreshTokens.push(regenToken)
                     res.send({accessToken: accessToken, refreshToken: regenToken})
@@ -87,7 +87,7 @@ module.exports = (app)=>{
     })
 
     function newToken(currentUser){
-        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "100s"})
+        return jwt.sign({user: currentUser}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "900s"})
     }
 
 
