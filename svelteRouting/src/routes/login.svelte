@@ -1,21 +1,28 @@
 <script>
-	import{loginUser} from "../services/users.service"
 
-	let userEmail = "";
-	let userPassword = "";
+import { loginUser } from "../services/users.service";
 
+let userEmail = "";
+let userPassword = "";
 
-	function validateEmail(userEmail) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(userEmail).toLowerCase())};
+function validateEmail(userEmail) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(userEmail).toLowerCase());
+}
 
-	function userLogin(){
-		if(!userEmail || userEmail === "" || !userPassword || userPassword === "" || !validateEmail(userEmail)){
-		  swal('Error', 'Please enter an email and password', 'error')
-		}else{
-		  loginUser(userEmail, userPassword)
-		}
-	}
+function userLogin() {
+  if (
+    !userEmail ||
+    userEmail === "" ||
+    !userPassword ||
+    userPassword === "" ||
+    !validateEmail(userEmail)
+  ) {
+    swal("Error", "Please enter an email and password", "error");
+  } else {
+    loginUser(userEmail, userPassword);
+  }
+}
 
 </script> 
 
@@ -23,48 +30,47 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-.list-container{
-		height: 100vh;
-		width: 100vw;
-		background-color: rgb(227,233,255);
-		text-align: center;
-	}
-
-	.list-content {
-		padding-top: 8vw;
-		margin-right: calc(-7em + 40vw);
-		margin-left: calc(-8.5em + 40vw);
-	}
-
-.home{
-	font-family: 'Montserrat', sans-serif;
-	  font-size: calc(0.5em + 0.8vw);
-	  color: black;
-	  text-decoration: underline;
+.list-container {
+	height: 100vh;
+	width: 100vw;
+	background-color: rgb(227, 233, 255);
+	text-align: center;
 }
 
-.signUpLink{
-	font-family: 'Montserrat', sans-serif;
-	 color: rgb(175, 126, 235);
+.list-content {
+	padding-top: 8vw;
+	margin-right: calc(-7em + 40vw);
+	margin-left: calc(-8.5em + 40vw);
 }
 
-.welcome{
+.home {
+	font-family: 'Montserrat', sans-serif;
+	font-size: calc(0.5em + 0.8vw);
+	color: black;
+	text-decoration: underline;
+}
+
+.signUpLink {
+	font-family: 'Montserrat', sans-serif;
+	color: rgb(175, 126, 235);
+}
+
+.welcome {
 	margin-top: 1em
 }
 
-.noHr{
+.noHr {
 	opacity: 0;
 }
 
-.enterLogIn{
+.enterLogIn {
 	background-color: rgb(175, 126, 235);
 	padding: 0.5em 6em 0.5em 6em;
 }
 
-h1{
+h1 {
 	font-family: 'Montserrat', sans-serif;
 }
-
 </style>
 
 <div class="list-container">

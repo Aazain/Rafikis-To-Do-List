@@ -1,75 +1,79 @@
 <script>
-	import {createNewUser} from "../services/users.service"
-	
-	let email = "";
-	let password = "";
+import { createNewUser } from "../services/users.service";
 
-	function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+let email = "";
+let password = "";
+
+function validateEmail(email) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
 }
 
-	function signUpUser() {
-		if(!email || email === "" || !password || password === "" || !validateEmail(email)){
-		  swal('Error', 'Please enter your email and password', 'error')
-		}else{
-		  createNewUser(email, password)
-		  swal('Success', 'Successfully Signed Up! Please Log In', 'success')
-		  .then(function() {
-			window.location.href = `/login`;
-		  });
-		}
-	}
-
-
+function signUpUser() {
+  if (
+    !email ||
+    email === "" ||
+    !password ||
+    password === "" ||
+    !validateEmail(email)
+  ) {
+    swal("Error", "Please enter your email and password", "error");
+  } else {
+    createNewUser(email, password);
+    swal("Success", "Successfully Signed Up! Please Log In", "success").then(
+      function () {
+        window.location.href = `/login`;
+      }
+    );
+  }
+}
 </script>
 
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-.list-container{
-		height: 100vh;
-		width: 100vw;
-		background-color: rgb(227,233,255);
-		text-align: center;
-	}
-
-	.list-content {
-		padding-top: 8vw;
-		margin-right: calc(-7em + 40vw);
-		margin-left: calc(-8.5em + 40vw);
-	}
-
-.home{
-	font-family: 'Montserrat', sans-serif;
-	  font-size: calc(0.5em + 0.8vw);
-	  color: black;
-	  text-decoration: underline;
+.list-container {
+	height: 100vh;
+	width: 100vw;
+	background-color: rgb(227, 233, 255);
+	text-align: center;
 }
 
-.logInLink{
-	font-family: 'Montserrat', sans-serif;
-	 color: rgb(175, 126, 235);
+.list-content {
+	padding-top: 8vw;
+	margin-right: calc(-7em + 40vw);
+	margin-left: calc(-8.5em + 40vw);
 }
 
-.welcome{
+.home {
+	font-family: 'Montserrat', sans-serif;
+	font-size: calc(0.5em + 0.8vw);
+	color: black;
+	text-decoration: underline;
+}
+
+.logInLink {
+	font-family: 'Montserrat', sans-serif;
+	color: rgb(175, 126, 235);
+}
+
+.welcome {
 	margin-top: 1em
 }
 
-.noHr{
+.noHr {
 	opacity: 0;
 }
 
-.enterSignUp{
+.enterSignUp {
 	background-color: rgb(175, 126, 235);
 	padding: 0.5em 6em 0.5em 6em;
 }
 
-h1{
-    font-family: 'Montserrat', sans-serif;
+h1 {
+	font-family: 'Montserrat', sans-serif;
 }
-
 </style>
 <div class="list-container">
 
