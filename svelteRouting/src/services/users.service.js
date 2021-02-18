@@ -62,23 +62,3 @@ export function logOutUser() {
     localStorage.setItem("accessToken", JSON.stringify("undefined"))
   );
 }
-
-// export function newAccessTokenGen() {
-//   const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-//   const headers = new Headers({
-//     "Content-Type": "application/json",
-//     "Accept": "application/json",
-//     "Authorization": `Bearer ${refreshToken}`,
-//   });
-//   return fetch(`${env()}/newAccessToken`, {
-//     method: "POST",
-//     headers,
-//   })
-//     .then((res) => {
-//       return res.json();
-//     })
-//     .then((data) =>
-//       localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
-//     )
-//     .catch((err) => console.log(err));
-// }

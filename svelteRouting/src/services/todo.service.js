@@ -19,10 +19,9 @@ export function createTodo(name) {
     .then( res => {
         return res
     })
-    .catch((err) => console.log(err))
+    .catch((err) => listError(err))
+    .catch((err) => errorCheck(err))
   }
-
-
 
   export function retrieveListData(){
     const accessToken = JSON.parse(localStorage.getItem('accessToken'));
@@ -42,18 +41,9 @@ export function createTodo(name) {
    .then(data =>{
       return data
    })
-   .catch(function listError(err){
-      if(err){
-        console.log(err)
-        swal('Error', 'Session Expired', 'error').then(
-          function(){
-            window.location.href = `/`
-          }
-        )
-      }
-   })
+   .catch((err) => listError(err))
+   .catch((err) => console.log(err))
  };
-
 
  export function removeTodo(id){
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
@@ -69,7 +59,8 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => console.log(err))
+      .catch((err) => listError(err))
+      .catch((err) => errorCheck(err))
  }
 
 
@@ -90,5 +81,48 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => console.log(err))
+      .catch((err) => listError(err))
+      .catch((err) => errorCheck(err))
  }
+
+
+function listError(err){
+  if(err){
+    newAccessTokenGen()
+  }
+}
+
+function errorCheck(err){
+  if(err){
+    swal('Error', 'Session Expired', 'error')
+    .then(function(){window.location.href = "/"})
+  }
+}
+
+ export function newAccessTokenGen() {
+  const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": `Bearer ${refreshToken}`,
+  });
+  return fetch(`${env()}/newAccessToken`, {
+    method: "POST",
+    headers,
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then(function checkTokens (data) {
+      localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
+      if(data.accessToken !== "undefined"){
+        //Fix redirect here
+      }
+      if(data.accessToken == "undefined"){
+        localStorage.setItem("refreshToken", "undefined")
+        swal('Error', 'Session Expired', 'error')
+        .then(function(){window.location.href = "/"})
+      }
+    })
+    .catch((err) => console.log(err));
+}

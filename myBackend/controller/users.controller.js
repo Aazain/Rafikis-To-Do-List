@@ -48,7 +48,6 @@ module.exports = (app) => {
 
   app.post("/users/login", async function (req, res) {
     let user;
-    // check user gave a username and password
     user = await Users.findOne({
       email: req.body.email,
     });
@@ -68,7 +67,7 @@ module.exports = (app) => {
           const refreshToken = jwt.sign(
             { _id: user._id, email: user.email },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: "172800s" },
+            { expiresIn: "20s" },
             (err, regenToken) => {
               if (err) {
                 res.status(401);
@@ -86,9 +85,9 @@ module.exports = (app) => {
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
-    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403).send({accessToken: "undefined"});
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
+      if (err) return res.send({accessToken: "undefined"}).sendStatus(403);
       const accessToken = newToken({ _id: user._id, email: user.email });
       res.send({ accessToken: accessToken });
     });
@@ -96,7 +95,7 @@ module.exports = (app) => {
 
   function newToken(currentUser) {
     return jwt.sign({ user: currentUser }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "900s",
+      expiresIn: "5s",
     });
   }
 };

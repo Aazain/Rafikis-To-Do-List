@@ -277,7 +277,6 @@ li {
 </style>
 	
 <!-- 	BODY -->
-
 <div class="list-container">
 	<div class="list-content">
 		<div class="registrationBtn">
