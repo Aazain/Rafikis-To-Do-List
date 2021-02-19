@@ -1,6 +1,5 @@
 
 import {env} from "../../config/env"
-
 export function createTodo(name) {
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
   const headers = new Headers({
@@ -25,12 +24,18 @@ export function createTodo(name) {
 
   export function retrieveListData(){
     const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+    const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
     const headers = new Headers({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': `Bearer ${accessToken}`
     })
-
+  
+    if (refreshToken == "undefined" && accessToken == "undefined"){
+      swal('Error', 'Session Expired', 'error')
+      .then(function(){window.location.href = "/"})
+    }
+     
     return fetch(`${env()}/todo`, {
       method: 'GET',
       headers
@@ -116,10 +121,10 @@ function errorCheck(err){
     .then(function checkTokens (data) {
       localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
       if(data.accessToken !== "undefined"){
-        //Fix redirect here
+       //Find a method
       }
       if(data.accessToken == "undefined"){
-        localStorage.setItem("refreshToken", "undefined")
+        localStorage.setItem("refreshToken", JSON.stringify("undefined"))
         swal('Error', 'Session Expired', 'error')
         .then(function(){window.location.href = "/"})
       }

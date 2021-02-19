@@ -56,9 +56,8 @@ function loginSuccess() {
 }
 
 export function logOutUser() {
-  localStorage.setItem(
-    "refreshToken",
-    JSON.stringify("undefined"),
-    localStorage.setItem("accessToken", JSON.stringify("undefined"))
+  localStorage.setItem("refreshToken",JSON.stringify("undefined"),
+    localStorage.setItem("accessToken", JSON.stringify("undefined")),
+    window.location.href = "/"
   );
 }

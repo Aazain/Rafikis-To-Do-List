@@ -6,14 +6,15 @@ import {
   createTodo,
   retrieveListData,
   removeTodo,
-  editTodo,
+  editTodo
 } from "../services/todo.service";
 import { logOutUser } from "../services/users.service";
 
 let listData = [];
 
+let singleItem = "";
 let todoName = "";
-let todoEdit = "";
+let todoEdit = ""
 
 onMount(async () => {
   listData = await retrieveListData();
@@ -81,7 +82,10 @@ function editStatus(id, name) {
   });
 }
 
-function itemEditor() {}
+function itemEditor(id) {
+	singleItem = id
+	window.location.href = "/editor"
+}
 
 </script>
 	
@@ -293,7 +297,7 @@ li {
 								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
 								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
 								<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
-								<span class:checked={item.status}><p class="taskItem" on:click={itemEditor}>{item.name}</p></span>
+								<span class:checked={item.status}><p class="taskItem" on:click={()=>itemEditor(item._id)}>{item.name}</p></span>
 								<div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 								<div class="modal-content">
