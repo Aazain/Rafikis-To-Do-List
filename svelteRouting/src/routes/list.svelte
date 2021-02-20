@@ -12,7 +12,6 @@ import { logOutUser } from "../services/users.service";
 
 let listData = [];
 
-let singleItem = "";
 let todoName = "";
 let todoEdit = ""
 
@@ -83,7 +82,7 @@ function editStatus(id, name) {
 }
 
 function itemEditor(id) {
-	singleItem = id
+	localStorage.setItem("editorItem", JSON.stringify(id))
 	window.location.href = "/editor"
 }
 
@@ -194,6 +193,11 @@ li {
 	color: white;
 }
 
+.saveChange:hover {
+	background-color: transparent;
+	color: black;
+}
+
 .checked {
 	text-decoration: line-through;
 	color: #d3d3d3;
@@ -297,7 +301,7 @@ li {
 								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
 								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
 								<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
-								<span class:checked={item.status}><p class="taskItem" on:click={()=>itemEditor(item._id)}>{item.name}</p></span>
+								<span class:checked={item.status}><p class="taskItem" on:click={()=>itemEditor(item)}>{item.name}</p></span>
 								<div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 								<div class="modal-content">

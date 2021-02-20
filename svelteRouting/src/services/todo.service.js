@@ -32,7 +32,7 @@ export function createTodo(name) {
     })
   
     if (refreshToken == "undefined" && accessToken == "undefined"){
-      swal('Error', 'Session Expired', 'error')
+      swal('Error', 'Session Expired, Please Log In', 'error')
       .then(function(){window.location.href = "/"})
     }
      
@@ -99,7 +99,7 @@ function listError(err){
 
 function errorCheck(err){
   if(err){
-    swal('Error', 'Session Expired', 'error')
+    swal('Error', 'Session Expired, Please Log In', 'error')
     .then(function(){window.location.href = "/"})
   }
 }
@@ -131,3 +131,5 @@ function errorCheck(err){
     })
     .catch((err) => console.log(err));
 }
+
+//Need to re do refresh token method as it is not a good way of doing it
