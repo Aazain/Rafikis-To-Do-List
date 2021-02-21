@@ -6,7 +6,8 @@ import {
   createTodo,
   retrieveListData,
   removeTodo,
-  editTodo
+  editTodo,
+  newAccessTokenGen
 } from "../services/todo.service";
 import { logOutUser } from "../services/users.service";
 
@@ -16,13 +17,16 @@ let todoName = "";
 let todoEdit = ""
 
 onMount(async () => {
-  listData = await retrieveListData();
+	listData = await retrieveListData();
+	newAccessTokenGen();
+	setInterval(newAccessTokenGen, 3600000)
 });
 
 function resetInputs() {
   todoName = "";
   todoEdit = "";
 }
+
 
 function logOut() {
   logOutUser();
@@ -191,11 +195,6 @@ li {
 	font-family: 'Montserrat', sans-serif;
 	background-color: rgb(175, 126, 235);
 	color: white;
-}
-
-.saveChange:hover {
-	background-color: transparent;
-	color: black;
 }
 
 .checked {

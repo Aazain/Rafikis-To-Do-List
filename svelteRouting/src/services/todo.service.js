@@ -18,7 +18,6 @@ export function createTodo(name) {
     .then( res => {
         return res
     })
-    .catch((err) => listError(err))
     .catch((err) => errorCheck(err))
   }
 
@@ -46,7 +45,6 @@ export function createTodo(name) {
    .then(data =>{
       return data
    })
-   .catch((err) => listError(err))
    .catch((err) => console.log(err))
  };
 
@@ -64,7 +62,6 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => listError(err))
       .catch((err) => errorCheck(err))
  }
 
@@ -86,16 +83,8 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => listError(err))
       .catch((err) => errorCheck(err))
  }
-
-
-function listError(err){
-  if(err){
-    newAccessTokenGen()
-  }
-}
 
 function errorCheck(err){
   if(err){
@@ -120,16 +109,16 @@ function errorCheck(err){
     })
     .then(function checkTokens (data) {
       localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
-      if(data.accessToken !== "undefined"){
-       //Find a method
-      }
       if(data.accessToken == "undefined"){
         localStorage.setItem("refreshToken", JSON.stringify("undefined"))
         swal('Error', 'Session Expired', 'error')
         .then(function(){window.location.href = "/"})
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => swal('Error', 'Session Expired', 'error')
+    .then(localStorage.setItem("refreshToken", JSON.stringify("undefined")),
+    localStorage.setItem("accessToken", JSON.stringify("undefined"))
+    )
+    .then(function(){window.location.href = "/"}));
 }
 
-//Need to re do refresh token method as it is not a good way of doing it

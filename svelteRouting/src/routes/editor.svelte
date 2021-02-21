@@ -1,36 +1,45 @@
 <script>
 import { onMount } from "svelte";
-import { removeTodo, editTodo } from "../services/todo.service";
+import { removeTodo, editTodo, newAccessTokenGen } from "../services/todo.service";
 
 let originalValue = "";
 let itemValue = "";
 let itemId = "";
 
 function getItem(){
-    let itemData = JSON.parse(localStorage.getItem("editorItem"))
-    if(itemData == "undefined"){
-        swal('Error', 'Please Select a Task First', 'error')
-        .then(function(){window.location.href = "/list"})
-    }else{
-        originalValue = itemData.name
+  let itemData = JSON.parse(localStorage.getItem("editorItem"))
+  if(itemData == "undefined"){
+      swal('Error', 'Please Select a Task First', 'error')
+      .then(function(){window.location.href = "/list"})
+  }else{
+      originalValue = itemData.name
         itemValue = itemData.name
-        itemId = itemData._id
-        let createdData = new Date(itemData.createdAt)
-        let updatedData = new Date(itemData.updatedAt)
-        let createdTime = createdData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
-        let updatedTime = updatedData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
-        document.getElementById("item-createdAt").innerHTML= "Created: " + createdTime
-        document.getElementById("item-updatedAt").innerHTML= "Updated: " + updatedTime
-    }
+      itemId = itemData._id
+      let createdData = new Date(itemData.createdAt)
+      let updatedData = new Date(itemData.updatedAt)
+      let itemStatus = itemData.status
+      let createdTime = createdData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
+      let updatedTime = updatedData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
+      document.getElementById("item-createdAt").innerHTML= "Created: " + createdTime
+      document.getElementById("item-updatedAt").innerHTML= "Updated: " + updatedTime
+      console.log(itemStatus)
+      if(itemStatus == true){
+        document.getElementById("item-status").innerHTML= "Status: Completed"
+      }else{
+        document.getElementById("item-status").innerHTML= "Status: Incomplete"
+      }
+  }
 }
 
 function cancelEdit(){
-    localStorage.setItem("editorItem", JSON.stringify("undefined"))
     window.location.href = "/list"
 }
 
 onMount(async () => {
     getItem();
+    window.addEventListener("beforeunload", function () {
+      localStorage.setItem("editorItem", JSON.stringify("undefined"))
+    });
 });
 
 function removeFromList(id) {
@@ -100,11 +109,12 @@ function editList(id) {
 
 <div class="list-container">
     <div class="list-content">
-        <a class="returnToList" href="/list">Return To List</a>
+        <a class="returnToList" on:click={cancelEdit} href="/list">Return To List</a>
 
         <div class="info">
             <p id="item-createdAt"></p>
             <p id="item-updatedAt"></p>
+            <p id="item-status"></p>
             <button on:click={cancelEdit}>Cancel</button>
             <input bind:value={itemValue} type="text">
         </div>
