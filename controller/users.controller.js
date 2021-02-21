@@ -67,7 +67,7 @@ module.exports = (app) => {
           const refreshToken = jwt.sign(
             { _id: user._id, email: user.email },
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: "4222s" },
+            { expiresIn: "302400s" },
             (err, regenToken) => {
               if (err) {
                 res.status(401);
@@ -95,7 +95,7 @@ module.exports = (app) => {
 
   function newToken(currentUser) {
     return jwt.sign({ user: currentUser }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "100s",
+      expiresIn: "604800s",
     });
   }
 };
