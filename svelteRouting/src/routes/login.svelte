@@ -71,6 +71,12 @@ function userLogin() {
 h1 {
 	font-family: 'Montserrat', sans-serif;
 }
+
+label{
+	font-family: 'Montserrat', sans-serif;
+	text-align: left;
+}
+
 </style>
 
 <div class="list-container">
@@ -82,13 +88,13 @@ h1 {
 		<hr>
 
 		<label for="loginEmail">Email Address
-			<input type="text" bind:value={userEmail} name="loginEmail">
+			<input class="form-control" type="email" bind:value={userEmail} name="loginEmail">
 		</label>
 
 		<hr class="noHr">
 
 		<label for="loginPassword">Password
-			<input type="password" bind:value={userPassword} name="loginPassword">
+			<input class="form-control" type="password" bind:value={userPassword} name="loginPassword">
 		</label>
 
 		<hr class="noHr">

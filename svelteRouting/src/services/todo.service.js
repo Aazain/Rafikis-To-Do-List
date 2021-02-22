@@ -45,8 +45,30 @@ export function createTodo(name) {
    .then(data =>{
       return data
    })
-   .catch((err) => console.log(err))
+   .catch((err) => errorCheck(err))
  };
+
+ export function getSingleItem(itemId){
+  const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+  const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${accessToken}`
+  })
+   
+  return fetch(`${env()}/todo/${itemId}`, {
+    method: 'GET',
+    headers
+  })
+  .then(
+    (res) => res.json()
+  )
+ .then(data =>{
+    return data
+ })
+ .catch((err) => console.log(err))
+};
 
  export function removeTodo(id){
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
