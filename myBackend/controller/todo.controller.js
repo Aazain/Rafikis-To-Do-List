@@ -17,12 +17,17 @@ module.exports = (app) => {
   }
 
   app.get("/todo/:id", tokenAuth, function (req, res) {
+    const currentUser = req.user;
     const { id } = req.params;
     Items.findById(id, function (err, foundData) {
       if (err) {
         res.status(404);
         res.send("Task not found");
-      } else {
+      }
+      else if(currentUser.user._id !== foundData.userId){
+        res.status(403).send("Forbidden")
+      }
+      else {
         res.send(foundData);
       }
     });
@@ -53,7 +58,8 @@ module.exports = (app) => {
       function (err, result) {
         if (!err) {
           res.send("Successfully Deleted Task");
-        } else {
+        } 
+        else {
           res.status(500).send("Unable to delete task");
         }
       }

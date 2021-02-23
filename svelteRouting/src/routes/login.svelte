@@ -1,9 +1,13 @@
 <script>
-
+import { onMount } from "svelte";
 import { loginUser } from "../services/users.service";
 
 let userEmail = "";
 let userPassword = "";
+
+onMount(async () => {
+	enter();
+});
 
 function validateEmail(userEmail) {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -22,6 +26,22 @@ function userLogin() {
   } else {
     loginUser(userEmail, userPassword);
   }
+}
+
+function enter(){
+		document.getElementById("emailInput").addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("loginButton").click();
+		}
+	})
+
+	document.getElementById("passwordInput").addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("loginButton").click();
+		}
+	})
 }
 
 </script> 
@@ -88,18 +108,18 @@ label{
 		<hr>
 
 		<label for="loginEmail">Email Address
-			<input class="form-control" type="email" bind:value={userEmail} name="loginEmail">
+			<input class="form-control" id="emailInput" type="email" bind:value={userEmail} name="loginEmail">
 		</label>
 
 		<hr class="noHr">
 
 		<label for="loginPassword">Password
-			<input class="form-control" type="password" bind:value={userPassword} name="loginPassword">
+			<input class="form-control" id="passwordInput" type="password" bind:value={userPassword} name="loginPassword">
 		</label>
 
 		<hr class="noHr">
 
-		<button type="button" on:click={userLogin} class="enterLogIn btn btn-dark">Login</button>
+		<button type="button" on:click={userLogin} id="loginButton" class="enterLogIn btn btn-dark">Login</button>
 
 		<hr>
 

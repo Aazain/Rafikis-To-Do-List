@@ -19,6 +19,7 @@ let todoEdit = ""
 onMount(async () => {
 	listData = await retrieveListData();
 	newAccessTokenGen();
+	enter();
 	setInterval(newAccessTokenGen, 3600000)
 });
 
@@ -89,6 +90,15 @@ function itemEditor(id) {
 	window.location.href = `/item/${id}`
 }
 
+function enter(){
+		document.getElementById("createTask").addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("footerButton").click();
+		}
+	});
+}
+
 </script>
 	
 <style>
@@ -96,15 +106,15 @@ function itemEditor(id) {
 
 .list-container {
 	height: 150vh;
-	width: 100vw;
+	width: 150vw;
 	background-color: rgb(227, 233, 255);
 	text-align: center;
 }
 
 .list-content {
 	padding-top: 8vw;
-	margin-right: calc(-7em + 40vw);
-	margin-left: calc(-8.5em + 40vw);
+	margin-right: calc(-7em + 90vw);
+	margin-left: calc(-7em + 38vw);
 }
 
 h1 {
@@ -130,7 +140,6 @@ li {
 
 #listArea {
 	background-color: white;
-	;
 	margin-top: 1em;
 	padding-bottom: 2em;
 	padding-top: 1em;
@@ -146,7 +155,6 @@ li {
 
 .addbtn {
 	font-family: 'Montserrat', sans-serif;
-	color: white;
 	margin-top: -1.5em;
 	background-color: rgb(175, 126, 235);
 	outline: none;
@@ -218,12 +226,13 @@ li {
 	background: black;
 	box-shadow: 0px 0px 10px black;
 	color: white;
+	border-radius: 0em;
 }
 
 .footer:hover>.addList {
 	background-color: black;
 	box-shadow: 0px 0px 10px black;
-	border-radius: 20em;
+	border-radius: 0em;
 }
 
 .addList {
@@ -232,9 +241,8 @@ li {
 	outline: none;
 	float: left;
 	color: white;
-	font-size: calc(0.6em + 0.3vw);
+	line-height: 38px;
 	transition: 0.2s;
-	line-height: 40px;
 	width: 0px;
 	font-weight: bold;
 }
@@ -283,6 +291,7 @@ li {
 </style>
 	
 <!-- 	BODY -->
+
 <div class="list-container">
 	<div class="list-content">
 		<div class="registrationBtn">
@@ -323,11 +332,12 @@ li {
 			</div>
 			  
 			  <div class="footer">
-				<input bind:value={todoName} autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
-				  <button type="submit" on:click={postToList} class="addbtn btn btn-dark">+ New Task</button> 
+				<input bind:value={todoName} autocomplete="off" class="addList" type="text" id="createTask" name="newItem" placeholder="Type Here">
+				  <button type="submit" on:click={postToList} id="footerButton" class="addbtn btn btn-dark">+ New Task</button> 
 			  </div>
 	</div>
 </div>
+
 	
 	
 		

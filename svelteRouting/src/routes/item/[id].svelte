@@ -5,9 +5,11 @@ import { removeTodo, editTodo, getSingleItem } from "../../services/todo.service
 let originalValue = "";
 let itemValue = "";
 let editorItemId = "";
+let itemStatus = "";
 
 onMount(async () => {
-  getItem()
+  getItem();
+  enter();
 });
 
 function getItem(){
@@ -15,16 +17,16 @@ function getItem(){
   let itemData = getSingleItem(itemId)
   .then(function(item) {
   if(item == undefined){
-    swal('Error', 'Please Select a Task First', 'error')
+    swal('Error', 'Please Select a Task', 'error')
     .then(function(){window.location.href = "/list"})
   }
   else{
       editorItemId = item._id
       originalValue = item.name
       itemValue = item.name
+      itemStatus = item.status
       let createdData = new Date(item.createdAt)
       let updatedData = new Date(item.updatedAt)
-      let itemStatus = item.status
       let createdTime = createdData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
       let updatedTime = updatedData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
       document.getElementById("item-createdAt").innerHTML= "Created: " + createdTime
@@ -50,9 +52,23 @@ export function preload(params) {
 function removeFromList(id) {
   if (!id || id === "") {
     swal("Error", "Please enter a task", "error");
+  } 
+  else{swal({
+  title: "Are you sure?",
+  text: "This Action Is Not Reversible",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Poof! Successfully Deleted Task", {
+      icon: "success"
+    }).then(removeTodo(id)).then(()=> window.location.href="/list")
   } else {
-    removeTodo(id).then(()=> window.location.href="/list");
+    swal("Task was not Deleted!",{icon: "error"});
   }
+})};
 }
 
 function editList(id) {
@@ -68,6 +84,28 @@ function editList(id) {
         .then(function(){window.location.href="/list"})
     )
   }
+}
+
+function editStatus(id, name) {
+  if(itemStatus == true){
+    itemStatus = false
+    document.getElementById("item-status").innerHTML= "Status: Incomplete"
+    swal({title: "Item Status Changed To Incomplete", timer: 600, button: false})
+  }else if(itemStatus == false || itemStatus == null){
+    itemStatus = true
+    document.getElementById("item-status").innerHTML= "Status: Complete"
+    swal({title: "Item Status Changed To Completed", timer: 600, button: false})
+  }
+  editTodo(id, name, itemStatus)
+}
+
+function enter(){
+		document.getElementById("editorText").addEventListener("keyup", function(event) {
+		if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("saveChanges").click();
+		}
+	});
 }
 
 </script>
@@ -99,7 +137,7 @@ function editList(id) {
   color: white;
 	font-size: calc(0.5em + 0.8vw);
 	text-decoration: underline;
-	text-shadow: 2px 2px 8px white
+	text-shadow: 2px 2px 8px white;
 }
 
 .editArea{
@@ -114,11 +152,11 @@ function editList(id) {
 	color: white;
 }
 
-.deleteButton, .editorTitle, .saveButton, .returnToList, p{
+.deleteButton, .editorTitle, .saveButton, .returnToList, p, .editingButtons{
   font-family: 'Montserrat', sans-serif;
 }
 
-.saveButton:hover, .deleteButton:hover {
+.saveButton:hover, .deleteButton:hover, .cancelEdit:hover {
 	background-color: transparent;
 	color: black;
 }
@@ -130,6 +168,24 @@ function editList(id) {
 .editorTitle{
   font-size: 1.2em;
   padding-top: 1em;
+  padding-left: 2em;
+  text-align: left;
+}
+
+.editingButtons{
+  padding-top: 1em;
+}
+
+#item-status{
+  text-decoration: underline;
+}
+#item-status:hover{
+  cursor: pointer;
+}
+
+.editInput{
+ margin-left: -1em;
+ padding-right: 1em;
 }
 
 </style>
@@ -143,13 +199,13 @@ function editList(id) {
                 <hr>
                 <p id="item-createdAt"></p>
                 <p id="item-updatedAt"></p>
-                <p id="item-status"></p>
-                <button on:click={cancelEdit}>Cancel</button>
-                <input class="editInput" bind:value={itemValue} type="text">
+                <p id="item-status" on:click={()=>editStatus(editorItemId, itemValue)}></p>
+                <input class="editInput" id="editorText" bind:value={itemValue} type="text">
               </div>
 
-              <div>
-                <button class="saveButton btn btn-dark" on:click={()=> editList(editorItemId)}>Save</button>
+              <div class="editingButtons">
+                <button class="cancelEdit btn btn-dark" on:click={cancelEdit}>Cancel</button>
+                <button class="saveButton btn btn-dark" id="saveChanges" on:click={()=> editList(editorItemId)}>Save</button>
                 <button class="deleteButton btn btn-danger" on:click={()=> removeFromList(editorItemId)}>Delete</button>
               </div>
           </div>
@@ -157,25 +213,3 @@ function editList(id) {
 </div>
 
 
-
-<!-- if(itemData == "undefined"){
-  swal('Error', 'Please Select a Task First', 'error')
-  .then(function(){window.location.href = "/list"})
-}else{
-  originalValue = itemData.name
-  itemValue = itemData.name
-  itemId = itemData._id
-  let createdData = new Date(itemData.createdAt)
-  let updatedData = new Date(itemData.updatedAt)
-  let itemStatus = itemData.status
-  let createdTime = createdData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
-  let updatedTime = updatedData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
-  document.getElementById("item-createdAt").innerHTML= "Created: " + createdTime
-  document.getElementById("item-updatedAt").innerHTML= "Updated: " + updatedTime
-  console.log(itemStatus)
-  if(itemStatus == true){
-    document.getElementById("item-status").innerHTML= "Status: Completed"
-  }else{
-    document.getElementById("item-status").innerHTML= "Status: Incomplete"
-  }
-} -->
