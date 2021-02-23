@@ -15,7 +15,7 @@ module.exports = (app) => {
       if (err) {
         res.status(400).send({
           message: "Error getting users",
-        });
+        })
       }
       return res.send([...foundUsers]);
     });
