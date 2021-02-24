@@ -168,8 +168,6 @@ function enter(){
 .editorTitle{
   font-size: 1.2em;
   padding-top: 1em;
-  padding-left: 2em;
-  text-align: left;
 }
 
 .editingButtons{
@@ -186,6 +184,12 @@ function enter(){
 .editInput{
  margin-left: -1em;
  padding-right: 1em;
+}
+
+@media (max-width: 330px) {
+	.list-container{
+		padding-left: 22px;
+	}
 }
 
 </style>

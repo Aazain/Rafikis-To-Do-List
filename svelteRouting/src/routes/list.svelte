@@ -167,6 +167,7 @@ li {
 	color: white;
 	cursor: pointer;
 	font-size: calc(0.6em + 0.4vw);
+	line-height: 27px;
 }
 
 .removeButton:hover,
@@ -211,7 +212,7 @@ li {
 
 .listSelect {
 	font-family: 'Montserrat', sans-serif;
-	font-size: calc(0.5em + 0.8vw);
+	font-size: calc(0.6em + 0.8vw);
 	margin-right: -2em;
 	color: white;
 	text-decoration: none;
@@ -227,6 +228,7 @@ li {
 	box-shadow: 0px 0px 10px black;
 	color: white;
 	border-radius: 0em;
+	border: none;
 }
 
 .footer:hover>.addList {
@@ -248,7 +250,7 @@ li {
 }
 
 .footer {
-	margin-left: calc(4em + 9vw);
+	margin-left: calc(4.7em + 9vw);
 }
 
 .taskComplete {
@@ -287,6 +289,24 @@ li {
 	margin-bottom: 2em;
 	margin-right: calc(-6.5em + -22vw);
 	border-color: red;
+}
+
+@media (max-width: 530px) {
+	.addbtn{
+		line-height: 13px;
+	}
+}
+
+@media (max-width: 330px) {
+	.list-container{
+		padding-left: 8px;
+	}
+	.dropdown{
+		display: none;
+	}
+	.listSelect{
+		padding-left: 40px;
+	}
 }
 </style>
 	

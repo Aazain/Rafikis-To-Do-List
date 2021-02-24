@@ -14,17 +14,17 @@ let listData = [
 <style>		
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-.list-container{
-	height: 100vh;
-	width: 100vw;
+.list-container {
+	height: 150vh;
+	width: 150vw;
 	background-color: rgb(227, 233, 255);
 	text-align: center;
 }
 
 .list-content {
 	padding-top: 8vw;
-	margin-right: calc(-7em + 40vw);
-	margin-left: calc(-8.5em + 40vw);
+	margin-right: calc(-7em + 90vw);
+	margin-left: calc(-7em + 38vw);
 }
 
 h1 {
@@ -190,6 +190,21 @@ li {
 
 input[type="checkbox"][readonly] {
 	pointer-events: none;
+}
+
+@media (max-width: 330px) {
+	.list-container{
+		padding-left: 8px;
+	}
+	.dropdown{
+		display: none;
+	}
+	.listSelect{
+		padding-left: 40px;
+	}
+	.registrationBtn{
+		padding-right: 2em;
+	}
 }
 </style>
 	
