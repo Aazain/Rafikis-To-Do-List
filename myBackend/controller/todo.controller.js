@@ -22,7 +22,7 @@ module.exports = (app) => {
     Items.findById(id, function (err, foundData) {
       if (err) {
         res.status(404);
-        res.send("Task not found");
+        res.send("Task was not found");
       }
       else if(currentUser.user._id !== foundData.userId){
         res.status(403).send("Forbidden")
