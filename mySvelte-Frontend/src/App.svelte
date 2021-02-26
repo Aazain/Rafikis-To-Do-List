@@ -5,30 +5,21 @@ import signUp from "./routes/signUp.svelte";
 import login from "./routes/login.svelte";
 import list from "./routes/list.svelte";
 import home from "./routes/home.svelte";
-import item from "./routes/item.svelte";
+import item from "./routes/item/[id].svelte";
 
-  let listData = [
-    { name: "Welcome" },
-    { name: "To", status: "true" },
-    { name: "Rafiki's" },
-    { name: "To", status: "true" },
-    { name: "Do" },
-    { name: "List", status: "true" },
-  ];
-  
-  </script>
+</script>
     
-  <style>		
+<style>		
 
-  </style>
+</style>
     
 <Router>
-            <div>
-              <Route path="" component="{home}" />
-              <Route path="list" component="{list}" />
-              <Route path="login" component="{login}" />
-              <Route path="signUp" component="{signUp}" />
-              <Route path="item/:id" component="{item}" />
-            </div>
+  <div>
+    <Route path="" component="{home}" />
+    <Route path="list" component="{list}" />
+    <Route path="login" component="{login}" />
+    <Route path="signUp" component="{signUp}" />
+    <Route path="item/:id" component="{item}"/>
+  </div>
 </Router>
 

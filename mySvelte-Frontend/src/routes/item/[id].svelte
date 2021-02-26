@@ -113,20 +113,7 @@ function enter(){
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-.list-container {
-	height: 150vh;
-	width: 100vw;
-	background-color: rgb(227, 233, 255);
-	text-align: center;
-}
-
-.list-content {
-	padding-top: 8vw;
-	margin-right: calc(-7em + 40vw);
-	margin-left: calc(-8.5em + 40vw);
-}
-
-.title{
+  .title {
 	background-color: rgb(175, 126, 235);
 	color: white;
 	padding: 0.5em;
@@ -186,10 +173,18 @@ function enter(){
  padding-right: 1em;
 }
 
-@media (max-width: 330px) {
-	.list-container{
-		padding-left: 22px;
-	}
+@media only screen and (min-width: 275px) {
+
+.title{
+  font-size: 3em;
+}
+
+.list-content{
+  margin-left: 1.9em;
+  margin-right: 0.4em
+}
+
+
 }
 
 </style>

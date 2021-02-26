@@ -12,19 +12,14 @@ let listData = [
 </script>
 	
 <style>		
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
 .list-container {
-	height: 150vh;
-	width: 150vw;
+	margin-top: -3em;
+	height: 120vh;
 	background-color: rgb(227, 233, 255);
 	text-align: center;
-}
-
-.list-content {
-	padding-top: 8vw;
-	margin-right: calc(-7em + 90vw);
-	margin-left: calc(-7em + 38vw);
 }
 
 h1 {
@@ -45,12 +40,10 @@ input[type=checkbox] {
 li {
 	font-family: 'Montserrat', sans-serif;
 	margin-bottom: 1.8em;
-	font-size: calc(0.7em + 0.3vw);
 }
 
 #listArea {
 	background-color: white;
-	;
 	margin-top: 1em;
 	padding-bottom: 2em;
 	padding-top: 1em;
@@ -66,7 +59,6 @@ li {
 
 .addbtn {
 	font-family: 'Montserrat', sans-serif;
-	color: white;
 	margin-top: -1.5em;
 	background-color: rgb(175, 126, 235);
 	outline: none;
@@ -78,7 +70,7 @@ li {
 	transition: 0.4s;
 	color: white;
 	cursor: pointer;
-	font-size: calc(0.6em + 0.4vw);
+	line-height: 27px;
 }
 
 .removeButton:hover,
@@ -96,14 +88,20 @@ li {
 
 .taskItem {
 	margin-bottom: 0;
-	margin-right: 4em;
+	margin-right: auto;
 	word-wrap: break-word;
 	text-align: center;
+}
+
+.taskItem:hover {
+	cursor: pointer;
+	text-decoration: underline;
 }
 
 .removeButton {
 	vertical-align: top;
 }
+
 
 .checked {
 	text-decoration: line-through;
@@ -112,10 +110,28 @@ li {
 
 .listSelect {
 	font-family: 'Montserrat', sans-serif;
-	font-size: calc(0.5em + 0.8vw);
 	margin-right: -2em;
 	color: white;
 	text-decoration: none;
+}
+
+.footer:hover>.addList {
+	width: 120px;
+	padding: 0 6px;
+}
+
+.footer:hover>.addbtn {
+	background: black;
+	box-shadow: 0px 0px 10px black;
+	color: white;
+	border-radius: 0em;
+	border: none;
+}
+
+.footer:hover>.addList {
+	background-color: black;
+	box-shadow: 0px 0px 10px black;
+	border-radius: 0em;
 }
 
 .addList {
@@ -124,15 +140,14 @@ li {
 	outline: none;
 	float: left;
 	color: white;
-	font-size: calc(0.6em + 0.3vw);
+	line-height: 38px;
 	transition: 0.2s;
-	line-height: 40px;
 	width: 0px;
 	font-weight: bold;
 }
 
 .footer {
-	margin-left: calc(4em + 9vw);
+	margin-left: 0;
 }
 
 .taskComplete {
@@ -176,44 +191,333 @@ li {
 .loginBtn,
 .signUpBtn {
 	font-family: 'Montserrat', sans-serif;
-	margin-top: -10vw;
-	margin-bottom: unset;
+	margin-top: -4vw;
 	font-size: calc(0.5em + 0.5vw);
 }
 
+
 .registrationBtn {
-	padding-top: 5em;
-	margin-bottom: -2vw;
-	margin-right: calc(-6.5em + -25vw);
+	margin-top: 2em;
+	margin-bottom: 2em;
+	margin-right: calc(-6.5em + -22vw);
 	border-color: red;
 }
 
-input[type="checkbox"][readonly] {
-	pointer-events: none;
+.footer{
+	margin-left: 14vw;
 }
 
-@media (max-width: 330px) {
-	.list-container{
-		padding-left: 8px;
+
+@media only screen and (max-width: 280px) {
+
+	.list-content{
+		margin-top: 6em;
+		margin-left: 1.9em;
+		margin-right: 0.4em
 	}
+
 	.dropdown{
 		display: none;
 	}
-	.listSelect{
-		padding-left: 40px;
+
+	.title{
+		padding-left: 2.5em;
 	}
+
+	.userBtn{
+		font-size: 1em;
+		margin-left: 10em;
+	}
+
+	.taskItem{
+		font-size: 1.5em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 4em;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 0.5em;
+	}
+
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+
 	.registrationBtn{
-		padding-right: 2em;
+		margin: 0;
 	}
+
 }
+
+@media only screen and (min-width: 281px) {
+
+	.list-content{
+		margin-top: 6em;
+		margin-left: 2em;
+		margin-right: 0.4em
+	}
+
+	.userBtn{
+		font-size: 1em;
+		margin-left: 10em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1.5em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 17vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 0.7em;
+	}
+
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+
+
+}
+
+
+@media only screen and (min-width: 440px) {
+
+.list-content{
+	margin-top: 6em;
+	margin-left: -1em;
+	margin-right: -3em
+}
+
+.userBtn{
+	font-size: 1em;
+	margin-left: 10em;
+}
+
+.dropdown{
+	display: none;
+}
+
+.title{
+	padding-left: 2.5em;
+}
+
+.taskItem{
+	font-size: 1.5em;
+}
+
+.editbtn{
+	padding: -2em;
+}
+
+.footer{
+	margin-left: 28vw;
+}
+
+.footer:hover>.addbtn {
+	font-size: 0.7em;
+}
+
+.taskComplete {
+	width: 1.5em;
+	height: 1.5em;
+}
+
+.registrationBtn{
+	margin: 0;
+}
+
+
+}
+
+
+@media only screen and (min-width: 768px) {
+
+	.list-content{
+		margin-top: 4em;
+		margin-left: -8em;
+		margin-right: -10em
+	}
+
+	.userBtn{
+		font-size: 1.2em;
+		margin-left: 25em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1.5em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 36vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+
+	
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+	.list-content{
+		margin-top: 2em;
+		margin-left: -6em;
+		margin-right: -5em
+	}
+
+	.userBtn{
+		font-size: 1.2em;
+		margin-left: 25em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1.2em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 23vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+
+	.taskComplete {
+		width: 1em;
+		height: 1em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+	
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+	
+
+	
+	.list-content{
+		margin-top: -2em;
+		margin-left: -0.5em;
+		margin-right: -0.5em
+	}
+
+	.userBtn{
+		font-size: 1em;
+		margin-left: 25em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 14vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+
+	.taskComplete {
+		width: 0.8em;
+		height: 0.8em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+	
+}
+
 </style>
 	
 	<!-- 	BODY -->
 <div class="list-container">
 	<div class="list-content">
 		<div class="registrationBtn">
-			<a href="login" class="loginBtn btn btn-dark" value="Login">Login</a>
-			<a href="signUp" class="signUpBtn btn btn-light" value="SignUp">Sign Up</a>
+			<div class="userBtn">
+				<a href="login" class="loginBtn btn btn-dark" value="Login">Login</a>
+				<a href="signUp" class="signUpBtn btn btn-light" value="SignUp">Sign Up</a>
+			</div>
 		</div>
 			<h1 class="title"> <a href="." class="listSelect"><i class="fa fa-bars pull-left dropdown"></i></a> To Do List</h1>
 			<div id="listArea">
@@ -235,5 +539,6 @@ input[type="checkbox"][readonly] {
 				<input autocomplete="off" class="addList textInput" type="text" id="createTask" name="newItem" placeholder="Type Here">
 				<button disabled type="submit" class="addbtn btn btn-dark">+ New Task</button> 
 			</div>
+
 	</div>
 </div>

@@ -104,6 +104,13 @@ function enter(){
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
+.list-container {
+	margin-top: -7em;
+	height: 120vh;
+	background-color: rgb(227, 233, 255);
+	text-align: center;
+}
+
 h1 {
 	font-family: 'Montserrat', sans-serif;
 	text-shadow: 2px 2px 8px white
@@ -122,7 +129,6 @@ input[type=checkbox] {
 li {
 	font-family: 'Montserrat', sans-serif;
 	margin-bottom: 1.8em;
-	font-size: calc(0.7em + 0.3vw);
 }
 
 #listArea {
@@ -153,7 +159,6 @@ li {
 	transition: 0.4s;
 	color: white;
 	cursor: pointer;
-	font-size: calc(0.6em + 0.4vw);
 	line-height: 27px;
 }
 
@@ -172,7 +177,7 @@ li {
 
 .taskItem {
 	margin-bottom: 0;
-	margin-right: 4em;
+	margin-right: auto;
 	word-wrap: break-word;
 	text-align: center;
 }
@@ -199,7 +204,6 @@ li {
 
 .listSelect {
 	font-family: 'Montserrat', sans-serif;
-	font-size: calc(0.6em + 0.8vw);
 	margin-right: -2em;
 	color: white;
 	text-decoration: none;
@@ -237,7 +241,7 @@ li {
 }
 
 .footer {
-	margin-left: calc(4.7em + 9vw);
+	margin-left: 0;
 }
 
 .taskComplete {
@@ -257,16 +261,13 @@ li {
 	background-color: rgb(175, 126, 235);
 }
 
-.logout {
-	background-color: rgb(175, 126, 235);
-}
-
 .logout:hover {
 	background-color: transparent;
 	color: black;
 }
 
 .logout {
+	background-color: rgb(175, 126, 235);
 	font-family: 'Montserrat', sans-serif;
 	margin-bottom: unset;
 	font-size: calc(0.5em + 0.5vw);
@@ -278,23 +279,330 @@ li {
 	border-color: red;
 }
 
-@media (max-width: 530px) {
-	.addbtn{
-		line-height: 13px;
-	}
+.footer{
+	margin-left: 14vw;
 }
 
-@media (max-width: 330px) {
-	.list-container{
-		padding-left: 8px;
+
+@media only screen and (max-width: 280px) {
+
+	.list-content{
+		margin-top: 6em;
+		margin-left: 1.9em;
+		margin-right: 0.4em
 	}
+
 	.dropdown{
 		display: none;
 	}
-	.listSelect{
-		padding-left: 40px;
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.logout{
+		font-size: 1em;
+		margin-left: 10em;
+		margin-bottom: 2em;
+	}
+
+	.taskItem{
+		font-size: 1.5em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 4em;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 0.5em;
+	}
+
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+	.modal-input{
+		font-size: 1.2em;
 	}
 }
+
+@media only screen and (min-width: 281px) {
+
+	.list-content{
+		margin-top: 6em;
+		margin-left: 2em;
+		margin-right: 0.4em
+	}
+
+	.logout{
+		font-size: 1em;
+		margin-left: 10em;
+		margin-bottom: 2em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1.5em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 17vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 0.7em;
+	}
+
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+	.modal-input{
+		font-size: 1.2em;
+	}
+
+}
+
+
+@media only screen and (min-width: 440px) {
+
+.list-content{
+	margin-top: 6em;
+	margin-left: -1em;
+	margin-right: -3em
+}
+
+.logout{
+	font-size: 1em;
+	margin-left: 10em;
+	margin-bottom: 2em;
+}
+
+.dropdown{
+	display: none;
+}
+
+.title{
+	padding-left: 2.5em;
+}
+
+.taskItem{
+	font-size: 1.5em;
+}
+
+.editbtn{
+	padding: -2em;
+}
+
+.footer{
+	margin-left: 28vw;
+}
+
+.footer:hover>.addbtn {
+	font-size: 0.7em;
+}
+
+.taskComplete {
+	width: 1.5em;
+	height: 1.5em;
+}
+
+.registrationBtn{
+	margin: 0;
+}
+
+.modal-input{
+	font-size: 1.2em;
+}
+
+}
+
+
+@media only screen and (min-width: 768px) {
+
+	.list-content{
+		margin-top: 4em;
+		margin-left: -8em;
+		margin-right: -10em
+	}
+
+	.logout{
+		font-size: 1.2em;
+		margin-left: 25em;
+		margin-bottom: 2em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1.5em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 36vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+	.modal-input{
+		font-size: 1.2em;
+	}
+	
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+	.list-content{
+		margin-top: 2em;
+		margin-left: -6em;
+		margin-right: -5em
+	}
+
+	.logout{
+		font-size: 1.2em;
+		margin-left: 25em;
+		margin-bottom: 2em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1.2em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 23vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+
+	.taskComplete {
+		width: 1em;
+		height: 1em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+
+	.modal-input{
+		font-size: 1.2em;
+	}
+	
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+	
+
+	
+	.list-content{
+		margin-top: -2em;
+		margin-left: -0.5em;
+		margin-right: -0.5em
+	}
+
+	.logout{
+		font-size: 1em;
+		margin-left: 25em;
+		margin-bottom: 2em;
+	}
+
+	.dropdown{
+		display: none;
+	}
+
+	.title{
+		padding-left: 2.5em;
+	}
+
+	.taskItem{
+		font-size: 1em;
+	}
+
+	.editbtn{
+		padding: -2em;
+	}
+
+	.footer{
+		margin-left: 14vw;
+	}
+
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+
+	.taskComplete {
+		width: 0.8em;
+		height: 0.8em;
+	}
+
+	.registrationBtn{
+		margin: 0;
+	}
+	
+}
+
 </style>
 	
 <!-- 	BODY -->
@@ -326,7 +634,7 @@ li {
 										</button>
 									</div>
 									<div class="modal-body">
-										<input bind:value={todoEdit} type="text" placeholder={item.name}>
+										<input class="modal-input" bind:value={todoEdit} type="text" placeholder={item.name}>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
