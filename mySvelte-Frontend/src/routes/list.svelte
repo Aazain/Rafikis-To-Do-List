@@ -48,8 +48,6 @@ function removeFromList(id, userId) {
   if (!id || id === "") {
     swal("Error", "Please enter a task", "error");
   } else {
-	  console.log(id)
-	  console.log(userId)
     removeTodo(id, userId).then(async () => {
       listData = await retrieveListData();
     });
@@ -62,15 +60,14 @@ function editList(id, userId) {
   } else if (!todoEdit || todoEdit === "") {
     swal("Error", "The edit field cannot be empty", "error");
   } else {
-    editTodo(id, userId,todoEdit).then(async () => {
-      6;
+    editTodo(id, userId, todoEdit).then(async () => {
       listData = await retrieveListData();
       resetInputs();
     });
   }
 }
 
-function editStatus(id, name) {
+function editStatus(id, userId,name) {
   let editedListData = null;
   for (let i = 0; i < listData.length; i++) {
     const currentListData = listData[i];
@@ -83,7 +80,7 @@ function editStatus(id, name) {
   if (!editedListData) {
     throw new Error("error");
   }
-  editTodo(id, name, editedListData.status).then(async () => {
+  editTodo(id, userId,name, editedListData.status).then(async () => {
     listData = await retrieveListData();
   });
 }
@@ -302,7 +299,7 @@ li {
 					{#each listData as item}
 						<div class="item">
 							<li class="taskName">
-								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
+								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.userId, item.name)} name="taskCheck" class="taskComplete">
 								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id, item.userId)}><i class="fa fa-trash w3-medium"></i></button>
 								<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
 								<span class:checked={item.status}><p class="taskItem" on:click={()=>itemEditor(item._id)}>{item.name}</p></span>

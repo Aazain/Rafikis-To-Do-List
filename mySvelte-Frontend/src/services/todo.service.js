@@ -1,4 +1,5 @@
 
+import Items from "../../../myBackend/model/todo.model";
 import {env} from "../../config/env"
 export function createTodo(name) {
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
@@ -105,7 +106,7 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => errorCheck(err))
+      .catch((err) => console.log(err))
  }
 
 function errorCheck(err){

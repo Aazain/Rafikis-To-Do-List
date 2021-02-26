@@ -6,6 +6,7 @@ let originalValue = "";
 let itemValue = "";
 let editorItemId = "";
 let itemStatus = "";
+let itemUserId = "";
 
 onMount(async () => {
   getItem();
@@ -25,6 +26,7 @@ function getItem(){
       originalValue = item.name
       itemValue = item.name
       itemStatus = item.status
+      itemUserId = item.userId
       let createdData = new Date(item.createdAt)
       let updatedData = new Date(item.updatedAt)
       let createdTime = createdData.toLocaleString('en-US', { month: 'long', weekday: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', year: "numeric", hour12: true })
@@ -49,7 +51,7 @@ export function preload(params) {
 	return id
 }
 
-function removeFromList(id) {
+function removeFromList(id, userId) {
   if (!id || id === "") {
     swal("Error", "Please enter a task", "error");
   } 
@@ -64,7 +66,7 @@ function removeFromList(id) {
   if (willDelete) {
     swal("Poof! Successfully Deleted Task", {
       icon: "success"
-    }).then(removeTodo(id)).then(()=> window.location.href="/list")
+    }).then(removeTodo(id, userId)).then(()=> window.location.href="/list")
   } else {
     swal("Task was not Deleted!",{icon: "error"});
   }
@@ -79,14 +81,14 @@ function editList(id) {
   } else if (itemValue == originalValue){
     swal("Error", "No Changes Were Made", "error");
   }else {
-    editTodo(id, itemValue).then(
+    editTodo(id, itemUserId, itemValue).then(
         swal("Success", "Successfully Edited Task", "success")
         .then(function(){window.location.href="/list"})
     )
   }
 }
 
-function editStatus(id, name) {
+function editStatus(id, userId, name) {
   if(itemStatus == true){
     itemStatus = false
     document.getElementById("item-status").innerHTML= "Status: Incomplete"
@@ -96,7 +98,7 @@ function editStatus(id, name) {
     document.getElementById("item-status").innerHTML= "Status: Complete"
     swal({title: "Item Status Changed To Completed", timer: 600, button: false})
   }
-  editTodo(id, name, itemStatus)
+  editTodo(id, userId, name, itemStatus)
 }
 
 function enter(){
@@ -196,14 +198,14 @@ function enter(){
                 <hr>
                 <p id="item-createdAt"></p>
                 <p id="item-updatedAt"></p>
-                <p id="item-status" on:click={()=>editStatus(editorItemId, itemValue)}></p>
+                <p id="item-status" on:click={()=>editStatus(editorItemId, itemUserId,itemValue)}></p>
                 <input class="editInput" id="editorText" bind:value={itemValue} type="text">
               </div>
 
               <div class="editingButtons">
                 <button class="cancelEdit btn btn-dark" on:click={cancelEdit}>Cancel</button>
-                <button class="saveButton btn btn-dark" id="saveChanges" on:click={()=> editList(editorItemId)}>Save</button>
-                <button class="deleteButton btn btn-danger" on:click={()=> removeFromList(editorItemId)}>Delete</button>
+                <button class="saveButton btn btn-dark" id="saveChanges" on:click={()=> editList(editorItemId, itemUserId)}>Save</button>
+                <button class="deleteButton btn btn-danger" on:click={()=> removeFromList(editorItemId, itemUserId)}>Delete</button>
               </div>
           </div>
     </div>
