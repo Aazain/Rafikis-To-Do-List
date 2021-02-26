@@ -103,6 +103,8 @@ function enter(){
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
+
+
 .list-container {
 	margin-top: -7em;
 	height: 120vh;
@@ -142,12 +144,14 @@ li {
 	background-color: rgb(175, 126, 235);
 	color: white;
 	padding: 0.5em;
+	padding-left: 1em;
 	box-shadow: 0px 0px 15px gray;
 }
 
 .addbtn {
 	font-family: 'Montserrat', sans-serif;
 	margin-top: -1.5em;
+	margin-bottom: 1.5em;
 	background-color: rgb(175, 126, 235);
 	outline: none;
 	border-radius: 2em;
@@ -179,6 +183,7 @@ li {
 	margin-right: auto;
 	word-wrap: break-word;
 	text-align: center;
+	margin-left: 10%;
 }
 
 .taskItem:hover {
@@ -206,6 +211,10 @@ li {
 	margin-right: -2em;
 	color: white;
 	text-decoration: none;
+}
+
+.footer:hover{
+	margin-left: 15%;
 }
 
 .footer:hover>.addList {
@@ -237,10 +246,8 @@ li {
 	transition: 0.2s;
 	width: 0px;
 	font-weight: bold;
-}
-
-.footer {
-	margin-left: 0;
+	margin-top: -1.5em;
+    margin-bottom: 1.5em;
 }
 
 .taskComplete {
@@ -273,14 +280,235 @@ li {
 }
 
 .registrationBtn {
-	margin-bottom: 2em;
-	margin-right: calc(-6.5em + -22vw);
-	border-color: red;
+display: flex;
+justify-content: flex-end;
 }
 
 .footer{
-	margin-left: 14vw;
+	display: flex;
+	justify-content: center;
 }
+
+@media only screen and (max-width: 280px) {
+.taskItem{
+	margin-left: 20%;
+}
+
+.editbtn, .removeButton{
+	padding: 0.4em;
+}
+
+	.list-content{
+		margin-top: 6em;
+		margin-left: 1.9em;
+		margin-right: 0.4em
+	}
+	.dropdown{
+		display: none;
+	}
+	.title{
+		padding-left: 2.5em;
+	}
+	.logout{
+		font-size: 1em;
+		margin-left: 10em;
+		margin-bottom: 2em;
+	}
+	.taskItem{
+		font-size: 1.5em;
+	}
+	.editbtn{
+		padding: -2em;
+	}
+	.footer:hover>.addbtn {
+		font-size: 0.5em;
+		margin-top: -3em;
+		margin-bottom: 3em;
+	}
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+	.modal-input{
+		font-size: 1.2em;
+	}
+}
+@media only screen and (min-width: 281px) {
+
+	.editbtn, .removeButton{
+	padding: 0.4em;
+}
+
+	.list-content{
+		margin-top: 6em;
+		margin-left: 2em;
+		margin-right: 0.4em
+	}
+	.logout{
+		font-size: 1em;
+		margin-left: 10em;
+		margin-bottom: 2em;
+	}
+	.dropdown{
+		display: none;
+	}
+	.listSelect{
+		padding-left: 40px;
+	}
+	.taskItem{
+		font-size: 1.5em;
+	}
+	.editbtn{
+		padding: -2em;
+	}
+	.footer:hover>.addbtn {
+		font-size: 0.7em;
+		margin-top: -2.15em;
+    	margin-bottom: 2.12em;
+	}
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+	.modal-input{
+		font-size: 1.2em;
+	}
+}	
+
+@media only screen and (min-width: 440px) {
+
+	.editbtn, .removeButton{
+	padding: 5.625px 11.25px;
+}
+
+.list-content{
+	margin-top: 6em;
+	margin-left: -1em;
+	margin-right: -3em
+}
+.logout{
+	font-size: 1em;
+	margin-left: 10em;
+	margin-bottom: 2em;
+}
+.dropdown{
+	display: none;
+}
+.taskItem{
+	font-size: 1.5em;
+}
+.editbtn{
+	padding: -2em;
+}
+.footer:hover>.addbtn {
+	font-size: 0.7em;
+}
+.taskComplete {
+	width: 1.5em;
+	height: 1.5em;
+}
+.modal-input{
+	font-size: 1.2em;
+}
+}
+@media only screen and (min-width: 768px) {
+
+	.list-content{
+		margin-top: 4em;
+		margin-left: -8em;
+		margin-right: -10em
+	}
+	.logout{
+		font-size: 1.2em;
+		margin-left: 25em;
+		margin-bottom: 2em;
+	}
+	.dropdown{
+		display: none;
+	}
+	.taskItem{
+		font-size: 1.5em;
+	}
+	.editbtn{
+		padding: -2em;
+	}
+	.footer:hover>.addbtn {
+		font-size: 1em;
+		margin-top: -1.5em;
+    margin-bottom: 1.5em;
+	}
+	.taskComplete {
+		width: 1.5em;
+		height: 1.5em;
+	}
+	.modal-input{
+		font-size: 1.2em;
+	}
+	
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	.list-content{
+		margin-top: 2em;
+		margin-left: -6em;
+		margin-right: -5em
+	}
+	.logout{
+		font-size: 1.2em;
+		margin-left: 25em;
+		margin-bottom: 2em;
+	}
+	.dropdown{
+		display: none;
+	}
+	.taskItem{
+		font-size: 1.2em;
+	}
+	.editbtn{
+		padding: -2em;
+	}
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+	.taskComplete {
+		width: 1em;
+		height: 1em;
+	}
+	.modal-input{
+		font-size: 1.2em;
+	}
+	
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+	
+	
+	.list-content{
+		margin-top: -2em;
+		margin-left: -0.5em;
+		margin-right: -0.5em
+	}
+	.logout{
+		font-size: 1em;
+		margin-left: 25em;
+		margin-bottom: 2em;
+	}
+	.taskItem{
+		font-size: 1em;
+	}
+	.editbtn{
+		padding: -2em;
+	}
+	.footer:hover>.addbtn {
+		font-size: 1em;
+	}
+	.taskComplete {
+		width: 0.8em;
+		height: 0.8em;
+	}
+	
+}
+
 
 </style>
 	

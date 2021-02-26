@@ -50,10 +50,13 @@ function enter(){
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
+.list-content{
+	margin-left: 1em;
+}
 
 .home {
 	font-family: 'Montserrat', sans-serif;
-	font-size: calc(0.5em + 0.8vw);
+	font-size: calc(0.8em + 0.8vw);
 	color: black;
 	text-decoration: underline;
 }

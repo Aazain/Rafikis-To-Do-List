@@ -60,6 +60,7 @@ li {
 .addbtn {
 	font-family: 'Montserrat', sans-serif;
 	margin-top: -1.5em;
+	margin-bottom: 1.5em;
 	background-color: rgb(175, 126, 235);
 	outline: none;
 	border-radius: 2em;
@@ -128,7 +129,8 @@ li {
 }
 
 .footer {
-	margin-left: 0;
+	display: flex;
+	justify-content: center;
 }
 
 .taskComplete {
@@ -178,15 +180,11 @@ li {
 
 
 .registrationBtn {
-	margin-top: 2em;
-	margin-bottom: 2em;
-	margin-right: calc(-6.5em + -22vw);
-	border-color: red;
+display: flex;
+justify-content: flex-end;
 }
 
-.footer{
-	margin-left: 14vw;
-}
+
 
 
 @media only screen and (max-width: 280px) {
@@ -207,7 +205,8 @@ li {
 
 	.userBtn{
 		font-size: 1em;
-		margin-left: 10em;
+		margin-left: 8em;
+		margin-bottom: 1em;
 	}
 
 	.taskItem{
@@ -218,9 +217,7 @@ li {
 		padding: -2em;
 	}
 
-	.footer{
-		margin-left: 4em;
-	}
+
 
 	.footer:hover>.addbtn {
 		font-size: 0.5em;
@@ -231,8 +228,8 @@ li {
 		height: 1.5em;
 	}
 
-	.registrationBtn{
-		margin: 0;
+	.loginBtn, .signUpBtn{
+		font-size: 0.8em;
 	}
 
 }
@@ -246,8 +243,8 @@ li {
 	}
 
 	.userBtn{
-		font-size: 1em;
-		margin-left: 10em;
+		font-size: 1.5em;
+		margin-left: 5em;
 	}
 
 	.dropdown{
@@ -256,6 +253,7 @@ li {
 
 	.title{
 		padding-left: 2.5em;
+		text-align: center;
 	}
 
 	.taskItem{
@@ -266,10 +264,6 @@ li {
 		padding: -2em;
 	}
 
-	.footer{
-		margin-left: 17vw;
-	}
-
 	.footer:hover>.addbtn {
 		font-size: 0.7em;
 	}
@@ -277,10 +271,6 @@ li {
 	.taskComplete {
 		width: 1.5em;
 		height: 1.5em;
-	}
-
-	.registrationBtn{
-		margin: 0;
 	}
 
 
@@ -297,7 +287,7 @@ li {
 }
 
 .userBtn{
-	font-size: 1em;
+	font-size: 1.5em;
 	margin-left: 10em;
 }
 
@@ -317,9 +307,6 @@ li {
 	padding: -2em;
 }
 
-.footer{
-	margin-left: 28vw;
-}
 
 .footer:hover>.addbtn {
 	font-size: 0.7em;
@@ -328,10 +315,6 @@ li {
 .taskComplete {
 	width: 1.5em;
 	height: 1.5em;
-}
-
-.registrationBtn{
-	margin: 0;
 }
 
 
@@ -351,10 +334,6 @@ li {
 		margin-left: 25em;
 	}
 
-	.dropdown{
-		display: none;
-	}
-
 	.title{
 		padding-left: 2.5em;
 	}
@@ -367,10 +346,6 @@ li {
 		padding: -2em;
 	}
 
-	.footer{
-		margin-left: 36vw;
-	}
-
 	.footer:hover>.addbtn {
 		font-size: 1em;
 	}
@@ -379,11 +354,6 @@ li {
 		width: 1.5em;
 		height: 1.5em;
 	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-
 
 	
 }
@@ -402,10 +372,6 @@ li {
 		margin-left: 25em;
 	}
 
-	.dropdown{
-		display: none;
-	}
-
 	.title{
 		padding-left: 2.5em;
 	}
@@ -418,10 +384,6 @@ li {
 		padding: -2em;
 	}
 
-	.footer{
-		margin-left: 23vw;
-	}
-
 	.footer:hover>.addbtn {
 		font-size: 1em;
 	}
@@ -430,11 +392,6 @@ li {
 		width: 1em;
 		height: 1em;
 	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-
 	
 }
 
@@ -454,10 +411,6 @@ li {
 		margin-left: 25em;
 	}
 
-	.dropdown{
-		display: none;
-	}
-
 	.title{
 		padding-left: 2.5em;
 	}
@@ -470,10 +423,6 @@ li {
 		padding: -2em;
 	}
 
-	.footer{
-		margin-left: 14vw;
-	}
-
 	.footer:hover>.addbtn {
 		font-size: 1em;
 	}
@@ -482,11 +431,6 @@ li {
 		width: 0.8em;
 		height: 0.8em;
 	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-	
 }
 
 </style>

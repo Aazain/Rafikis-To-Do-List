@@ -55,12 +55,13 @@ module.exports = (app) => {
   app.delete("/todo/:id/:userId", tokenAuth, function (req, res) {
     const currentUser = req.user;
     const { id } = req.params;
+    const userId = req.params.userId
     Items.findByIdAndRemove(
       {
-        _id: id,
+        _id: id
       },
       function (err, result) {
-        if(req.params.userId !== req.user.user._id){
+        if(userId !== req.user.user._id){
           res.status(403).send("Forbidden")
         }
         else if (!err) {
@@ -86,7 +87,7 @@ module.exports = (app) => {
         return res.send("Successfully added task to list");
       })
       .catch((err) => {
-        res.status(500);
+        return res.status(500);
       });
   });
 
@@ -95,7 +96,7 @@ module.exports = (app) => {
     const { id } = req.params;
     const { name, status } = req.body;
     if(req.user.user._id !== req.params.userId){
-      return res.send(403).send("Forbidden")
+      return res.status(403).send("Forbidden")
     }else{
       Items.updateOne(
         {
@@ -112,8 +113,7 @@ module.exports = (app) => {
             return res.send("Successfully edited Task");
           }
           else {
-            res.send("Failed to edit task");
-            res.status(400);
+            return res.status(400).send("Failed to edit task");
           }
         }
       );

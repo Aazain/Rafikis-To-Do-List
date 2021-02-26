@@ -8,7 +8,6 @@ const jwt = require("jsonwebtoken");
 app.use(express.json());
 
 module.exports = (app) => {
-  let refreshTokens = [];
 
   app.get("/users", function (req, res) {
     const findUsers = Users.find({}, function (err, foundUsers) {
@@ -70,10 +69,9 @@ module.exports = (app) => {
             { expiresIn: "302400s" },
             (err, regenToken) => {
               if (err) {
-                res.status(401);
+                return res.status(401);
               }
-              refreshTokens.push(regenToken);
-              res.send({ accessToken: accessToken, refreshToken: regenToken });
+              return res.send({ accessToken: accessToken, refreshToken: regenToken });
             }
           );
         }
@@ -85,9 +83,8 @@ module.exports = (app) => {
     const authHeader = req.headers["authorization"];
     const refreshToken = authHeader && authHeader.split(" ")[1];
     if (refreshToken == null) return res.sendStatus(401);
-    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403).send({accessToken: "undefined"});
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-      if (err) return res.send({accessToken: "undefined"}).sendStatus(403);
+      if (err) return res.send({accessToken: "undefined"}).status(403);
       const accessToken = newToken({ _id: user._id, email: user.email });
       res.send({ accessToken: accessToken });
     });
