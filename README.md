@@ -14,8 +14,10 @@ To successfully run this code, you need to make sure that you have NodeJS instal
 -Svelte
 -Cors
 
-To actually run the frontend client, cd into the mySvelteFrontend folder and type in `npm run dev` in the terminal and it should start on localhost port 5000.
-It is recommended to install nodemon if you decide to edit the files. Nodemon restarts the server everytime you apply a save to the JS file so that you dont need to type in node server.js everytime you make a change to the file.
+To actually run the frontend client, cd into the mySvelteFrontend folder and type in `npm run start:dev` in the terminal and it should start on localhost port 5000.
+It is recommended to install nodemon for the backend if you decide to edit the files. Nodemon restarts the server everytime you apply a save to the JS file so that you dont need to type in node server.js everytime you make a change to the file.
+
+There are 2 different types of apps. The /mySvelte-Frontend is a Client Side Rendered app while the /svelteRouting is a Server Side Rendered app (using sapper).
 
 V1 Live Website: https://rafikis-to-do-list.herokuapp.com/
 V2 Live Website: https://rafikis-todolist.tiiny.site/ (database link: https://todolist-v2-server.herokuapp.com/todo)
