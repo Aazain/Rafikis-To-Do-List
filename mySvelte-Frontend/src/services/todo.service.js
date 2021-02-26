@@ -1,5 +1,3 @@
-
-import Items from "../../../myBackend/model/todo.model";
 import {env} from "../../config/env"
 export function createTodo(name) {
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
