@@ -20,12 +20,15 @@ module.exports = (app) => {
     const currentUser = req.user;
     const { id } = req.params;
     Items.findById(id, function (err, foundData) {
+      if(foundData == null){
+        return res.status(404).send("Task does not Exist")
+      }
+      if(currentUser.user._id !== foundData.userId){
+        return res.status(403).send("Forbidden")
+      }
       if (err) {
         res.status(404);
-        res.send("Task was not found");
-      }
-      else if(currentUser.user._id !== foundData.userId){
-        res.status(403).send("Forbidden")
+       return res.send("Task was not found");
       }
       else {
         res.send(foundData);
