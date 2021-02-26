@@ -70,7 +70,7 @@ export function createTodo(name) {
  .catch((err) => console.log(err))
 };
 
- export function removeTodo(id){
+ export function removeTodo(id, userId){
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
   const headers = new Headers({
     'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export function createTodo(name) {
     'Authorization': `Bearer ${accessToken}`
   })
 
-    return fetch(`${env()}/todo/${id}`, {
+    return fetch(`${env()}/todo/${id}/${userId}`, {
         method: 'DELETE',
         headers
       }).then( res => {
@@ -88,14 +88,14 @@ export function createTodo(name) {
  }
 
 
- export function editTodo(id, edit, stat){
+ export function editTodo(id, userId,edit, stat){
   const accessToken = JSON.parse(localStorage.getItem('accessToken'));
   const headers = new Headers({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Authorization': `Bearer ${accessToken}`
   })
-    return fetch(`${env()}/todo/${id}`, {
+    return fetch(`${env()}/todo/${id}/${userId}`, {
         method: 'PATCH',
         headers,
         body: JSON.stringify({

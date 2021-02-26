@@ -35,28 +35,32 @@ module.exports = (app) => {
 
   app.get("/todo", tokenAuth, function (req, res) {
     const currentUser = req.user;
-    const findData = Items.find(
-      { userId: currentUser.user._id },
+    const findData = Items.find({ 
+      userId: currentUser.user._id 
+    },
       function (err, foundData) {
         if (err) {
           res.status(400).send({
             message: "Error getting to-do list",
           });
-        } else if (res.status == 403) {
-        }
+        } 
         return res.send([...foundData]);
       }
     );
   });
 
-  app.delete("/todo/:id", tokenAuth, function (req, res) {
+  app.delete("/todo/:id/:userId", tokenAuth, function (req, res) {
+    const currentUser = req.user;
     const { id } = req.params;
     Items.findByIdAndRemove(
       {
         _id: id,
       },
       function (err, result) {
-        if (!err) {
+        if(req.params.userId !== req.user.user._id){
+          res.status(403).send("Forbidden")
+        }
+        else if (!err) {
           res.send("Successfully Deleted Task");
         } 
         else {
@@ -83,27 +87,33 @@ module.exports = (app) => {
       });
   });
 
-  app.patch("/todo/:id", tokenAuth, function (req, res) {
+  app.patch("/todo/:id/:userId", tokenAuth, function (req, res) {
+    const currentUser = req.user;
     const { id } = req.params;
     const { name, status } = req.body;
-    Items.updateOne(
-      {
-        _id: id,
-      },
-      {
-        $set: {
-          name,
-          status,
+    if(req.user.user._id !== req.params.userId){
+      return res.send(403).send("Forbidden")
+    }else{
+      Items.updateOne(
+        {
+          _id: id,
         },
-      },
-      function (err) {
-        if (!err) {
-          res.send("Successfully edited Task");
-        } else {
-          res.send("Failed to edit task");
-          res.status(400);
+        {
+          $set: {
+            name,
+            status,
+          },
+        },
+        function (err) {
+          if (!err) {
+            return res.send("Successfully edited Task");
+          }
+          else {
+            res.send("Failed to edit task");
+            res.status(400);
+          }
         }
-      }
-    );
+      );
+    }
   });
 };

@@ -44,23 +44,25 @@ function postToList() {
   }
 }
 
-function removeFromList(id) {
+function removeFromList(id, userId) {
   if (!id || id === "") {
     swal("Error", "Please enter a task", "error");
   } else {
-    removeTodo(id).then(async () => {
+	  console.log(id)
+	  console.log(userId)
+    removeTodo(id, userId).then(async () => {
       listData = await retrieveListData();
     });
   }
 }
 
-function editList(id) {
+function editList(id, userId) {
   if (!id || id === "") {
     swal("Error", "The edit field cannot be empty", "error");
   } else if (!todoEdit || todoEdit === "") {
     swal("Error", "The edit field cannot be empty", "error");
   } else {
-    editTodo(id, todoEdit).then(async () => {
+    editTodo(id, userId,todoEdit).then(async () => {
       6;
       listData = await retrieveListData();
       resetInputs();
@@ -283,326 +285,6 @@ li {
 	margin-left: 14vw;
 }
 
-
-@media only screen and (max-width: 280px) {
-
-	.list-content{
-		margin-top: 6em;
-		margin-left: 1.9em;
-		margin-right: 0.4em
-	}
-
-	.dropdown{
-		display: none;
-	}
-
-	.title{
-		padding-left: 2.5em;
-	}
-
-	.logout{
-		font-size: 1em;
-		margin-left: 10em;
-		margin-bottom: 2em;
-	}
-
-	.taskItem{
-		font-size: 1.5em;
-	}
-
-	.editbtn{
-		padding: -2em;
-	}
-
-	.footer{
-		margin-left: 4em;
-	}
-
-	.footer:hover>.addbtn {
-		font-size: 0.5em;
-	}
-
-	.taskComplete {
-		width: 1.5em;
-		height: 1.5em;
-	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-
-	.modal-input{
-		font-size: 1.2em;
-	}
-}
-
-@media only screen and (min-width: 281px) {
-
-	.list-content{
-		margin-top: 6em;
-		margin-left: 2em;
-		margin-right: 0.4em
-	}
-
-	.logout{
-		font-size: 1em;
-		margin-left: 10em;
-		margin-bottom: 2em;
-	}
-
-	.dropdown{
-		display: none;
-	}
-
-	.title{
-		padding-left: 2.5em;
-	}
-
-	.taskItem{
-		font-size: 1.5em;
-	}
-
-	.editbtn{
-		padding: -2em;
-	}
-
-	.footer{
-		margin-left: 17vw;
-	}
-
-	.footer:hover>.addbtn {
-		font-size: 0.7em;
-	}
-
-	.taskComplete {
-		width: 1.5em;
-		height: 1.5em;
-	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-
-	.modal-input{
-		font-size: 1.2em;
-	}
-
-}
-
-
-@media only screen and (min-width: 440px) {
-
-.list-content{
-	margin-top: 6em;
-	margin-left: -1em;
-	margin-right: -3em
-}
-
-.logout{
-	font-size: 1em;
-	margin-left: 10em;
-	margin-bottom: 2em;
-}
-
-.dropdown{
-	display: none;
-}
-
-.title{
-	padding-left: 2.5em;
-}
-
-.taskItem{
-	font-size: 1.5em;
-}
-
-.editbtn{
-	padding: -2em;
-}
-
-.footer{
-	margin-left: 28vw;
-}
-
-.footer:hover>.addbtn {
-	font-size: 0.7em;
-}
-
-.taskComplete {
-	width: 1.5em;
-	height: 1.5em;
-}
-
-.registrationBtn{
-	margin: 0;
-}
-
-.modal-input{
-	font-size: 1.2em;
-}
-
-}
-
-
-@media only screen and (min-width: 768px) {
-
-	.list-content{
-		margin-top: 4em;
-		margin-left: -8em;
-		margin-right: -10em
-	}
-
-	.logout{
-		font-size: 1.2em;
-		margin-left: 25em;
-		margin-bottom: 2em;
-	}
-
-	.dropdown{
-		display: none;
-	}
-
-	.title{
-		padding-left: 2.5em;
-	}
-
-	.taskItem{
-		font-size: 1.5em;
-	}
-
-	.editbtn{
-		padding: -2em;
-	}
-
-	.footer{
-		margin-left: 36vw;
-	}
-
-	.footer:hover>.addbtn {
-		font-size: 1em;
-	}
-
-	.taskComplete {
-		width: 1.5em;
-		height: 1.5em;
-	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-
-	.modal-input{
-		font-size: 1.2em;
-	}
-	
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-
-	.list-content{
-		margin-top: 2em;
-		margin-left: -6em;
-		margin-right: -5em
-	}
-
-	.logout{
-		font-size: 1.2em;
-		margin-left: 25em;
-		margin-bottom: 2em;
-	}
-
-	.dropdown{
-		display: none;
-	}
-
-	.title{
-		padding-left: 2.5em;
-	}
-
-	.taskItem{
-		font-size: 1.2em;
-	}
-
-	.editbtn{
-		padding: -2em;
-	}
-
-	.footer{
-		margin-left: 23vw;
-	}
-
-	.footer:hover>.addbtn {
-		font-size: 1em;
-	}
-
-	.taskComplete {
-		width: 1em;
-		height: 1em;
-	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-
-	.modal-input{
-		font-size: 1.2em;
-	}
-	
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-	
-
-	
-	.list-content{
-		margin-top: -2em;
-		margin-left: -0.5em;
-		margin-right: -0.5em
-	}
-
-	.logout{
-		font-size: 1em;
-		margin-left: 25em;
-		margin-bottom: 2em;
-	}
-
-	.dropdown{
-		display: none;
-	}
-
-	.title{
-		padding-left: 2.5em;
-	}
-
-	.taskItem{
-		font-size: 1em;
-	}
-
-	.editbtn{
-		padding: -2em;
-	}
-
-	.footer{
-		margin-left: 14vw;
-	}
-
-	.footer:hover>.addbtn {
-		font-size: 1em;
-	}
-
-	.taskComplete {
-		width: 0.8em;
-		height: 0.8em;
-	}
-
-	.registrationBtn{
-		margin: 0;
-	}
-	
-}
-
 </style>
 	
 <!-- 	BODY -->
@@ -621,7 +303,7 @@ li {
 						<div class="item">
 							<li class="taskName">
 								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
-								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
+								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id, item.userId)}><i class="fa fa-trash w3-medium"></i></button>
 								<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
 								<span class:checked={item.status}><p class="taskItem" on:click={()=>itemEditor(item._id)}>{item.name}</p></span>
 								<div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -638,7 +320,7 @@ li {
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
-										<button type="button" on:click={()=>editList(item._id)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
+										<button type="button" on:click={()=>editList(item._id, item.userId)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
 								</div>
 							</li>
 						</div>								
@@ -647,7 +329,7 @@ li {
 			</div>
 			  
 			  <div class="footer">
-				<input bind:value={todoName} autocomplete="off" class="addList" type="text" id="createTask" name="newItem" placeholder="Type Here">
+					<input bind:value={todoName} autocomplete="off" class="addList" type="text" id="createTask" name="newItem" placeholder="Type Here">
 				  <button type="submit" on:click={postToList} id="footerButton" class="addbtn btn btn-dark">+ New Task</button> 
 			  </div>
 	</div>

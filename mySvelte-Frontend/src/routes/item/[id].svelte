@@ -175,16 +175,14 @@ function enter(){
 
 @media only screen and (min-width: 275px) {
 
-.title{
-  font-size: 3em;
-}
+  .title{
+    font-size: 3em;
+  }
 
-.list-content{
-  margin-left: 1.9em;
-  margin-right: 0.4em
-}
-
-
+  .list-content{
+    margin-left: 1.9em;
+    margin-right: 0.4em
+  }
 }
 
 </style>

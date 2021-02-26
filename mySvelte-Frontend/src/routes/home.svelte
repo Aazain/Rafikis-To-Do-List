@@ -115,25 +115,6 @@ li {
 	text-decoration: none;
 }
 
-.footer:hover>.addList {
-	width: 120px;
-	padding: 0 6px;
-}
-
-.footer:hover>.addbtn {
-	background: black;
-	box-shadow: 0px 0px 10px black;
-	color: white;
-	border-radius: 0em;
-	border: none;
-}
-
-.footer:hover>.addList {
-	background-color: black;
-	box-shadow: 0px 0px 10px black;
-	border-radius: 0em;
-}
-
 .addList {
 	border: none;
 	background: none;

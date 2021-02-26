@@ -54,19 +54,6 @@ function enter(){
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
 
-.list-container {
-	height: 100vh;
-	width: 100vw;
-	background-color: rgb(227, 233, 255);
-	text-align: center;
-}
-
-.list-content {
-	padding-top: 8vw;
-	margin-right: calc(-7em + 40vw);
-	margin-left: calc(-8.5em + 40vw);
-}
-
 .home {
 	font-family: 'Montserrat', sans-serif;
 	font-size: calc(0.5em + 0.8vw);
