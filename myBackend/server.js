@@ -20,6 +20,7 @@ mongoose.connect(process.env.DB_PASS, {
     console.log("Connected to DB...")
 });
 
+app.use(cors())
 app.options('*', cors()) 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
