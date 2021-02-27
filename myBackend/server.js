@@ -30,7 +30,6 @@ app.use((req, res, next) => {
     next();
 })
 
-
 todoController(app);
 usersController(app);
 
