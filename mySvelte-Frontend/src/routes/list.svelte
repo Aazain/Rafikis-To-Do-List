@@ -18,7 +18,7 @@ let todoEdit = ""
 
 onMount(async () => {
 	listData = await retrieveListData();
-	newAccessTokenGen();
+	setTimeout(newAccessTokenGen, 1000)
 	enter();
 	setInterval(newAccessTokenGen, 3600000)
 });

@@ -44,7 +44,7 @@ export function createTodo(name) {
    .then(data =>{
       return data
    })
-   .catch((err) => tryAgain(err))
+   .catch((err) => console.log(err))
  };
 
  export function getSingleItem(itemId){
