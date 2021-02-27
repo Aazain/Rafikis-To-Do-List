@@ -53,19 +53,17 @@ module.exports = (app) => {
     );
   });
 
-  app.delete("/todo/:id/:userId", tokenAuth, function (req, res) {
+  app.delete("/todo/:id", tokenAuth, function (req, res) {
     const currentUser = req.user;
+    let userId = currentUser.user._id
     const { id } = req.params;
-    const userId = req.params.userId
     Items.findByIdAndRemove(
       {
-        _id: id
+        _id: id,
+        userId: userId
       },
       function (err, result) {
-        if(userId !== req.user.user._id){
-          res.status(403).send("Forbidden")
-        }
-        else if (!err) {
+        if (!err) {
           res.send("Successfully Deleted Task");
         } 
         else {
@@ -94,14 +92,13 @@ module.exports = (app) => {
 
   app.patch("/todo/:id/:userId", tokenAuth, function (req, res) {
     const currentUser = req.user;
+    let userId = currentUser.user._id
     const { id } = req.params;
     const { name, status } = req.body;
-    if(req.user.user._id !== req.params.userId){
-      return res.status(403).send("Forbidden")
-    }else{
       Items.updateOne(
         {
           _id: id,
+          userId
         },
         {
           $set: {
@@ -118,6 +115,5 @@ module.exports = (app) => {
           }
         }
       );
-    }
   });
 };

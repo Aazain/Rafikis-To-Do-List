@@ -20,12 +20,13 @@ mongoose.connect(process.env.DB_PASS, {
     console.log("Connected to DB...")
 });
 
-app.use(cors({origin: "*"}))
-app.options('*', cors()) 
+app.use(cors({origin: "*"}));
+app.options('*', cors()) ;
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, PATCH, POST, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", true);
     next();
 })
 
