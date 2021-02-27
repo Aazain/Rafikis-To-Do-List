@@ -132,11 +132,11 @@ function tryAgain(err){
       localStorage.setItem("accessToken", JSON.stringify(data.accessToken))
       if(data.accessToken == "undefined"){
         localStorage.setItem("refreshToken", JSON.stringify("undefined"))
-        swal('Error', 'Session Expired', 'error')
+        swal('Error', 'Session Expired, Please Log In', 'error')
         .then(function(){window.location.href = "/"})
       }
     })
-    .catch((err) => swal('Error', 'Session Expired', 'error')
+    .catch((err) => swal('Error', 'Session Expired, Please Log In', 'error')
     .then(localStorage.setItem("refreshToken", JSON.stringify("undefined")),
     localStorage.setItem("accessToken", JSON.stringify("undefined"))
     )

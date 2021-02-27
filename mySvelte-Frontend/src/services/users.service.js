@@ -40,22 +40,29 @@ export function loginUser(email, password) {
       password,
     }),
   })
-    .then((res) => res)
+    .then((res) => res.json())
     .then(function(data) {
       console.log(data)
-      if(data.status == 400){
-        swal('Error', "An Acount With This Email Does Not Exist", 'error')
-      }
-      else if(data.status == 203){
+      if(data.message == "Incorrect Email or Password"){
         swal('Error', "Incorrect Email or Password", 'error')
       }
-      else if(data.status == 200){
-        (res)=>res.json()
-        .them((data)=>console.log(data))
+      else if(data.message == "User Does Not Exist"){
+        swal('Error', "An Acount With This Email Does Not Exist", 'error')
+      }
+      else{
+          localStorage.setItem("refreshToken",JSON.stringify(data.refreshToken),
+          localStorage.setItem("accessToken", JSON.stringify(data.accessToken)),
+          loginSuccess()
+        )
       }
     }
   )
 }
+
+function loginSuccess() {
+  window.location.href = "/list";
+}
+
 export function logOutUser() {
   localStorage.setItem("refreshToken",JSON.stringify("undefined"),
     localStorage.setItem("accessToken", JSON.stringify("undefined")),
