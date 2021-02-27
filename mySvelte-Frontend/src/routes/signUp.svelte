@@ -24,12 +24,7 @@ function signUpUser() {
   ) {
     swal("Error", "Please enter your email and password", "error");
   } else {
-    createNewUser(email, password);
-    swal("Success", "Successfully Signed Up! Please Log In", "success").then(
-      function () {
-        window.location.href = `/login`;
-      }
-    );
+    createNewUser(email, password)
   }
 }
 

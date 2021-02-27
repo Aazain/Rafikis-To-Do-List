@@ -5,6 +5,7 @@ const app = express();
 const Users = require("../model/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { getMaxListeners } = require("../model/users.model");
 app.use(express.json());
 
 module.exports = (app) => {
@@ -21,23 +22,31 @@ module.exports = (app) => {
   });
 
   app.post("/users/signup", async function (req, res) {
+    const password = req.body.password
+    const email = req.body.email
     try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      const userList = new Users({
-        email: req.body.email,
-        password: hashedPassword,
-      });
-      if (
-        req.body.email == null ||
-        req.body.email == "" ||
-        req.body.password == null ||
-        req.body.password == ""
-      ) {
-        res.status(400).send("Enter Email and Password");
-      } else {
+      Users.findOne({email: req.body.email}, async function(req, userData){
+        if(userData !== null){
+          console.log("cool")
+          return res.status(409).send("A User With This Email Already Exists")
+        }
+        else if (
+          email == null ||
+          email == "" ||
+          password == null ||
+          password == ""
+          ) {res.status(400).send("Enter Email and Password")
+        } 
+        else{
+          const hashedPassword = await bcrypt.hash(password, 10);
+          const userList = new Users({
+            email: email,
+            password: hashedPassword,
+          });
         userList.save();
-      }
-      return res.status(201).send("Successfully added user");
+        }
+        return res.status(201).send("Successfully added user");
+    })
     } catch {
       if (res.status == !400 || res.status == !201) {
         res.status(500).send("Error");
@@ -51,7 +60,7 @@ module.exports = (app) => {
       email: req.body.email,
     });
     if (user == null) {
-      return res.status(400).send({ message: "Incorrect Email or Password" });
+      return res.status(400).send({ message: "User Does Not Exist" });
     }
     return bcrypt.compare(
       req.body.password,

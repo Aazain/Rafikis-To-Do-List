@@ -25,7 +25,13 @@ function userLogin() {
     swal("Error", "Please enter an email and password", "error");
   } else {
     loginUser(userEmail, userPassword);
+	resetInputs();
   }
+}
+
+function resetInputs(){
+	userEmail = ""
+	userPassword = ""
 }
 
 function enter(){
