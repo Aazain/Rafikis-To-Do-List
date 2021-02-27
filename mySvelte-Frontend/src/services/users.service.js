@@ -13,9 +13,7 @@ export function createNewUser(email, password) {
       }),
     })
     .then(function(res) {
-      console.log(res.ok)
       if (res.ok == false) {
-        console.log("nice")
         swal("Error", "A user with this email already Exists", 'error')
       } else if (res.ok == true)(
         swal("Success", "Successfully Signed Up! Please Log In", "success").then(
@@ -42,7 +40,6 @@ export function loginUser(email, password) {
   })
     .then((res) => res.json())
     .then(function(data) {
-      console.log(data)
       if(data.message == "Incorrect Email or Password"){
         swal('Error', "Incorrect Email or Password", 'error')
       }
