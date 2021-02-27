@@ -90,11 +90,12 @@ module.exports = (app) => {
       });
   });
 
-  app.patch("/todo/:id/:userId", tokenAuth, function (req, res) {
+  app.patch("/todo/:id", tokenAuth, function (req, res) {
     const currentUser = req.user;
     let userId = currentUser.user._id
     const { id } = req.params;
     const { name, status } = req.body;
+    console.log(name)
       Items.updateOne(
         {
           _id: id,
@@ -103,7 +104,7 @@ module.exports = (app) => {
         {
           $set: {
             name,
-            status,
+            status
           },
         },
         function (err) {
@@ -111,6 +112,7 @@ module.exports = (app) => {
             return res.send("Successfully edited Task");
           }
           else {
+            console.log(err)
             return res.status(400).send("Failed to edit task");
           }
         }

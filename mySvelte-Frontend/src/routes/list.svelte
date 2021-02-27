@@ -44,30 +44,30 @@ function postToList() {
   }
 }
 
-function removeFromList(id, userId) {
+function removeFromList(id) {
   if (!id || id === "") {
     swal("Error", "Please enter a task", "error");
   } else {
-    removeTodo(id, userId).then(async () => {
+    removeTodo(id).then(async () => {
       listData = await retrieveListData();
     });
   }
 }
 
-function editList(id, userId) {
+function editList(id) {
   if (!id || id === "") {
     swal("Error", "The edit field cannot be empty", "error");
   } else if (!todoEdit || todoEdit === "") {
     swal("Error", "The edit field cannot be empty", "error");
   } else {
-    editTodo(id, userId, todoEdit).then(async () => {
+    editTodo(id, todoEdit).then(async () => {
       listData = await retrieveListData();
       resetInputs();
     });
   }
 }
 
-function editStatus(id, userId,name) {
+function editStatus(id,name) {
   let editedListData = null;
   for (let i = 0; i < listData.length; i++) {
     const currentListData = listData[i];
@@ -80,7 +80,7 @@ function editStatus(id, userId,name) {
   if (!editedListData) {
     throw new Error("error");
   }
-  editTodo(id, userId,name, editedListData.status).then(async () => {
+  editTodo(id, name, editedListData.status).then(async () => {
     listData = await retrieveListData();
   });
 }
@@ -210,8 +210,8 @@ li{font-family:'Montserrat',sans-serif;margin-bottom:1.8em}
 					{#each listData as item}
 						<div class="item">
 							<li class="taskName">
-								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.userId, item.name)} name="taskCheck" class="taskComplete">
-								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id, item.userId)}><i class="fa fa-trash w3-medium"></i></button>
+								<input type="checkbox" bind:checked={item.status} on:change={()=>editStatus(item._id, item.name)} name="taskCheck" class="taskComplete">
+								<button id="deleteBtn" class="btn btn removeButton pull-right" on:click={()=>removeFromList(item._id)}><i class="fa fa-trash w3-medium"></i></button>
 								<button class="editbtn btn btn pull-right" data-toggle="modal" data-target="#editorModal{item._id}"><i class="fa fa-edit w3-medium"></i></button>
 								<span class:checked={item.status}><p class="taskItem" on:click={()=>itemEditor(item._id)}>{item.name}</p></span>
 								<div class="modal fade" id="editorModal{item._id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -228,7 +228,7 @@ li{font-family:'Montserrat',sans-serif;margin-bottom:1.8em}
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" on:click={resetInputs} data-dismiss="modal">Cancel</button>
-										<button type="button" on:click={()=>editList(item._id, item.userId)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
+										<button type="button" on:click={()=>editList(item._id)} data-dismiss="modal" class="btn btn saveChange">Save changes</button>
 								</div>
 							</li>
 						</div>								
