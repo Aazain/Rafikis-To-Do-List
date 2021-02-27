@@ -95,7 +95,6 @@ module.exports = (app) => {
     let userId = currentUser.user._id
     const { id } = req.params;
     const { name, status } = req.body;
-    console.log(name)
       Items.updateOne(
         {
           _id: id,
