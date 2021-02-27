@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const Items = require("../model/todo.model");
 const jwt = require("jsonwebtoken");
+const { json } = require("body-parser");
 module.exports = (app) => {
 
   function tokenAuth(req, res, next) {

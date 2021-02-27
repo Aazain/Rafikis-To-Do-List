@@ -1,5 +1,6 @@
 const express = require("express");
-const app = express();
+const app = express()  
+const cors = require('cors')
 const bodyparser = require("body-parser")
 const todoController = require("./controller/todo.controller");
 const userController = require("./controller/users.controller");
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(cors());
 todoController(app);
 usersController(app);
 
