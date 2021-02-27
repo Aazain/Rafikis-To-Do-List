@@ -17,7 +17,7 @@ export function createTodo(name) {
     .then( res => {
         return res
     })
-    .catch((err) => errorCheck(err))
+    .catch((err) => tryAgain(err))
   }
 
   export function retrieveListData(){
@@ -44,7 +44,7 @@ export function createTodo(name) {
    .then(data =>{
       return data
    })
-   .catch((err) => errorCheck(err))
+   .catch((err) => tryAgain(err))
  };
 
  export function getSingleItem(itemId){
@@ -66,7 +66,7 @@ export function createTodo(name) {
  .then(data =>{
     return data
  })
- .catch((err) => console.log(err))
+ .catch((err) => tryAgain(err))
 };
 
  export function removeTodo(id, userId){
@@ -83,7 +83,7 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => errorCheck(err))
+      .catch((err) => tryAgain(err))
  }
 
 
@@ -104,14 +104,13 @@ export function createTodo(name) {
       }).then( res => {
           return res
       })
-      .catch((err) => console.log(err))
-      
+      .catch((err) => tryAgain(err))
  }
 
-function errorCheck(err){
+function tryAgain(err){
   if(err){
-    swal('Error', 'Session Expired, Please Log In', 'error')
-    .then(function(){window.location.href = "/"})
+    swal('Error', 'Error Please Try Again', 'error')
+    .then(function(){window.location.href = "/list"})
   }
 }
 
