@@ -27,7 +27,6 @@ module.exports = (app) => {
     try {
       Users.findOne({email: req.body.email}, async function(req, userData){
         if(userData !== null){
-          console.log("cool")
           return res.status(409).send("A User With This Email Already Exists")
         }
         else if (
