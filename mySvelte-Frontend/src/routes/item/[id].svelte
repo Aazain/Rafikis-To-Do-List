@@ -115,6 +115,7 @@ function enter(){
   .title {
 	background-color: rgb(175, 126, 235);
 	color: white;
+  margin-top: -1em;
 	padding-bottom: 0.6em;
   padding-top: 0.3em;
 	box-shadow: 0px 0px 15px gray;
