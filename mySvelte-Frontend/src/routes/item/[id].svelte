@@ -115,7 +115,8 @@ function enter(){
   .title {
 	background-color: rgb(175, 126, 235);
 	color: white;
-	padding: 0.5em;
+	padding-bottom: 0.6em;
+  padding-top: 0.3em;
 	box-shadow: 0px 0px 15px gray;
 }
 
@@ -178,10 +179,6 @@ function enter(){
     font-size: 3em;
   }
 
-  .list-content{
-    margin-left: 1.9em;
-    margin-right: 0.4em
-  }
 }
 
 </style>

@@ -102,12 +102,12 @@ function enter(){
 	
 <style>
 @import "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap";
-.list-container{margin-top:-7em;height:120vh;background-color:#e3e9ff;text-align:center}
+.list-container{margin-top:-7em;height:120vh;background-color:#e3e9ff;text-align:center;}
 h1{font-family:'Montserrat',sans-serif;text-shadow:2px 2px 8px #fff}
 ul{padding:1em;margin:0;list-style-type:none}
 input[type=checkbox]{transform:scale(0.8)}
 li{font-family:'Montserrat',sans-serif;margin-bottom:1.8em}
-#listArea{background-color:#fff;margin-top:1em;padding-bottom:2em;padding-top:1em;box-shadow:0 0 15px gray}
+#listArea{background-color:#fff;margin-top:1em;padding-bottom:2em;padding-top:1em;box-shadow:0 0 15px gray;margin-right: 0.1em;}
 .title{background-color:#af7eeb;color:#fff;padding:.5em;padding-left:1em;box-shadow:0 0 15px gray}
 .addbtn{font-family:'Montserrat',sans-serif;margin-top:-1.5em;margin-bottom:1.5em;background-color:#af7eeb;outline:none;border-radius:2em;box-shadow:0 0 10px #af7eeb;display:flex;justify-content:center;align-items:center;transition:.4s;color:#fff;cursor:pointer;line-height:27px}
 .removeButton:hover,.editbtn:hover{transition-duration:.2s;background-color:gray}
@@ -118,7 +118,6 @@ li{font-family:'Montserrat',sans-serif;margin-bottom:1.8em}
 .saveChange{font-family:'Montserrat',sans-serif;background-color:#af7eeb;color:#fff}
 .checked{text-decoration:line-through;color:#d3d3d3}
 .listSelect{font-family:'Montserrat',sans-serif;margin-right:-2em;color:#fff;text-decoration:none}
-.footer:hover{margin-left:15%}
 .footer:hover>.addList{width:120px;padding:0 6px}
 .footer:hover>.addbtn{background:#000;box-shadow:0 0 10px #000;color:#fff;border-radius:0;border:none}
 .footer:hover>.addList{background-color:#000;box-shadow:0 0 10px #000;border-radius:0}

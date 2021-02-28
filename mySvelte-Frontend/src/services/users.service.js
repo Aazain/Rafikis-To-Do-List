@@ -44,7 +44,7 @@ export function loginUser(email, password) {
         swal('Error', "Incorrect Email or Password", 'error')
       }
       else if(data.message == "User Does Not Exist"){
-        swal('Error', "An Acount With This Email Does Not Exist", 'error')
+        swal('Error', "An Account With This Email Does Not Exist", 'error')
       }
       else{
           localStorage.setItem("refreshToken",JSON.stringify(data.refreshToken),
