@@ -22,4 +22,4 @@ There are 2 different types of apps. The /mySvelte-Frontend is a Client Side Ren
 
 It is recommended to install nodemon for the backend if you decide to edit the files. Nodemon restarts the server everytime you apply a save to the JS file so that you dont need to type in node server.js everytime you make a change to the file.
 
-Live Website: https://elegant-swanson-c6eaa2.netlify.app/
+Live Website: https://gallant-shockley-937010.netlify.app/
