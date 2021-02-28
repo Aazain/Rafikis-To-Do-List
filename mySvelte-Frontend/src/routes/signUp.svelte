@@ -109,7 +109,7 @@ label{
 
 		<hr class="noHr">
 
-			<button type="button" on:click={signUpUser} id="signUpButton" class=" enterSignUp btn btn-dark">SignUp</button>
+			<button type="button" on:click={signUpUser} id="signUpButton" class=" enterSignUp btn btn-dark">Sign Up</button>
 
 		<hr>
 
