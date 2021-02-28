@@ -193,6 +193,11 @@ li{font-family:'Montserrat',sans-serif;margin-bottom:1.8em}
 .footer:hover>.addbtn{font-size:1em}
 .taskComplete{width:.8em;height:.8em}
 }
+@media only screen and (max-width: 1200px) {
+	.addList{width:120px;padding:0 6px;background-color:#000;box-shadow:0 0 10px #000;border-radius:0}
+	.addbtn{background:#000;box-shadow:0 0 10px #000;color:#fff;border-radius:0;border:none}
+	.footer{margin-left:15%}
+}
 </style>
 	
 <!-- 	BODY -->
