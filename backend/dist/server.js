@@ -8,7 +8,7 @@ var mongoose_1 = __importDefault(require("mongoose"));
 require("dotenv/config");
 var todoController = require("./controllers/users.controller");
 var app = express_1.default();
-mongoose_1.default.connect("" + process.env.DB_PASS, { useNewUrlParser: true }, function () { return console.log("Connected to DB..."); });
+mongoose_1.default.connect("" + process.env.DB_PASS, { useNewUrlParser: true, useUnifiedTopology: true }, function () { return console.log("Connected to DB..."); });
 todoController(app);
 var port = process.env.PORT || 4000;
 app.listen(port, function () {

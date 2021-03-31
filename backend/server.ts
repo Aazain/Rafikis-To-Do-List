@@ -5,8 +5,7 @@ require("dotenv/config")
 const todoController = require("./controllers/users.controller")
 const app = express();
 
-mongoose.connect(`${process.env.DB_PASS}`, {useNewUrlParser: true},() => console.log("Connected to DB..."));
-
+mongoose.connect(`${process.env.DB_PASS}`, {useNewUrlParser: true, useUnifiedTopology: true },() => console.log("Connected to DB..."));
 todoController(app)
 
 
