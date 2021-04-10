@@ -1,14 +1,18 @@
 
-import express, { Application, Request, Response } from "express"
+import express, { Application, json, request, Request, Response } from "express"
 import { Users } from "../models/users.model";
 const app:Application = express();
 
-module.exports = (app:any)=>{
-
 class Express{
+    private app: Application = express();
+    
+    constructor(app: Application){
+        app = app;
+    }
 
     getUsers() {
         app.get("/users", (req: Request, res: Response) => {
+            console.log("nice")
             Users.find({}, (err, foundData) => {
                 if (err) {
                     res.status(404).send("Unable to find Users")
@@ -19,9 +23,10 @@ class Express{
         })
     }
 
-}
-
-    const express = new Express
-    express.getUsers();
+    signUp(){
+        app.post("/users/signup", (req: Request, res: Response)=>{
+           console.log(req.body)
+        })
+    }
 
 }
