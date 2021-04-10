@@ -1,31 +1,33 @@
 
 import express, { Application, json, request, Request, Response } from "express"
 import { Users } from "../models/users.model";
-const app:Application = express();
+import { userServices } from "../services/user.services"
 
-class Express{
-    private app: Application = express();
+export class Express{
+    private app: Application;
     
     constructor(app: Application){
-        app = app;
+        this.app = app;
     }
 
     getUsers() {
-        app.get("/users", (req: Request, res: Response) => {
-            console.log("nice")
+        this.app.get("/users", (req: Request, res: Response) => {
             Users.find({}, (err, foundData) => {
                 if (err) {
-                    res.status(404).send("Unable to find Users")
+                    return res.status(404).send("Unable to find Users")
                 } else {
-                    res.send([...foundData])
+                    return res.send([...foundData])
                 }
             })
         })
     }
 
     signUp(){
-        app.post("/users/signup", (req: Request, res: Response)=>{
-           console.log(req.body)
+        this.app.post("/users/signup", (req: Request, res: Response)=>{
+            const userEmail = req.body.email
+            const userPassword = req.body.password
+            const userService = new userServices(userEmail, userPassword)
+            const createUser = userService.signUpUser();
         })
     }
 
