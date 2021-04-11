@@ -22,9 +22,10 @@ app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Credentials", "true");
     next();
 });
-var user = new users_controller_1.Express(app);
+var user = new users_controller_1.userController(app);
 user.getUsers();
 user.signUp();
+user.logIn();
 var port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log("Server running on port:", port);

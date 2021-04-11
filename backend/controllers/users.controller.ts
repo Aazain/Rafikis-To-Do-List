@@ -3,7 +3,7 @@ import express, { Application, json, request, Request, Response } from "express"
 import { Users } from "../models/users.model";
 import { userServices } from "../services/user.services"
 
-export class Express{
+export class userController{
     private app: Application;
     
     constructor(app: Application){
@@ -29,8 +29,16 @@ export class Express{
             const userService = new userServices(userEmail, userPassword)
             const createUser = await userService.createUser();
             res.send(createUser)
-            console.log(createUser)
         })
     }
 
+    logIn(){
+        this.app.post("/users/login", async (req: Request, res: Response)=>{
+            const userEmail = req.body.email
+            const userPassword = req.body.password
+            const userService = new userServices(userEmail, userPassword)
+            const loginUser = await userService.userLogin();
+            res.send(loginUser)
+        })
+    }
 }

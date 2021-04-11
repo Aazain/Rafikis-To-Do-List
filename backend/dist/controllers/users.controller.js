@@ -41,14 +41,14 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
     return to;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Express = void 0;
+exports.userController = void 0;
 var users_model_1 = require("../models/users.model");
 var user_services_1 = require("../services/user.services");
-var Express = /** @class */ (function () {
-    function Express(app) {
+var userController = /** @class */ (function () {
+    function userController(app) {
         this.app = app;
     }
-    Express.prototype.getUsers = function () {
+    userController.prototype.getUsers = function () {
         this.app.get("/users", function (req, res) {
             users_model_1.Users.find({}, function (err, foundData) {
                 if (err) {
@@ -60,7 +60,7 @@ var Express = /** @class */ (function () {
             });
         });
     };
-    Express.prototype.signUp = function () {
+    userController.prototype.signUp = function () {
         var _this = this;
         this.app.post("/users/signup", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userEmail, userPassword, userService, createUser;
@@ -74,12 +74,30 @@ var Express = /** @class */ (function () {
                     case 1:
                         createUser = _a.sent();
                         res.send(createUser);
-                        console.log(createUser);
                         return [2 /*return*/];
                 }
             });
         }); });
     };
-    return Express;
+    userController.prototype.logIn = function () {
+        var _this = this;
+        this.app.post("/users/login", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userEmail, userPassword, userService, loginUser;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userEmail = req.body.email;
+                        userPassword = req.body.password;
+                        userService = new user_services_1.userServices(userEmail, userPassword);
+                        return [4 /*yield*/, userService.userLogin()];
+                    case 1:
+                        loginUser = _a.sent();
+                        res.send(loginUser);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    };
+    return userController;
 }());
-exports.Express = Express;
+exports.userController = userController;

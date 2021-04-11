@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { Express } from "./controllers/users.controller"
+import { userController } from "./controllers/users.controller"
 require("dotenv/config")
 const app = express();
 const bodyParser = require('body-parser')
@@ -22,9 +22,10 @@ app.use((req, res, next) => {
 })
 
 
-const user = new Express(app)
+const user = new userController(app)
 user.getUsers();
 user.signUp();
+user.logIn();
 
 let port = process.env.PORT || 4000
 app.listen(port, ()=>{

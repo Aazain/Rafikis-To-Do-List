@@ -36,55 +36,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userServices = void 0;
-var users_model_1 = require("../models/users.model");
-var password_1 = require("./password");
+exports.passwordService = void 0;
 var bcrypt = require('bcrypt');
-var userServices = /** @class */ (function () {
-    function userServices(email, password) {
-        this.email = email;
-        this.password = password;
+var jwt = require('jsonwebtoken');
+require("dotenv/config");
+var passwordService = /** @class */ (function () {
+    function passwordService(password, currentUser) {
+        this.currentUser = currentUser;
+        this.userPassword = password;
     }
-    userServices.prototype.createUser = function () {
+    passwordService.prototype.userAuth = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, hashedPassword, userList;
+            var passwordAuth, newToken, refreshToken;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, users_model_1.Users.findOne({ email: this.email })];
+                    case 0: return [4 /*yield*/, bcrypt.compare(this.userPassword, this.currentUser.password)];
                     case 1:
-                        checkEmail = _a.sent();
-                        if (!(checkEmail !== null)) return [3 /*break*/, 2];
-                        return [2 /*return*/, "a user with this email already exists"];
-                    case 2: return [4 /*yield*/, bcrypt.hash(this.password, 10)];
-                    case 3:
-                        hashedPassword = _a.sent();
-                        userList = new users_model_1.Users({
-                            email: this.email,
-                            password: hashedPassword
-                        });
-                        userList.save();
-                        return [2 /*return*/, "successfully created user"];
+                        passwordAuth = _a.sent();
+                        if (!passwordAuth) {
+                            return [2 /*return*/, "incorrect email or password"];
+                        }
+                        else {
+                            newToken = this.createAccessToken({ _id: this.currentUser._id, email: this.currentUser.email });
+                            refreshToken = this.createRefreshToken({ _id: this.currentUser._id, email: this.currentUser.email });
+                            return [2 /*return*/, { accessToken: newToken, refreshToken: refreshToken }];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    userServices.prototype.userLogin = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var currentUser, passService, loginAuth;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, users_model_1.Users.findOne({ email: this.email })];
-                    case 1:
-                        currentUser = _a.sent();
-                        passService = new password_1.passwordService(this.password, currentUser);
-                        return [4 /*yield*/, passService.userAuth()];
-                    case 2:
-                        loginAuth = _a.sent();
-                        return [2 /*return*/, loginAuth];
-                }
-            });
+    passwordService.prototype.createAccessToken = function (currentUser) {
+        return jwt.sign({ user: currentUser }, process.env.ACCESSTOKEN, {
+            expiresIn: "10s"
         });
     };
-    return userServices;
+    passwordService.prototype.createRefreshToken = function (currentUser) {
+        return jwt.sign({ user: currentUser }, process.env.REFRESHTOKEN, {
+            expiresIn: "20s"
+        });
+    };
+    return passwordService;
 }());
-exports.userServices = userServices;
+exports.passwordService = passwordService;
