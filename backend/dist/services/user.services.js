@@ -37,7 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
-var express_1 = require("express");
 var users_model_1 = require("../models/users.model");
 var bcrypt = require('bcrypt');
 var userServices = /** @class */ (function () {
@@ -47,31 +46,27 @@ var userServices = /** @class */ (function () {
     }
     userServices.prototype.createUser = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var hashedPassword, userList;
+            var hashedPassword, userList, checkEmail;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, bcrypt.hash(this.password, 10)];
+                    case 0: return [4 /*yield*/, bcrypt.hash(this.email, 10)];
                     case 1:
                         hashedPassword = _a.sent();
                         userList = new users_model_1.Users({
                             email: this.email,
                             password: hashedPassword
                         });
-                        userList.save();
-                        return [2 /*return*/, express_1.response.status(201).send("Successfully created user")];
+                        checkEmail = users_model_1.Users.findOne({ email: this.email });
+                        if (checkEmail !== null) {
+                            return [2 /*return*/, checkEmail];
+                        }
+                        else {
+                            userList.save();
+                            return [2 /*return*/, { message: "Successfully Created User" }];
+                        }
+                        return [2 /*return*/];
                 }
             });
-        });
-    };
-    userServices.prototype.signUpUser = function () {
-        var _this = this;
-        users_model_1.Users.findOne({ email: this.email }, function (res, userData) {
-            if (userData !== null) {
-                return express_1.response.status(409).send("A user with this email already exists");
-            }
-            else {
-                _this.createUser();
-            }
         });
     };
     return userServices;

@@ -13,24 +13,19 @@ export class userServices{
     }
 
     async createUser(){
-        const hashedPassword = await bcrypt.hash(this.password, 10)
+        const hashedPassword = await bcrypt.hash(this.email, 10)
         const userList = new Users({
             email: this.email,
             password: hashedPassword
         })
-        userList.save();
-        return response.status(201).send("Successfully created user")
-    }
 
-    signUpUser(){
-        Users.findOne({email: this.email},(res: Response, userData: string) =>{
-            if(userData !== null){
-                return response.status(409).send("A user with this email already exists")
-            }
-            else{
-                this.createUser();
-            }
-        })
+        let checkEmail: object = Users.findOne({email: this.email})
+        if(checkEmail !== null){
+            return checkEmail
+        }
+        else{
+            userList.save();
+            return {message: "Successfully Created User"}
+        }
     }
-
 } 

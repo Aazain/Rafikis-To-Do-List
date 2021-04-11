@@ -23,11 +23,13 @@ export class Express{
     }
 
     signUp(){
-        this.app.post("/users/signup", (req: Request, res: Response)=>{
+        this.app.post("/users/signup", async (req: Request, res: Response)=>{
             const userEmail = req.body.email
             const userPassword = req.body.password
             const userService = new userServices(userEmail, userPassword)
-            const createUser = userService.signUpUser();
+            const createUser = await userService.createUser();
+            res.send(createUser)
+            console.log(createUser)
         })
     }
 
