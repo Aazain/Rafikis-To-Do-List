@@ -36,68 +36,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userServices = void 0;
-var users_model_1 = require("../models/users.model");
-var password_services_1 = require("./password.services");
+exports.passwordService = void 0;
+var token_services_1 = require("./token.services");
 var bcrypt = require('bcrypt');
-var userServices = /** @class */ (function () {
-    function userServices(email, password) {
-        this.email = email;
-        this.password = password;
+require("dotenv/config");
+var passwordService = /** @class */ (function () {
+    function passwordService(password, currentUser) {
+        this.currentUser = currentUser;
+        this.userPassword = password;
     }
-    userServices.prototype.createUser = function () {
+    passwordService.prototype.userAuth = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, hashedPassword, userList;
+            var passwordAuth, token, newToken, refreshToken;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.findUser()];
+                    case 0: return [4 /*yield*/, bcrypt.compare(this.userPassword, this.currentUser.password)];
                     case 1:
-                        checkEmail = _a.sent();
-                        if (!(checkEmail !== null)) return [3 /*break*/, 2];
-                        return [2 /*return*/, "a user with this email already exists"];
-                    case 2: return [4 /*yield*/, bcrypt.hash(this.password, 10)];
-                    case 3:
-                        hashedPassword = _a.sent();
-                        userList = new users_model_1.Users({
-                            email: this.email,
-                            password: hashedPassword
-                        });
-                        userList.save();
-                        return [2 /*return*/, "successfully created user"];
+                        passwordAuth = _a.sent();
+                        if (!passwordAuth) {
+                            return [2 /*return*/, "incorrect email or password"];
+                        }
+                        else {
+                            token = new token_services_1.tokenService;
+                            newToken = token.createAccessToken({ _id: this.currentUser._id, email: this.currentUser.email });
+                            refreshToken = token.createRefreshToken({ _id: this.currentUser._id, email: this.currentUser.email });
+                            return [2 /*return*/, { accessToken: newToken, refreshToken: refreshToken }];
+                        }
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    userServices.prototype.userLogin = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var currentUser, passService, loginAuth;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.findUser()];
-                    case 1:
-                        currentUser = _a.sent();
-                        passService = new password_services_1.passwordService(this.password, currentUser);
-                        return [4 /*yield*/, passService.userAuth()];
-                    case 2:
-                        loginAuth = _a.sent();
-                        return [2 /*return*/, loginAuth];
-                }
-            });
-        });
-    };
-    userServices.prototype.findUser = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var currentUser;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, users_model_1.Users.findOne({ email: this.email })];
-                    case 1:
-                        currentUser = _a.sent();
-                        return [2 /*return*/, currentUser];
-                }
-            });
-        });
-    };
-    return userServices;
+    return passwordService;
 }());
-exports.userServices = userServices;
+exports.passwordService = passwordService;

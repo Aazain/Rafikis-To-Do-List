@@ -44,6 +44,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 var users_model_1 = require("../models/users.model");
 var user_services_1 = require("../services/user.services");
+var token_services_1 = require("../services/token.services");
 var userController = /** @class */ (function () {
     function userController(app) {
         this.app = app;
@@ -93,6 +94,27 @@ var userController = /** @class */ (function () {
                     case 1:
                         loginUser = _a.sent();
                         res.send(loginUser);
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+    };
+    userController.prototype.refreshToken = function () {
+        var _this = this;
+        this.app.post("/newAccessToken", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var user, findUser, authHeader, refreshToken, refreshTokenService, refreshAccess;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = new user_services_1.userServices(req.body.email, req.body.password);
+                        return [4 /*yield*/, user.findUser()];
+                    case 1:
+                        findUser = _a.sent();
+                        authHeader = req.headers["authorization"];
+                        refreshToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
+                        refreshTokenService = new token_services_1.tokenService();
+                        refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser);
+                        res.send(refreshAccess);
                         return [2 /*return*/];
                 }
             });

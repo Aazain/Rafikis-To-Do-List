@@ -1,6 +1,6 @@
 import e, { request, response } from "express"
 import { Users } from "../models/users.model"
-import { passwordService } from "./password"
+import { passwordService } from "./password.services"
 const bcrypt = require ('bcrypt')
 
 export class userServices{
@@ -13,7 +13,7 @@ export class userServices{
     }
 
     async createUser(){
-        const checkEmail: object = await Users.findOne({email: this.email})
+        const checkEmail: object = await this.findUser();
         if(checkEmail !== null){
             return "a user with this email already exists"
         }
@@ -29,9 +29,14 @@ export class userServices{
     }
 
     async userLogin(){
-        const currentUser = await Users.findOne({email: this.email})
+        const currentUser = await this.findUser();
         const passService = new passwordService(this.password ,currentUser)
         const loginAuth = await passService.userAuth();
         return loginAuth
+    }
+
+    async findUser(){
+        const currentUser = await Users.findOne({email: this.email})
+        return currentUser
     }
 } 

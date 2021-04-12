@@ -26,6 +26,7 @@ var user = new users_controller_1.userController(app);
 user.getUsers();
 user.signUp();
 user.logIn();
+user.refreshToken();
 var port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log("Server running on port:", port);

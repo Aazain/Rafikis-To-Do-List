@@ -1,7 +1,9 @@
 
 import express, { Application, json, request, Request, Response } from "express"
 import { Users } from "../models/users.model";
+import { passwordService } from "../services/password.services";
 import { userServices } from "../services/user.services"
+import { tokenService } from "../services/token.services"
 
 export class userController{
     private app: Application;
@@ -39,6 +41,20 @@ export class userController{
             const userService = new userServices(userEmail, userPassword)
             const loginUser = await userService.userLogin();
             res.send(loginUser)
+        })
+    }
+
+    refreshToken(){
+        this.app.post("/newAccessToken", async (req: Request, res: Response)=>{
+            const user = new userServices(req.body.email, req.body.password)
+            const findUser = await user.findUser()
+
+            const authHeader = req.headers["authorization"]
+            const refreshToken = authHeader?.split(" ")[1]
+            const refreshTokenService = new tokenService();
+            const refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser)
+            res.send(refreshAccess)
+
         })
     }
 }

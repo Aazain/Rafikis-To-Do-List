@@ -1,7 +1,7 @@
 import { Users } from "../models/users.model"
 import { userServices } from "./user.services"
+import { tokenService } from "./token.services"
 const bcrypt = require ('bcrypt')
-const jwt = require ('jsonwebtoken')
 require("dotenv/config")
 
 interface user{
@@ -26,22 +26,10 @@ export class passwordService{
             return "incorrect email or password"
         }
         else{
-            const newToken = this.createAccessToken({_id: this.currentUser._id, email: this.currentUser.email})
-            const refreshToken = this.createRefreshToken({_id: this.currentUser._id, email: this.currentUser.email})
+            const token = new tokenService
+            const newToken = token.createAccessToken({_id: this.currentUser._id, email: this.currentUser.email})
+            const refreshToken = token.createRefreshToken({_id: this.currentUser._id, email: this.currentUser.email})
             return {accessToken: newToken, refreshToken: refreshToken}
         }
     }
-
-    createAccessToken (currentUser: any){
-        return jwt.sign({ user: currentUser }, process.env.ACCESSTOKEN, {
-            expiresIn: "10s"
-        })
-    }
-
-    createRefreshToken (currentUser: any){
-        return jwt.sign({user: currentUser}, process.env.REFRESHTOKEN,{
-            expiresIn: "20s"
-        })
-    }
-    
 }

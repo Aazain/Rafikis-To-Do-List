@@ -26,6 +26,7 @@ const user = new userController(app)
 user.getUsers();
 user.signUp();
 user.logIn();
+user.refreshToken();
 
 let port = process.env.PORT || 4000
 app.listen(port, ()=>{
