@@ -35,31 +35,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
-var users_model_1 = require("../models/users.model");
 var user_services_1 = require("../services/user.services");
 var token_services_1 = require("../services/token.services");
+var userlist_services_1 = require("../services/userlist.services");
 var userController = /** @class */ (function () {
     function userController(app) {
         this.app = app;
     }
     userController.prototype.getUsers = function () {
-        this.app.get("/users", function (req, res) {
-            users_model_1.Users.find({}, function (err, foundData) {
-                if (err) {
-                    return res.status(404).send("Unable to find Users");
-                }
-                else {
-                    return res.send(__spreadArray([], foundData));
+        var _this = this;
+        this.app.get("/users", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var users, getAllUsers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        users = new userlist_services_1.userList();
+                        return [4 /*yield*/, users.getUserList()];
+                    case 1:
+                        getAllUsers = _a.sent();
+                        res.send(getAllUsers);
+                        return [2 /*return*/];
                 }
             });
-        });
+        }); });
     };
     userController.prototype.signUp = function () {
         var _this = this;

@@ -4,6 +4,7 @@ import { Users } from "../models/users.model";
 import { passwordService } from "../services/password.services";
 import { userServices } from "../services/user.services"
 import { tokenService } from "../services/token.services"
+import { userList } from "../services/userlist.services"
 
 export class userController{
     private app: Application;
@@ -13,14 +14,10 @@ export class userController{
     }
 
     getUsers() {
-        this.app.get("/users", (req: Request, res: Response) => {
-            Users.find({}, (err, foundData) => {
-                if (err) {
-                    return res.status(404).send("Unable to find Users")
-                } else {
-                    return res.send([...foundData])
-                }
-            })
+        this.app.get("/users", async (req: Request, res: Response) => {
+            const users = new userList();
+            const getAllUsers = await users.getUserList()
+            res.send(getAllUsers)
         })
     }
 
@@ -48,13 +45,11 @@ export class userController{
         this.app.post("/newAccessToken", async (req: Request, res: Response)=>{
             const user = new userServices(req.body.email, req.body.password)
             const findUser = await user.findUser()
-
             const authHeader = req.headers["authorization"]
             const refreshToken = authHeader?.split(" ")[1]
             const refreshTokenService = new tokenService();
             const refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser)
             res.send(refreshAccess)
-
         })
     }
 }

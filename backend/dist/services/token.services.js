@@ -7,12 +7,12 @@ var tokenService = /** @class */ (function () {
     }
     tokenService.prototype.createAccessToken = function (currentUser) {
         return jwt.sign({ user: currentUser }, process.env.ACCESSTOKEN, {
-            expiresIn: "10s"
+            expiresIn: "259200"
         });
     };
     tokenService.prototype.createRefreshToken = function (currentUser) {
         return jwt.sign({ user: currentUser }, process.env.REFRESHTOKEN, {
-            expiresIn: "20s"
+            expiresIn: "604800s"
         });
     };
     tokenService.prototype.refreshAccessToken = function (refreshToken, currentUser) {
@@ -30,6 +30,17 @@ var tokenService = /** @class */ (function () {
             }
         });
         return newToken;
+    };
+    tokenService.prototype.tokenAuth = function (accessToken) {
+        var authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, function (err, user) {
+            if (err) {
+                return "Forbidden";
+            }
+            else {
+                return user;
+            }
+        });
+        return authenticateToken;
     };
     return tokenService;
 }());

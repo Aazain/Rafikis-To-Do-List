@@ -4,7 +4,7 @@ import { tokenService } from "./token.services"
 const bcrypt = require ('bcrypt')
 require("dotenv/config")
 
-interface user{
+export interface user{
     _id: string
     email: string
     password: string
