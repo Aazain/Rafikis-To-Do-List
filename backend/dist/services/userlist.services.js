@@ -48,7 +48,7 @@ var userList = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, users_model_1.Users.find({}, function (err, result) {
                             if (err) {
-                                return err;
+                                return null;
                             }
                             else {
                                 return result;

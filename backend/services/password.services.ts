@@ -1,21 +1,19 @@
-import { Users } from "../models/users.model"
-import { userServices } from "./user.services"
-import { tokenService } from "./token.services"
+import { TokenService } from "./token.services"
 const bcrypt = require ('bcrypt')
 require("dotenv/config")
 
-export interface user{
+export interface User{
     _id: string
     email: string
     password: string
     __v: number
 }
 
-export class passwordService{
+export class PasswordService{
     userPassword: string
-    currentUser: user
+    currentUser: User
 
-    constructor(password: string ,currentUser: user){
+    constructor(password: string ,currentUser: User){
         this.currentUser = currentUser
         this.userPassword = password
     }
@@ -26,7 +24,7 @@ export class passwordService{
             return "incorrect email or password"
         }
         else{
-            const token = new tokenService
+            const token = new TokenService
             const newToken = token.createAccessToken({_id: this.currentUser._id, email: this.currentUser.email})
             const refreshToken = token.createRefreshToken({_id: this.currentUser._id, email: this.currentUser.email})
             return {accessToken: newToken, refreshToken: refreshToken}

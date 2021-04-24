@@ -36,68 +36,68 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserServices = void 0;
-var users_model_1 = require("../models/users.model");
-var password_services_1 = require("./password.services");
-var bcrypt = require('bcrypt');
-var UserServices = /** @class */ (function () {
-    function UserServices(email, password) {
-        this.email = email;
-        this.password = password;
+exports.todoController = void 0;
+var token_services_1 = require("../services/token.services");
+var items_services_1 = require("../services/items.services");
+var todoController = /** @class */ (function () {
+    function todoController(app) {
+        this.app = app;
     }
-    UserServices.prototype.createUser = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var checkEmail, hashedPassword, userList;
+    todoController.prototype.getItems = function () {
+        var _this = this;
+        var tokenAuthentication = new token_services_1.TokenService();
+        this.app.get("/todo", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var authHeader, accessToken, auth, itemService, getItems;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.findUser()];
+                    case 0:
+                        authHeader = req.headers["authorization"];
+                        accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
+                        auth = tokenAuthentication.tokenAuth(accessToken);
+                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
+                        return [2 /*return*/, res.status(403).send(auth)];
                     case 1:
-                        checkEmail = _a.sent();
-                        if (!(checkEmail !== null)) return [3 /*break*/, 2];
-                        return [2 /*return*/, "a user with this email already exists"];
-                    case 2: return [4 /*yield*/, bcrypt.hash(this.password, 10)];
-                    case 3:
-                        hashedPassword = _a.sent();
-                        userList = new users_model_1.Users({
-                            email: this.email,
-                            password: hashedPassword
-                        });
-                        userList.save();
-                        return [2 /*return*/, "successfully created user"];
-                }
-            });
-        });
-    };
-    UserServices.prototype.userLogin = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var currentUser, passService, loginAuth;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.findUser()];
-                    case 1:
-                        currentUser = _a.sent();
-                        passService = new password_services_1.PasswordService(this.password, currentUser);
-                        return [4 /*yield*/, passService.userAuth()];
+                        itemService = new items_services_1.ItemServices(auth);
+                        return [4 /*yield*/, itemService.getItemList()];
                     case 2:
-                        loginAuth = _a.sent();
-                        return [2 /*return*/, loginAuth];
+                        getItems = _a.sent();
+                        if (getItems == "unable to get Items") {
+                            return [2 /*return*/, res.status(404).send(getItems)];
+                        }
+                        else {
+                            return [2 /*return*/, res.send(getItems)];
+                        }
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
-        });
+        }); });
     };
-    UserServices.prototype.findUser = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var currentUser;
+    todoController.prototype.deleteItems = function () {
+        var _this = this;
+        var tokenAuthentication = new token_services_1.TokenService();
+        this.app.delete("/todo/:id", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var authHeader, accessToken, auth, itemId, itemService, deleteItem;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, users_model_1.Users.findOne({ email: this.email })];
+                    case 0:
+                        authHeader = req.headers["authorization"];
+                        accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
+                        auth = tokenAuthentication.tokenAuth(accessToken);
+                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
+                        return [2 /*return*/, res.status(403).send("forbidden")];
                     case 1:
-                        currentUser = _a.sent();
-                        return [2 /*return*/, currentUser];
+                        itemId = req.params;
+                        itemService = new items_services_1.ItemServices(auth);
+                        return [4 /*yield*/, itemService.deleteItem(itemId.id)];
+                    case 2:
+                        deleteItem = _a.sent();
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
-        });
+        }); });
     };
-    return UserServices;
+    return todoController;
 }());
-exports.UserServices = UserServices;
+exports.todoController = todoController;

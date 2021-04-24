@@ -36,16 +36,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.passwordService = void 0;
+exports.PasswordService = void 0;
 var token_services_1 = require("./token.services");
 var bcrypt = require('bcrypt');
 require("dotenv/config");
-var passwordService = /** @class */ (function () {
-    function passwordService(password, currentUser) {
+var PasswordService = /** @class */ (function () {
+    function PasswordService(password, currentUser) {
         this.currentUser = currentUser;
         this.userPassword = password;
     }
-    passwordService.prototype.userAuth = function () {
+    PasswordService.prototype.userAuth = function () {
         return __awaiter(this, void 0, void 0, function () {
             var passwordAuth, token, newToken, refreshToken;
             return __generator(this, function (_a) {
@@ -57,7 +57,7 @@ var passwordService = /** @class */ (function () {
                             return [2 /*return*/, "incorrect email or password"];
                         }
                         else {
-                            token = new token_services_1.tokenService;
+                            token = new token_services_1.TokenService;
                             newToken = token.createAccessToken({ _id: this.currentUser._id, email: this.currentUser.email });
                             refreshToken = token.createRefreshToken({ _id: this.currentUser._id, email: this.currentUser.email });
                             return [2 /*return*/, { accessToken: newToken, refreshToken: refreshToken }];
@@ -67,6 +67,6 @@ var passwordService = /** @class */ (function () {
             });
         });
     };
-    return passwordService;
+    return PasswordService;
 }());
-exports.passwordService = passwordService;
+exports.PasswordService = PasswordService;

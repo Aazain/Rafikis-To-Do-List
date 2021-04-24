@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var users_controller_1 = require("./controllers/users.controller");
+var todo_controller_1 = require("./controllers/todo.controller");
 require("dotenv/config");
 var app = express_1.default();
 var bodyParser = require('body-parser');
@@ -27,6 +28,9 @@ user.getUsers();
 user.signUp();
 user.logIn();
 user.refreshToken();
+var todo = new todo_controller_1.todoController(app);
+todo.getItems();
+todo.deleteItems();
 var port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log("Server running on port:", port);

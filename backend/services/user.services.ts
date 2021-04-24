@@ -1,9 +1,8 @@
-import e, { request, response } from "express"
 import { Users } from "../models/users.model"
-import { passwordService } from "./password.services"
+import { PasswordService } from "./password.services"
 const bcrypt = require ('bcrypt')
 
-export class userServices{
+export class UserServices{
     email:string
     password: string
 
@@ -30,7 +29,7 @@ export class userServices{
 
     async userLogin(){
         const currentUser = await this.findUser();
-        const passService = new passwordService(this.password ,currentUser)
+        const passService = new PasswordService(this.password ,currentUser)
         const loginAuth = await passService.userAuth();
         return loginAuth
     }

@@ -2,30 +2,30 @@ import { NextFunction } from "express"
 
 const jwt = require ('jsonwebtoken')
 
-interface userInfo{
+interface UserInfo{
     _id: string
     email: string
 }
 
-export class tokenService{
+export class TokenService{
 
-    createAccessToken (currentUser: userInfo){
+    createAccessToken (currentUser: UserInfo){
         return jwt.sign({ user: currentUser }, process.env.ACCESSTOKEN, {
-            expiresIn: "259200"
+            expiresIn: "259200s"
         })
     }
 
-    createRefreshToken (currentUser: userInfo){
+    createRefreshToken (currentUser: UserInfo){
         return jwt.sign({user: currentUser}, process.env.REFRESHTOKEN,{
             expiresIn: "604800s"
         })
     }
 
-    refreshAccessToken(refreshToken: string | undefined, currentUser: userInfo){
+    refreshAccessToken(refreshToken: string | undefined, currentUser: UserInfo){
         if(!refreshToken){return "Error"}
         const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err: Error, token: string)=>{
             if(err){
-                return err
+                return "invalid token"
             }
             else{
                 const createNewToken = this.createAccessToken(currentUser)
@@ -38,7 +38,8 @@ export class tokenService{
     tokenAuth(accessToken: string | undefined){
         const authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, (err: Error, user: string)=>{
             if(err){
-                return "Forbidden"
+                console.log(err)
+                return "forbidden"
             }
             else{
                 return user

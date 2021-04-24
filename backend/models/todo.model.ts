@@ -9,4 +9,4 @@ const listSchema = new Schema({
     timestamps:true
 })
 
-const Items = model("Items", listSchema)
+export const Items = model("Items", listSchema)

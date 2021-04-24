@@ -1,6 +1,7 @@
-import express from "express";
+import express, { request, response } from "express";
 import mongoose from "mongoose";
 import { userController } from "./controllers/users.controller"
+import { todoController } from "./controllers/todo.controller"
 require("dotenv/config")
 const app = express();
 const bodyParser = require('body-parser')
@@ -27,6 +28,11 @@ user.getUsers();
 user.signUp();
 user.logIn();
 user.refreshToken();
+
+const todo = new todoController(app)
+todo.getItems();
+todo.deleteItems();
+
 
 let port = process.env.PORT || 4000
 app.listen(port, ()=>{

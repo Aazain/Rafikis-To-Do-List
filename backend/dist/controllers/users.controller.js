@@ -55,7 +55,12 @@ var userController = /** @class */ (function () {
                         return [4 /*yield*/, users.getUserList()];
                     case 1:
                         getAllUsers = _a.sent();
-                        res.send(getAllUsers);
+                        if (getAllUsers == null) {
+                            return [2 /*return*/, res.status(404).send("Unable to find Users")];
+                        }
+                        else {
+                            res.send(getAllUsers);
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -70,11 +75,16 @@ var userController = /** @class */ (function () {
                     case 0:
                         userEmail = req.body.email;
                         userPassword = req.body.password;
-                        userService = new user_services_1.userServices(userEmail, userPassword);
+                        userService = new user_services_1.UserServices(userEmail, userPassword);
                         return [4 /*yield*/, userService.createUser()];
                     case 1:
                         createUser = _a.sent();
-                        res.send(createUser);
+                        if (createUser == "a user with this email already exists") {
+                            return [2 /*return*/, res.status(409).send(createUser)];
+                        }
+                        else {
+                            return [2 /*return*/, res.status(201).send(createUser)];
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -89,11 +99,16 @@ var userController = /** @class */ (function () {
                     case 0:
                         userEmail = req.body.email;
                         userPassword = req.body.password;
-                        userService = new user_services_1.userServices(userEmail, userPassword);
+                        userService = new user_services_1.UserServices(userEmail, userPassword);
                         return [4 /*yield*/, userService.userLogin()];
                     case 1:
                         loginUser = _a.sent();
-                        res.send(loginUser);
+                        if (loginUser == "incorrect email or password") {
+                            res.status(403).send(loginUser);
+                        }
+                        else {
+                            return [2 /*return*/, res.status(200).send(loginUser)];
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -106,15 +121,20 @@ var userController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        user = new user_services_1.userServices(req.body.email, req.body.password);
+                        user = new user_services_1.UserServices(req.body.email, req.body.password);
                         return [4 /*yield*/, user.findUser()];
                     case 1:
                         findUser = _a.sent();
                         authHeader = req.headers["authorization"];
                         refreshToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
-                        refreshTokenService = new token_services_1.tokenService();
+                        refreshTokenService = new token_services_1.TokenService();
                         refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser);
-                        res.send(refreshAccess);
+                        if (refreshAccess == "invalid token") {
+                            res.status(400).send(refreshAccess);
+                        }
+                        else {
+                            res.status(200).send(refreshAccess);
+                        }
                         return [2 /*return*/];
                 }
             });
