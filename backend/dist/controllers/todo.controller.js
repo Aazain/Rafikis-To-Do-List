@@ -43,14 +43,43 @@ var todoController = /** @class */ (function () {
     function todoController(app) {
         this.app = app;
     }
-    todoController.prototype.getItems = function () {
-        var _this = this;
-        var tokenAuthentication = new token_services_1.TokenService();
-        this.app.get("/todo", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var authHeader, accessToken, auth, itemService, getItems;
+    todoController.prototype.getSingleItem = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemService, getItem;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        tokenAuthentication = new token_services_1.TokenService();
+                        authHeader = req.headers["authorization"];
+                        accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
+                        auth = tokenAuthentication.tokenAuth(accessToken);
+                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
+                        return [2 /*return*/, res.status(403).send("forbidden")];
+                    case 1:
+                        itemId = req.params.id;
+                        itemService = new items_services_1.ItemServices(auth);
+                        return [4 /*yield*/, itemService.getSingleItem(itemId)];
+                    case 2:
+                        getItem = _a.sent();
+                        if (getItem == "unable to find item" || !getItem) {
+                            return [2 /*return*/, res.status(404).send("unable to find item")];
+                        }
+                        else {
+                            return [2 /*return*/, res.status(200).send(getItem)];
+                        }
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    todoController.prototype.getItems = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenAuthentication, authHeader, accessToken, auth, itemService, getItems;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        tokenAuthentication = new token_services_1.TokenService();
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
@@ -71,16 +100,15 @@ var todoController = /** @class */ (function () {
                     case 3: return [2 /*return*/];
                 }
             });
-        }); });
+        });
     };
-    todoController.prototype.deleteItems = function () {
-        var _this = this;
-        var tokenAuthentication = new token_services_1.TokenService();
-        this.app.delete("/todo/:id", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var authHeader, accessToken, auth, itemId, itemService, deleteItem;
+    todoController.prototype.deleteItems = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemService, itemCheck, deleteItem;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        tokenAuthentication = new token_services_1.TokenService();
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
@@ -89,14 +117,25 @@ var todoController = /** @class */ (function () {
                     case 1:
                         itemId = req.params;
                         itemService = new items_services_1.ItemServices(auth);
-                        return [4 /*yield*/, itemService.deleteItem(itemId.id)];
+                        return [4 /*yield*/, itemService.checkItemId(itemId.id)];
                     case 2:
+                        itemCheck = _a.sent();
+                        if (!(itemCheck.length === 0)) return [3 /*break*/, 3];
+                        return [2 /*return*/, res.status(404).send("item does not exist")];
+                    case 3: return [4 /*yield*/, itemService.deleteItem(itemId.id)];
+                    case 4:
                         deleteItem = _a.sent();
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        if (deleteItem == "unable to delete task" || !deleteItem) {
+                            return [2 /*return*/, res.status(500).send("unable to delete task")];
+                        }
+                        else {
+                            return [2 /*return*/, res.status(202).send("successfully deleted task ")];
+                        }
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
-        }); });
+        });
     };
     return todoController;
 }());

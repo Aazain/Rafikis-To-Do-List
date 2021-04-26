@@ -34,7 +34,6 @@ var TokenService = /** @class */ (function () {
     TokenService.prototype.tokenAuth = function (accessToken) {
         var authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, function (err, user) {
             if (err) {
-                console.log(err);
                 return "forbidden";
             }
             else {

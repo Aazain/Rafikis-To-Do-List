@@ -44,9 +44,8 @@ var userController = /** @class */ (function () {
     function userController(app) {
         this.app = app;
     }
-    userController.prototype.getUsers = function () {
-        var _this = this;
-        this.app.get("/users", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    userController.prototype.getUsers = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
             var users, getAllUsers;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -64,11 +63,10 @@ var userController = /** @class */ (function () {
                         return [2 /*return*/];
                 }
             });
-        }); });
+        });
     };
-    userController.prototype.signUp = function () {
-        var _this = this;
-        this.app.post("/users/signup", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    userController.prototype.signUp = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
             var userEmail, userPassword, userService, createUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -88,11 +86,10 @@ var userController = /** @class */ (function () {
                         return [2 /*return*/];
                 }
             });
-        }); });
+        });
     };
-    userController.prototype.logIn = function () {
-        var _this = this;
-        this.app.post("/users/login", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    userController.prototype.logIn = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
             var userEmail, userPassword, userService, loginUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -112,11 +109,10 @@ var userController = /** @class */ (function () {
                         return [2 /*return*/];
                 }
             });
-        }); });
+        });
     };
-    userController.prototype.refreshToken = function () {
-        var _this = this;
-        this.app.post("/newAccessToken", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    userController.prototype.refreshToken = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
             var user, findUser, authHeader, refreshToken, refreshTokenService, refreshAccess;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -138,7 +134,7 @@ var userController = /** @class */ (function () {
                         return [2 /*return*/];
                 }
             });
-        }); });
+        });
     };
     return userController;
 }());

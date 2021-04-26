@@ -1,6 +1,7 @@
-import { Application, request, Request, Response } from "express"
+import e, { Application, request, Request, Response } from "express"
 import { TokenService } from "../services/token.services"
 import { ItemServices } from "../services/items.services"
+import { Items } from "../models/todo.model"
 
 
 export class todoController{
@@ -10,9 +11,29 @@ export class todoController{
         this.app = app
     }
 
-    getItems(){
+    async getSingleItem(req: Request, res: Response){
+        const tokenAuthentication = new TokenService()
+        const authHeader = req.headers["authorization"]
+        const accessToken = authHeader?.split(" ")[1]
+        const auth = tokenAuthentication.tokenAuth(accessToken);
+        if(auth == "forbidden"){
+            return res.status(403).send("forbidden")
+        }
+        else{
+            const itemId = req.params.id
+            const itemService = new ItemServices(auth)
+            const getItem: any = await itemService.getSingleItem(itemId)
+            if(getItem == "unable to find item" || !getItem){
+                return res.status(404).send("unable to find item")
+            }
+            else{
+                return res.status(200).send(getItem)
+            }
+        }
+    }
+
+    async getItems(req: Request, res: Response){
         const tokenAuthentication = new TokenService();
-        this.app.get("/todo", async (req: Request, res: Response)=>{
             const authHeader = req.headers["authorization"]
             const accessToken = authHeader?.split(" ")[1]
             const auth = tokenAuthentication.tokenAuth(accessToken);
@@ -28,12 +49,10 @@ export class todoController{
                     return res.send(getItems)
                 }
             }
-        })
     }
 
-    deleteItems(){
+    async deleteItems(req: Request, res: Response){
         const tokenAuthentication = new TokenService();
-        this.app.delete("/todo/:id", async (req: Request, res: Response)=>{
             const authHeader = req.headers["authorization"]
             const accessToken = authHeader?.split(" ")[1]
             const auth = tokenAuthentication.tokenAuth(accessToken);
@@ -43,10 +62,20 @@ export class todoController{
             else{
                 const itemId = req.params;
                 const itemService = new ItemServices(auth);
-                const deleteItem = await itemService.deleteItem(itemId.id);
-
+                const itemCheck: any = await itemService.checkItemId(itemId.id)
+                if(itemCheck.length === 0){
+                    return res.status(404).send("item does not exist")
+                }
+                else{
+                    const deleteItem = await itemService.deleteItem(itemId.id);
+                    if (deleteItem == "unable to delete task" || !deleteItem){
+                        return res.status(500).send("unable to delete task")
+                    }
+                    else{
+                        return res.status(202).send("successfully deleted task ")
+                    }
+                }
             }
-        })
     }
 
 }

@@ -24,13 +24,14 @@ app.use(function (req, res, next) {
     next();
 });
 var user = new users_controller_1.userController(app);
-user.getUsers();
-user.signUp();
-user.logIn();
-user.refreshToken();
+app.get("/users", user.getUsers);
+app.post("/users/signup", user.signUp);
+app.post("/users/login", user.logIn);
+app.post("/newAccessToken", user.refreshToken);
 var todo = new todo_controller_1.todoController(app);
-todo.getItems();
-todo.deleteItems();
+app.get("/todo", todo.getItems);
+app.get("/todo/:id", todo.getSingleItem);
+app.delete("/todo/:id", todo.deleteItems);
 var port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log("Server running on port:", port);

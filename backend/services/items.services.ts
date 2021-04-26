@@ -7,15 +7,28 @@ interface CurrentUserData{
     exp: number
 }
 
-interface fjsaofa extends QueryOptions{
-    err: Error
-}
-
 export class ItemServices{
     currentUser: CurrentUserData
 
     constructor(currentUser: CurrentUserData){
         this.currentUser = currentUser
+    }
+
+    checkItemId(params: string){
+        return Items.find({_id: params})
+    }
+
+    getSingleItem(params: string){
+        const id = params
+        return Items.findById(id, (err: Error, result: object)=>{
+            if(err || result == null){
+                return("unable to find item")
+            }
+            else{
+                return result
+            }
+        })
+
     }
 
     getItemList(){
@@ -30,7 +43,14 @@ export class ItemServices{
     }
 
     deleteItem(itemId: string){
-        Items.findOneAndDelete({_id: itemId, userId: this.currentUser.user._id})
+        return Items.findByIdAndRemove({_id: itemId, userId: this.currentUser.user._id}, {useFindAndModify: false}, (err: Error, result: any)=>{
+            if(err || !result){
+                return "unable to delete task"
+            }
+            else{
+                return "successfully deleted task"
+            }
+        })
 
     }
 

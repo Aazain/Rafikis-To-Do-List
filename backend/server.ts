@@ -24,14 +24,16 @@ app.use((req, res, next) => {
 
 
 const user = new userController(app)
-user.getUsers();
-user.signUp();
-user.logIn();
-user.refreshToken();
+app.get("/users", user.getUsers);
+app.post("/users/signup", user.signUp);
+app.post("/users/login", user.logIn);
+app.post("/newAccessToken", user.refreshToken);
+
 
 const todo = new todoController(app)
-todo.getItems();
-todo.deleteItems();
+app.get("/todo", todo.getItems);
+app.get("/todo/:id", todo.getSingleItem);
+app.delete("/todo/:id", todo.deleteItems);
 
 
 let port = process.env.PORT || 4000

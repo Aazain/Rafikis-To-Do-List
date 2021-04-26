@@ -6,6 +6,20 @@ var ItemServices = /** @class */ (function () {
     function ItemServices(currentUser) {
         this.currentUser = currentUser;
     }
+    ItemServices.prototype.checkItemId = function (params) {
+        return todo_model_1.Items.find({ _id: params });
+    };
+    ItemServices.prototype.getSingleItem = function (params) {
+        var id = params;
+        return todo_model_1.Items.findById(id, function (err, result) {
+            if (err || result == null) {
+                return ("unable to find item");
+            }
+            else {
+                return result;
+            }
+        });
+    };
     ItemServices.prototype.getItemList = function () {
         return todo_model_1.Items.find({ userId: this.currentUser.user._id }, function (err, result) {
             if (err) {
@@ -17,7 +31,14 @@ var ItemServices = /** @class */ (function () {
         });
     };
     ItemServices.prototype.deleteItem = function (itemId) {
-        todo_model_1.Items.findOneAndDelete({ _id: itemId, userId: this.currentUser.user._id });
+        return todo_model_1.Items.findByIdAndRemove({ _id: itemId, userId: this.currentUser.user._id }, { useFindAndModify: false }, function (err, result) {
+            if (err || !result) {
+                return "unable to delete task";
+            }
+            else {
+                return "successfully deleted task";
+            }
+        });
     };
     return ItemServices;
 }());

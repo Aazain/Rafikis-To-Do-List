@@ -11,8 +11,7 @@ export class userController{
         this.app = app;
     }
 
-    getUsers() {
-        this.app.get("/users", async (req: Request, res: Response) => {
+    async getUsers(req: Request, res: Response) {
             const users = new userList();
             const getAllUsers = await users.getUserList()
             if(getAllUsers == null){
@@ -20,11 +19,9 @@ export class userController{
             }else{
                 res.send(getAllUsers)
             }
-        })
     }
 
-    signUp(){
-        this.app.post("/users/signup", async (req: Request, res: Response)=>{
+    async signUp(req: Request, res: Response){
             const userEmail = req.body.email
             const userPassword = req.body.password
             const userService = new UserServices(userEmail, userPassword)
@@ -34,11 +31,9 @@ export class userController{
             }else{
                 return res.status(201).send(createUser)
             }
-        })
     }
 
-    logIn(){
-        this.app.post("/users/login", async (req: Request, res: Response)=>{
+    async logIn(req: Request, res: Response){
             const userEmail = req.body.email
             const userPassword = req.body.password
             const userService = new UserServices(userEmail, userPassword)
@@ -49,11 +44,9 @@ export class userController{
             else{
                 return res.status(200).send(loginUser)
             }
-        })
     }
 
-    refreshToken(){
-        this.app.post("/newAccessToken", async (req: Request, res: Response)=>{
+    async refreshToken(req: Request, res: Response){
             const user = new UserServices(req.body.email, req.body.password)
             const findUser = await user.findUser()
             const authHeader = req.headers["authorization"]
@@ -66,6 +59,5 @@ export class userController{
             else{
                 res.status(200).send(refreshAccess)
             }
-        })
     }
 }

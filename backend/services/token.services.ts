@@ -38,7 +38,6 @@ export class TokenService{
     tokenAuth(accessToken: string | undefined){
         const authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, (err: Error, user: string)=>{
             if(err){
-                console.log(err)
                 return "forbidden"
             }
             else{
