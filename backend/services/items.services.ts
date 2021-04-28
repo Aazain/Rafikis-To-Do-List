@@ -19,6 +19,7 @@ export class ItemServices{
     }
 
     getSingleItem(params: string){
+        console.log(params)
         const id = params
         return Items.findById(id, (err: Error, result: object)=>{
             if(err || result == null){
@@ -44,7 +45,7 @@ export class ItemServices{
 
     deleteItem(itemId: string){
         return Items.findByIdAndRemove({_id: itemId, userId: this.currentUser.user._id}, {useFindAndModify: false}, (err: Error, result: any)=>{
-            if(err || !result){
+            if(err){
                 return "unable to delete task"
             }
             else{
@@ -52,6 +53,32 @@ export class ItemServices{
             }
         })
 
+    }
+
+    newTask(userId: string, task: string, status: boolean){
+        const itemList = new Items({
+            userId,
+            task,
+            status
+        })
+        itemList.save()
+        .then(()=>{
+            return "successfully created new task"
+        })
+        .catch((err: Error)=>{
+            return "unable to create task"
+        })
+    }
+
+    updateTask(userId: string, itemId: string, task: string, status: boolean){
+        console.log(userId, itemId, task, status)
+        const patchTask = Items.updateOne({
+            userId,
+            _id: itemId
+        }, {$set:{
+            task,
+            status
+        }})
     }
 
 

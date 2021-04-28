@@ -10,6 +10,7 @@ var ItemServices = /** @class */ (function () {
         return todo_model_1.Items.find({ _id: params });
     };
     ItemServices.prototype.getSingleItem = function (params) {
+        console.log(params);
         var id = params;
         return todo_model_1.Items.findById(id, function (err, result) {
             if (err || result == null) {
@@ -32,13 +33,37 @@ var ItemServices = /** @class */ (function () {
     };
     ItemServices.prototype.deleteItem = function (itemId) {
         return todo_model_1.Items.findByIdAndRemove({ _id: itemId, userId: this.currentUser.user._id }, { useFindAndModify: false }, function (err, result) {
-            if (err || !result) {
+            if (err) {
                 return "unable to delete task";
             }
             else {
                 return "successfully deleted task";
             }
         });
+    };
+    ItemServices.prototype.newTask = function (userId, task, status) {
+        var itemList = new todo_model_1.Items({
+            userId: userId,
+            task: task,
+            status: status
+        });
+        itemList.save()
+            .then(function () {
+            return "successfully created new task";
+        })
+            .catch(function (err) {
+            return "unable to create task";
+        });
+    };
+    ItemServices.prototype.updateTask = function (userId, itemId, task, status) {
+        console.log(userId, itemId, task, status);
+        var patchTask = todo_model_1.Items.updateOne({
+            userId: userId,
+            _id: itemId
+        }, { $set: {
+                task: task,
+                status: status
+            } });
     };
     return ItemServices;
 }());

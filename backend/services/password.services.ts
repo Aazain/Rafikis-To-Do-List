@@ -10,10 +10,10 @@ export interface User{
 }
 
 export class PasswordService{
-    userPassword: string
+    userPassword: string | undefined
     currentUser: User
 
-    constructor(password: string ,currentUser: User){
+    constructor(password: string | undefined ,currentUser: User){
         this.currentUser = currentUser
         this.userPassword = password
     }

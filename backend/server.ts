@@ -34,6 +34,8 @@ const todo = new todoController(app)
 app.get("/todo", todo.getItems);
 app.get("/todo/:id", todo.getSingleItem);
 app.delete("/todo/:id", todo.deleteItems);
+app.post("/todo", todo.createItem);
+app.patch("/todo/:id", todo.updateItem);
 
 
 let port = process.env.PORT || 4000

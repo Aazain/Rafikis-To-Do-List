@@ -4,9 +4,9 @@ const bcrypt = require ('bcrypt')
 
 export class UserServices{
     email:string
-    password: string
+    password: string | undefined
 
-    constructor(email: string, password: string){
+    constructor(email: string, password: string | undefined){
         this.email = email
         this.password = password
     }

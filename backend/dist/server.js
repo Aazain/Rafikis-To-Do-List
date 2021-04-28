@@ -32,6 +32,8 @@ var todo = new todo_controller_1.todoController(app);
 app.get("/todo", todo.getItems);
 app.get("/todo/:id", todo.getSingleItem);
 app.delete("/todo/:id", todo.deleteItems);
+app.post("/todo", todo.createItem);
+app.patch("/todo/:id", todo.updateItem);
 var port = process.env.PORT || 4000;
 app.listen(port, function () {
     console.log("Server running on port:", port);
