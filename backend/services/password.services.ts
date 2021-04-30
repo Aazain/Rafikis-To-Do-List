@@ -2,6 +2,10 @@ import { TokenService } from "./token.services"
 const bcrypt = require ('bcrypt')
 require("dotenv/config")
 
+export enum PasswordAuth{
+    INCORRECT = "INCORRECT"
+}
+
 export interface User{
     _id: string
     email: string
@@ -12,8 +16,9 @@ export interface User{
 export class PasswordService{
     userPassword: string | undefined
     currentUser: User
+    passwordAuthStatus!: PasswordAuth
 
-    constructor(password: string | undefined ,currentUser: User){
+    constructor(password: string | undefined, currentUser: User){
         this.currentUser = currentUser
         this.userPassword = password
     }
@@ -21,7 +26,8 @@ export class PasswordService{
     async userAuth(){
         const passwordAuth = await bcrypt.compare(this.userPassword, this.currentUser.password)
         if(!passwordAuth){
-            return "incorrect email or password"
+            this.passwordAuthStatus = PasswordAuth.INCORRECT
+            return this.passwordAuthStatus
         }
         else{
             const token = new TokenService

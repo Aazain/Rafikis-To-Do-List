@@ -1,29 +1,39 @@
 import { QueryOptions } from "mongoose"
 import { Items } from "../models/todo.model"
 
+export enum ItemServiceStatus{
+    UNABLE = "UNABLE", ERROR = "ItemServiceError", SUCCESS = "ItemServiceSuccess"
+}
+
 interface CurrentUserData{
     user: {_id: string, email: string}
     iat: number
     exp: number
 }
 
-export class ItemServices{
-    currentUser: CurrentUserData
+export class ItemService{
+    currentUser: CurrentUserData;
+    itemStatus!: ItemServiceStatus;
 
     constructor(currentUser: CurrentUserData){
         this.currentUser = currentUser
     }
 
     checkItemId(params: string){
-        return Items.find({_id: params})
+        return Items.find({_id: params}, (err: Error)=>{
+            if(err){
+                this.itemStatus = ItemServiceStatus.ERROR
+                return this.itemStatus
+            }
+        })
     }
 
     getSingleItem(params: string){
-        console.log(params)
         const id = params
         return Items.findById(id, (err: Error, result: object)=>{
             if(err || result == null){
-                return("unable to find item")
+                this.itemStatus = ItemServiceStatus.UNABLE;
+                return this.itemStatus;
             }
             else{
                 return result
@@ -35,7 +45,8 @@ export class ItemServices{
     getItemList(){
         return Items.find({userId: this.currentUser.user._id}, (err: Error, result: object)=>{
             if(err){
-                return "unable to get Items"
+                this.itemStatus = ItemServiceStatus.UNABLE;
+                return this.itemStatus;
             }
             else{
                 return result
@@ -46,10 +57,11 @@ export class ItemServices{
     deleteItem(itemId: string){
         return Items.findByIdAndRemove({_id: itemId, userId: this.currentUser.user._id}, {useFindAndModify: false}, (err: Error, result: any)=>{
             if(err){
-                return "unable to delete task"
+                this.itemStatus = ItemServiceStatus.UNABLE;
+                return this.itemStatus;
             }
             else{
-                return "successfully deleted task"
+                return ItemServiceStatus.SUCCESS
             }
         })
 
@@ -63,22 +75,36 @@ export class ItemServices{
         })
         itemList.save()
         .then(()=>{
-            return "successfully created new task"
+            return ItemServiceStatus.SUCCESS
         })
         .catch((err: Error)=>{
-            return "unable to create task"
+            this.itemStatus = ItemServiceStatus.UNABLE;
+            return this.itemStatus;
         })
     }
 
     updateTask(userId: string, itemId: string, task: string, status: boolean){
-        console.log(userId, itemId, task, status)
-        const patchTask = Items.updateOne({
-            userId,
-            _id: itemId
-        }, {$set:{
-            task,
-            status
-        }})
+        const updatePromise = new Promise(async (resolve, reject)=>{
+                await Items.findOneAndUpdate({
+                    userId,
+                    _id: itemId
+                }, {
+                    $set:{
+                        task,
+                        status
+                }},{
+                    useFindAndModify: false
+                },(err: Error)=>{
+                    if(err){
+                        reject(ItemServiceStatus.ERROR)
+                    }
+                    else{
+                        resolve(ItemServiceStatus.SUCCESS)
+                    }
+                }
+            )
+        })
+        return updatePromise
     }
 
 

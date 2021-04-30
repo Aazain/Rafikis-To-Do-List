@@ -1,9 +1,7 @@
 import e, { Application, request, Request, Response } from "express"
-import { TokenService } from "../services/token.services"
-import { ItemServices } from "../services/items.services"
-import { Items } from "../models/todo.model"
-import { userList } from "../services/userlist.services"
-import { UserServices } from "../services/user.services"
+import { TokenService, TokenStatus } from "../services/token.services"
+import { ItemService, ItemServiceStatus } from "../services/items.services"
+import { isValidObjectId, Mongoose } from "mongoose"
 
 
 export class todoController{
@@ -18,14 +16,14 @@ export class todoController{
         const authHeader = req.headers["authorization"]
         const accessToken = authHeader?.split(" ")[1]
         const auth = tokenAuthentication.tokenAuth(accessToken);
-        if(auth == "forbidden"){
+        if(auth == TokenStatus.ERROR){
             return res.status(403).send("forbidden")
         }
         else{
             const itemId = req.params.id
-            const itemService = new ItemServices(auth)
+            const itemService = new ItemService(auth)
             const getItem: any = await itemService.getSingleItem(itemId)
-            if(getItem == "unable to find item" || !getItem){
+            if(getItem == ItemServiceStatus.UNABLE || !getItem){
                 return res.status(404).send("unable to find item")
             }
             else{
@@ -39,13 +37,13 @@ export class todoController{
             const authHeader = req.headers["authorization"]
             const accessToken = authHeader?.split(" ")[1]
             const auth = tokenAuthentication.tokenAuth(accessToken);
-            if(auth == "forbidden"){
-                return res.status(403).send(auth)
+            if(auth == TokenStatus.ERROR){
+                return res.status(403).send("forbidden")
             }else{
-                const itemService = new ItemServices(auth);
+                const itemService = new ItemService(auth);
                 const getItems = await itemService.getItemList();
-                if(getItems == "unable to get Items"){
-                    return res.status(404).send(getItems)
+                if(getItems === ItemServiceStatus.UNABLE){
+                    return res.status(404).send("unable to get items")
                 }
                 else{
                     return res.send(getItems)
@@ -55,23 +53,24 @@ export class todoController{
 
     async deleteItems(req: Request, res: Response){
         const tokenAuthentication = new TokenService();
-            const authHeader = req.headers["authorization"]
-            const accessToken = authHeader?.split(" ")[1]
-            const auth = tokenAuthentication.tokenAuth(accessToken);
-            if (auth == "forbidden"){
-                return res.status(403).send("forbidden")
-            }
-            else{
-                const itemId = req.params.id;
-                const itemService = new ItemServices(auth);
+        const authHeader = req.headers["authorization"]
+        const accessToken = authHeader?.split(" ")[1]
+        const auth = tokenAuthentication.tokenAuth(accessToken);
+        if (auth == TokenStatus.ERROR){
+            return res.status(403).send("forbidden")
+        }
+        else{
+            const itemId = req.params.id;
+            const itemService = new ItemService(auth);
+            const itemIdValidity = isValidObjectId(itemId) 
+            if(itemIdValidity == true){
                 const itemCheck: any = await itemService.checkItemId(itemId)
-                if(itemCheck.length === 0){
+                if(itemCheck.length === 0 || itemCheck === ItemServiceStatus.ERROR){
                     return res.status(404).send("item does not exist")
                 }
                 else{
                     const deleteItem = await itemService.deleteItem(itemId);
-                    if (deleteItem == "unable to delete task" || !deleteItem){
-                        console.log(deleteItem, !deleteItem)
+                    if (deleteItem == ItemServiceStatus.UNABLE || !deleteItem){
                         return res.status(500).send("unable to delete task")
                     }
                     else{
@@ -79,22 +78,26 @@ export class todoController{
                     }
                 }
             }
+            else{
+                return res.status(404).send("item does not exist")
+            }
+        }
     }
 
-    async createItem(req: Request,  res: Response){
+    createItem(req: Request,  res: Response){
         const tokenAuthentication = new TokenService();
         const authHeader = req.headers["authorization"]
         const accessToken = authHeader?.split(" ")[1]
         const auth = tokenAuthentication.tokenAuth(accessToken);
-        if (auth == "forbidden"){
+        if (auth == TokenStatus.ERROR){
             return res.status(403).send("forbidden")
         }
         else{
             const task = req.body.task
             const status = req.body.status
-            const itemService = new ItemServices(auth);
+            const itemService = new ItemService(auth);
             const createTask: any = itemService.newTask(auth.user._id, task, status)
-            if(createTask == "unable to create task"){
+            if(createTask == ItemServiceStatus.UNABLE){
                 return res.status(500).send("unable to create task")
             }
             else{
@@ -108,21 +111,33 @@ export class todoController{
         const authHeader = req.headers["authorization"]
         const accessToken = authHeader?.split(" ")[1]
         const auth = tokenAuthentication.tokenAuth(accessToken);
-        if (auth == "forbidden"){
+        if (auth == TokenStatus.ERROR){
             return res.status(403).send("forbidden")
         }
         else{
             const itemId = req.params.id;
-            const itemService = new ItemServices(auth);
-            const itemCheck: any = await itemService.checkItemId(itemId)
-            if(itemCheck.length === 0){
-                return res.status(404).send("item does not exist")
+            const itemIdValidity = isValidObjectId(itemId)
+            if(itemIdValidity == true){
+                const itemService = new ItemService(auth);
+                const itemCheck: any = await itemService.checkItemId(itemId)
+                if(itemCheck.length === 0){
+                    return res.status(404).send("item does not exist")
+                }
+                else{
+                    const task = req.body.task
+                    const status = req.body.status
+                    const itemService = new ItemService(auth);
+                    const patchTask = await itemService.updateTask(auth.user._id, itemId, task, status)
+                    if(patchTask == ItemServiceStatus.ERROR){
+                        return res.status(400).send("failed to edit task")
+                    }
+                    else{
+                        return res.send("successfully edited task")
+                    }
+                }
             }
             else{
-                const task = req.body.task
-                const status = req.body.status
-                const itemService = new ItemServices(auth);
-                const patchTask = itemService.updateTask(auth.user._id, itemId, task, status)
+                return res.status(404).send("item does not exist")
             }
         }
     }

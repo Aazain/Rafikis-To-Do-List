@@ -36,16 +36,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserServices = void 0;
+exports.UserService = void 0;
 var users_model_1 = require("../models/users.model");
 var password_services_1 = require("./password.services");
+var users_controller_1 = require("../controllers/users.controller");
 var bcrypt = require('bcrypt');
-var UserServices = /** @class */ (function () {
-    function UserServices(email, password) {
+var UserService = /** @class */ (function () {
+    function UserService(email, password) {
         this.email = email;
         this.password = password;
     }
-    UserServices.prototype.createUser = function () {
+    UserService.prototype.createUser = function () {
         return __awaiter(this, void 0, void 0, function () {
             var checkEmail, hashedPassword, userList;
             return __generator(this, function (_a) {
@@ -54,7 +55,8 @@ var UserServices = /** @class */ (function () {
                     case 1:
                         checkEmail = _a.sent();
                         if (!(checkEmail !== null)) return [3 /*break*/, 2];
-                        return [2 /*return*/, "a user with this email already exists"];
+                        this.userControllerService = users_controller_1.UserControllerService.ERROR;
+                        return [2 /*return*/, this.userControllerService];
                     case 2: return [4 /*yield*/, bcrypt.hash(this.password, 10)];
                     case 3:
                         hashedPassword = _a.sent();
@@ -62,13 +64,14 @@ var UserServices = /** @class */ (function () {
                             email: this.email,
                             password: hashedPassword
                         });
+                        this.userControllerService = users_controller_1.UserControllerService.SUCCESS;
                         userList.save();
-                        return [2 /*return*/, "successfully created user"];
+                        return [2 /*return*/, this.userControllerService];
                 }
             });
         });
     };
-    UserServices.prototype.userLogin = function () {
+    UserService.prototype.userLogin = function () {
         return __awaiter(this, void 0, void 0, function () {
             var currentUser, passService, loginAuth;
             return __generator(this, function (_a) {
@@ -76,16 +79,20 @@ var UserServices = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.findUser()];
                     case 1:
                         currentUser = _a.sent();
+                        if (!!currentUser) return [3 /*break*/, 2];
+                        this.userControllerService = users_controller_1.UserControllerService.ERROR;
+                        return [2 /*return*/, this.userControllerService];
+                    case 2:
                         passService = new password_services_1.PasswordService(this.password, currentUser);
                         return [4 /*yield*/, passService.userAuth()];
-                    case 2:
+                    case 3:
                         loginAuth = _a.sent();
                         return [2 /*return*/, loginAuth];
                 }
             });
         });
     };
-    UserServices.prototype.findUser = function () {
+    UserService.prototype.findUser = function () {
         return __awaiter(this, void 0, void 0, function () {
             var currentUser;
             return __generator(this, function (_a) {
@@ -98,6 +105,6 @@ var UserServices = /** @class */ (function () {
             });
         });
     };
-    return UserServices;
+    return UserService;
 }());
-exports.UserServices = UserServices;
+exports.UserService = UserService;

@@ -1,8 +1,14 @@
 
 import express, { Application, json, request, Request, Response } from "express"
-import { UserServices } from "../services/user.services"
-import { TokenService } from "../services/token.services"
+import { UserService } from "../services/user.services"
+import { TokenService, TokenStatus } from "../services/token.services"
 import { userList } from "../services/userlist.services"
+import { PasswordAuth } from "../services/password.services"
+import { emailValidation } from "../services/email.validation"
+
+export enum UserControllerService{
+    ERROR = "ERROR", SUCCESS = "SUCCESS"
+}
 
 export class userController{
     private app: Application;
@@ -24,40 +30,69 @@ export class userController{
     async signUp(req: Request, res: Response){
             const userEmail = req.body.email
             const userPassword = req.body.password
-            const userService = new UserServices(userEmail, userPassword)
-            const createUser = await userService.createUser();
-            if(createUser == "a user with this email already exists"){
-                return res.status(409).send(createUser)
-            }else{
-                return res.status(201).send(createUser)
+            const userService = new UserService(userEmail, userPassword)
+            const validateEmail = new emailValidation
+            const emailCheck = validateEmail.validate(userEmail)
+            if(!userPassword){
+                return res.status(403).send("please enter a password")
+            }
+            else{
+                if(emailCheck == true){
+                    const createUser = await userService.createUser();
+                    if(createUser == UserControllerService.ERROR){
+                        return res.status(409).send("a user with this email already exists")
+                    }
+                    else{
+                        return res.status(201).send("successfully created user")
+                    }
+                }
+                else{
+                    return res.status(403).send("please enter a valid email and password")
+                }
             }
     }
 
     async logIn(req: Request, res: Response){
-            const userEmail = req.body.email
-            const userPassword = req.body.password
-            const userService = new UserServices(userEmail, userPassword)
+        const userEmail = req.body.email
+        const userPassword = req.body.password
+        const validateEmail = new emailValidation
+        const emailCheck = validateEmail.validate(userEmail)
+        if(emailCheck == true){
+            const userService = new UserService(userEmail, userPassword)
             const loginUser = await userService.userLogin();
-            if(loginUser == "incorrect email or password"){
-                res.status(403).send(loginUser)
+            if(loginUser == PasswordAuth.INCORRECT){
+                return res.status(403).send("incorrect email or password")
+            }
+            else if(!userPassword){
+                return res.status(403).send("please enter a password")
+            }
+            else if(loginUser == UserControllerService.ERROR){
+                return res.status(404).send("user does not exist")
             }
             else{
-                return res.status(200).send(loginUser)
+                return res.send(loginUser)
             }
+        }
+        else{
+            return res.status(403).send("please enter a valid email")
+        }
     }
 
     async refreshToken(req: Request, res: Response){
-            const user = new UserServices(req.body.email, req.body.password)
+            const user = new UserService(req.body.email, req.body.password)
             const findUser = await user.findUser()
             const authHeader = req.headers["authorization"]
             const refreshToken = authHeader?.split(" ")[1]
             const refreshTokenService = new TokenService();
             const refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser)
-            if(refreshAccess == "invalid token"){
-                res.status(400).send(refreshAccess)
+            if(refreshAccess == TokenStatus.INVALID){
+                return res.status(400).send("invalid token")
+            }
+            else if(refreshAccess == TokenStatus.ERROR){
+                return res.status(400).send("please provide an access token")
             }
             else{
-                res.status(200).send(refreshAccess)
+                return res.status(200).send(refreshAccess)
             }
     }
 }

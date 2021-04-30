@@ -1,6 +1,8 @@
-import { NextFunction } from "express"
-
 const jwt = require ('jsonwebtoken')
+
+export enum TokenStatus{
+    INVALID = "INVALID", ERROR = "TokenError"
+}
 
 interface UserInfo{
     _id: string
@@ -8,6 +10,7 @@ interface UserInfo{
 }
 
 export class TokenService{
+    tokenServiceStatus!: TokenStatus;
 
     createAccessToken (currentUser: UserInfo){
         return jwt.sign({ user: currentUser }, process.env.ACCESSTOKEN, {
@@ -22,23 +25,30 @@ export class TokenService{
     }
 
     refreshAccessToken(refreshToken: string | undefined, currentUser: UserInfo){
-        if(!refreshToken){return "Error"}
-        const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err: Error, token: string)=>{
-            if(err){
-                return "invalid token"
-            }
-            else{
-                const createNewToken = this.createAccessToken(currentUser)
-                return {accessToken: createNewToken}
-            }
-        })
-        return newToken
+        if(!refreshToken){
+            this.tokenServiceStatus = TokenStatus.ERROR
+            return this.tokenServiceStatus
+        }
+        else{
+            const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err: Error, token: string)=>{
+                if(err){
+                    this.tokenServiceStatus = TokenStatus.INVALID
+                    return this.tokenServiceStatus
+                }
+                else{
+                    const createNewToken = this.createAccessToken(currentUser)
+                    return {accessToken: createNewToken}
+                }
+            })
+            return newToken
+        }
     }
 
     tokenAuth(accessToken: string | undefined){
         const authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, (err: Error, user: string)=>{
             if(err){
-                return "forbidden"
+                this.tokenServiceStatus = TokenStatus.ERROR
+                return this.tokenServiceStatus
             }
             else{
                 return user

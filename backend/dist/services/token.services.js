@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TokenService = void 0;
+exports.TokenService = exports.TokenStatus = void 0;
 var jwt = require('jsonwebtoken');
+var TokenStatus;
+(function (TokenStatus) {
+    TokenStatus["INVALID"] = "INVALID";
+    TokenStatus["ERROR"] = "TokenError";
+})(TokenStatus = exports.TokenStatus || (exports.TokenStatus = {}));
 var TokenService = /** @class */ (function () {
     function TokenService() {
     }
@@ -18,23 +23,29 @@ var TokenService = /** @class */ (function () {
     TokenService.prototype.refreshAccessToken = function (refreshToken, currentUser) {
         var _this = this;
         if (!refreshToken) {
-            return "Error";
+            this.tokenServiceStatus = TokenStatus.ERROR;
+            return this.tokenServiceStatus;
         }
-        var newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, function (err, token) {
-            if (err) {
-                return "invalid token";
-            }
-            else {
-                var createNewToken = _this.createAccessToken(currentUser);
-                return { accessToken: createNewToken };
-            }
-        });
-        return newToken;
+        else {
+            var newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, function (err, token) {
+                if (err) {
+                    _this.tokenServiceStatus = TokenStatus.INVALID;
+                    return _this.tokenServiceStatus;
+                }
+                else {
+                    var createNewToken = _this.createAccessToken(currentUser);
+                    return { accessToken: createNewToken };
+                }
+            });
+            return newToken;
+        }
     };
     TokenService.prototype.tokenAuth = function (accessToken) {
+        var _this = this;
         var authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, function (err, user) {
             if (err) {
-                return "forbidden";
+                _this.tokenServiceStatus = TokenStatus.ERROR;
+                return _this.tokenServiceStatus;
             }
             else {
                 return user;

@@ -41,6 +41,9 @@ var users_model_1 = require("../models/users.model");
 var userList = /** @class */ (function () {
     function userList() {
     }
+    userList.getUserList = function () {
+        throw new Error("Method not implemented.");
+    };
     userList.prototype.getUserList = function () {
         return __awaiter(this, void 0, void 0, function () {
             var allUsers;

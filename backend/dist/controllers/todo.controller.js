@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.todoController = void 0;
 var token_services_1 = require("../services/token.services");
 var items_services_1 = require("../services/items.services");
+var mongoose_1 = require("mongoose");
 var todoController = /** @class */ (function () {
     function todoController(app) {
         this.app = app;
@@ -53,15 +54,15 @@ var todoController = /** @class */ (function () {
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
-                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
+                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 1];
                         return [2 /*return*/, res.status(403).send("forbidden")];
                     case 1:
                         itemId = req.params.id;
-                        itemService = new items_services_1.ItemServices(auth);
+                        itemService = new items_services_1.ItemService(auth);
                         return [4 /*yield*/, itemService.getSingleItem(itemId)];
                     case 2:
                         getItem = _a.sent();
-                        if (getItem == "unable to find item" || !getItem) {
+                        if (getItem == items_services_1.ItemServiceStatus.UNABLE || !getItem) {
                             return [2 /*return*/, res.status(404).send("unable to find item")];
                         }
                         else {
@@ -83,15 +84,15 @@ var todoController = /** @class */ (function () {
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
-                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
-                        return [2 /*return*/, res.status(403).send(auth)];
+                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 1];
+                        return [2 /*return*/, res.status(403).send("forbidden")];
                     case 1:
-                        itemService = new items_services_1.ItemServices(auth);
+                        itemService = new items_services_1.ItemService(auth);
                         return [4 /*yield*/, itemService.getItemList()];
                     case 2:
                         getItems = _a.sent();
-                        if (getItems == "unable to get Items") {
-                            return [2 /*return*/, res.status(404).send(getItems)];
+                        if (getItems === items_services_1.ItemServiceStatus.UNABLE) {
+                            return [2 /*return*/, res.status(404).send("unable to get items")];
                         }
                         else {
                             return [2 /*return*/, res.send(getItems)];
@@ -104,7 +105,7 @@ var todoController = /** @class */ (function () {
     };
     todoController.prototype.deleteItems = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemService, itemCheck, deleteItem;
+            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemService, itemIdValidity, itemCheck, deleteItem;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -112,62 +113,59 @@ var todoController = /** @class */ (function () {
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
-                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
+                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 1];
                         return [2 /*return*/, res.status(403).send("forbidden")];
                     case 1:
                         itemId = req.params.id;
-                        itemService = new items_services_1.ItemServices(auth);
+                        itemService = new items_services_1.ItemService(auth);
+                        itemIdValidity = mongoose_1.isValidObjectId(itemId);
+                        if (!(itemIdValidity == true)) return [3 /*break*/, 6];
                         return [4 /*yield*/, itemService.checkItemId(itemId)];
                     case 2:
                         itemCheck = _a.sent();
-                        if (!(itemCheck.length === 0)) return [3 /*break*/, 3];
+                        if (!(itemCheck.length === 0 || itemCheck === items_services_1.ItemServiceStatus.ERROR)) return [3 /*break*/, 3];
                         return [2 /*return*/, res.status(404).send("item does not exist")];
                     case 3: return [4 /*yield*/, itemService.deleteItem(itemId)];
                     case 4:
                         deleteItem = _a.sent();
-                        if (deleteItem == "unable to delete task" || !deleteItem) {
-                            console.log(deleteItem, !deleteItem);
+                        if (deleteItem == items_services_1.ItemServiceStatus.UNABLE || !deleteItem) {
                             return [2 /*return*/, res.status(500).send("unable to delete task")];
                         }
                         else {
                             return [2 /*return*/, res.status(202).send("successfully deleted task ")];
                         }
                         _a.label = 5;
-                    case 5: return [2 /*return*/];
+                    case 5: return [3 /*break*/, 7];
+                    case 6: return [2 /*return*/, res.status(404).send("item does not exist")];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
     };
     todoController.prototype.createItem = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, task, status_1, itemService, createTask;
-            return __generator(this, function (_a) {
-                tokenAuthentication = new token_services_1.TokenService();
-                authHeader = req.headers["authorization"];
-                accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
-                auth = tokenAuthentication.tokenAuth(accessToken);
-                if (auth == "forbidden") {
-                    return [2 /*return*/, res.status(403).send("forbidden")];
-                }
-                else {
-                    task = req.body.task;
-                    status_1 = req.body.status;
-                    itemService = new items_services_1.ItemServices(auth);
-                    createTask = itemService.newTask(auth.user._id, task, status_1);
-                    if (createTask == "unable to create task") {
-                        return [2 /*return*/, res.status(500).send("unable to create task")];
-                    }
-                    else {
-                        return [2 /*return*/, res.status(201).send("successfully created task")];
-                    }
-                }
-                return [2 /*return*/];
-            });
-        });
+        var tokenAuthentication = new token_services_1.TokenService();
+        var authHeader = req.headers["authorization"];
+        var accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
+        var auth = tokenAuthentication.tokenAuth(accessToken);
+        if (auth == token_services_1.TokenStatus.ERROR) {
+            return res.status(403).send("forbidden");
+        }
+        else {
+            var task = req.body.task;
+            var status_1 = req.body.status;
+            var itemService = new items_services_1.ItemService(auth);
+            var createTask = itemService.newTask(auth.user._id, task, status_1);
+            if (createTask == items_services_1.ItemServiceStatus.UNABLE) {
+                return res.status(500).send("unable to create task");
+            }
+            else {
+                return res.status(201).send("successfully created task");
+            }
+        }
     };
     todoController.prototype.updateItem = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemService, itemCheck, task, status_2, itemService_1, patchTask;
+            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemIdValidity, itemService, itemCheck, task, status_2, itemService_1, patchTask;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -175,25 +173,35 @@ var todoController = /** @class */ (function () {
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
-                        if (!(auth == "forbidden")) return [3 /*break*/, 1];
+                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 1];
                         return [2 /*return*/, res.status(403).send("forbidden")];
                     case 1:
                         itemId = req.params.id;
-                        itemService = new items_services_1.ItemServices(auth);
+                        itemIdValidity = mongoose_1.isValidObjectId(itemId);
+                        if (!(itemIdValidity == true)) return [3 /*break*/, 6];
+                        itemService = new items_services_1.ItemService(auth);
                         return [4 /*yield*/, itemService.checkItemId(itemId)];
                     case 2:
                         itemCheck = _a.sent();
-                        if (itemCheck.length === 0) {
-                            return [2 /*return*/, res.status(404).send("item does not exist")];
+                        if (!(itemCheck.length === 0)) return [3 /*break*/, 3];
+                        return [2 /*return*/, res.status(404).send("item does not exist")];
+                    case 3:
+                        task = req.body.task;
+                        status_2 = req.body.status;
+                        itemService_1 = new items_services_1.ItemService(auth);
+                        return [4 /*yield*/, itemService_1.updateTask(auth.user._id, itemId, task, status_2)];
+                    case 4:
+                        patchTask = _a.sent();
+                        if (patchTask == items_services_1.ItemServiceStatus.ERROR) {
+                            return [2 /*return*/, res.status(400).send("failed to edit task")];
                         }
                         else {
-                            task = req.body.task;
-                            status_2 = req.body.status;
-                            itemService_1 = new items_services_1.ItemServices(auth);
-                            patchTask = itemService_1.updateTask(auth.user._id, itemId, task, status_2);
+                            return [2 /*return*/, res.send("successfully edited task")];
                         }
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        _a.label = 5;
+                    case 5: return [3 /*break*/, 7];
+                    case 6: return [2 /*return*/, res.status(404).send("item does not exist")];
+                    case 7: return [2 /*return*/];
                 }
             });
         });

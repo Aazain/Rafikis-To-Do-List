@@ -36,10 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PasswordService = void 0;
+exports.PasswordService = exports.PasswordAuth = void 0;
 var token_services_1 = require("./token.services");
 var bcrypt = require('bcrypt');
 require("dotenv/config");
+var PasswordAuth;
+(function (PasswordAuth) {
+    PasswordAuth["INCORRECT"] = "INCORRECT";
+})(PasswordAuth = exports.PasswordAuth || (exports.PasswordAuth = {}));
 var PasswordService = /** @class */ (function () {
     function PasswordService(password, currentUser) {
         this.currentUser = currentUser;
@@ -54,7 +58,8 @@ var PasswordService = /** @class */ (function () {
                     case 1:
                         passwordAuth = _a.sent();
                         if (!passwordAuth) {
-                            return [2 /*return*/, "incorrect email or password"];
+                            this.passwordAuthStatus = PasswordAuth.INCORRECT;
+                            return [2 /*return*/, this.passwordAuthStatus];
                         }
                         else {
                             token = new token_services_1.TokenService;

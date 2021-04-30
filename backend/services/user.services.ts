@@ -1,10 +1,12 @@
 import { Users } from "../models/users.model"
 import { PasswordService } from "./password.services"
+import { UserControllerService } from "../controllers/users.controller"
 const bcrypt = require ('bcrypt')
 
-export class UserServices{
+export class UserService{
     email:string
     password: string | undefined
+    userControllerService!: UserControllerService | undefined
 
     constructor(email: string, password: string | undefined){
         this.email = email
@@ -14,7 +16,8 @@ export class UserServices{
     async createUser(){
         const checkEmail: object = await this.findUser();
         if(checkEmail !== null){
-            return "a user with this email already exists"
+            this.userControllerService = UserControllerService.ERROR;
+            return this.userControllerService;
         }
         else{
             const hashedPassword = await bcrypt.hash(this.password, 10)
@@ -22,16 +25,23 @@ export class UserServices{
                 email: this.email,
                 password: hashedPassword
             })
+            this.userControllerService = UserControllerService.SUCCESS;
             userList.save();
-            return "successfully created user"
+            return this.userControllerService
         }
     }
 
     async userLogin(){
         const currentUser = await this.findUser();
-        const passService = new PasswordService(this.password ,currentUser)
-        const loginAuth = await passService.userAuth();
-        return loginAuth
+        if(!currentUser){
+            this.userControllerService = UserControllerService.ERROR
+            return this.userControllerService
+        }
+        else{
+            const passService = new PasswordService(this.password, currentUser)
+            const loginAuth = await passService.userAuth();
+            return loginAuth
+        }
     }
 
     async findUser(){
