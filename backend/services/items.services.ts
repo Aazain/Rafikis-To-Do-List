@@ -11,6 +11,16 @@ interface CurrentUserData{
     exp: number
 }
 
+interface ItemData{
+    _id: string
+    userId: string
+    task:string
+    status: boolean
+    createdAt: string
+    updatedAt: string
+    __v: 0
+}
+
 export class ItemService{
     currentUser: CurrentUserData;
     itemStatus!: ItemServiceStatus;
@@ -30,10 +40,14 @@ export class ItemService{
 
     getSingleItem(params: string){
         const id = params
-        return Items.findById(id, (err: Error, result: object)=>{
+        return Items.findById(id, (err: Error, result: ItemData)=>{
             if(err || result == null){
                 this.itemStatus = ItemServiceStatus.UNABLE;
                 return this.itemStatus;
+            }
+            else if(this.currentUser.user._id !== result.userId){
+                this.itemStatus = ItemServiceStatus.ERROR
+                return this.itemStatus
             }
             else{
                 return result

@@ -65,6 +65,10 @@ var ItemService = /** @class */ (function () {
                 _this.itemStatus = ItemServiceStatus.UNABLE;
                 return _this.itemStatus;
             }
+            else if (_this.currentUser.user._id !== result.userId) {
+                _this.itemStatus = ItemServiceStatus.ERROR;
+                return _this.itemStatus;
+            }
             else {
                 return result;
             }

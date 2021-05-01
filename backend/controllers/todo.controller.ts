@@ -26,6 +26,9 @@ export class todoController{
             if(getItem == ItemServiceStatus.UNABLE || !getItem){
                 return res.status(404).send("unable to find item")
             }
+            else if(getItem == ItemServiceStatus.ERROR){
+                return res.status(403).send("forbidden")
+            }
             else{
                 return res.status(200).send(getItem)
             }

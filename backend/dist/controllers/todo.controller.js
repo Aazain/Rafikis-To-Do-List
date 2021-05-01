@@ -65,6 +65,9 @@ var todoController = /** @class */ (function () {
                         if (getItem == items_services_1.ItemServiceStatus.UNABLE || !getItem) {
                             return [2 /*return*/, res.status(404).send("unable to find item")];
                         }
+                        else if (getItem == items_services_1.ItemServiceStatus.ERROR) {
+                            return [2 /*return*/, res.status(403).send("forbidden")];
+                        }
                         else {
                             return [2 /*return*/, res.status(200).send(getItem)];
                         }
