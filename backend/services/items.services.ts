@@ -56,6 +56,31 @@ export class ItemService{
 
     }
 
+    getSingleItems(params: string){
+        const id = params
+        try{
+            const promide = new Promise (async(reject, resolve)=>{
+                Items.findById(id, (err: Error, result: ItemData)=>{
+                    if(err || result == null){
+                        reject(ItemServiceStatus.UNABLE)
+        
+                    }
+                    else if(this.currentUser.user._id !== result.userId){
+                        reject(ItemServiceStatus.ERROR)
+        
+                    }
+                    else{
+                         resolve(result)
+                    }
+                })
+            })
+            return promide
+        }
+        catch(err){
+            return err
+        }
+    }
+
     getItemList(){
         return Items.find({userId: this.currentUser.user._id}, (err: Error, result: object)=>{
             if(err){

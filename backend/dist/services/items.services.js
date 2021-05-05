@@ -74,6 +74,33 @@ var ItemService = /** @class */ (function () {
             }
         });
     };
+    ItemService.prototype.getSingleItems = function (params) {
+        var _this = this;
+        var id = params;
+        try {
+            var promide = new Promise(function (reject, resolve) { return __awaiter(_this, void 0, void 0, function () {
+                var _this = this;
+                return __generator(this, function (_a) {
+                    todo_model_1.Items.findById(id, function (err, result) {
+                        if (err || result == null) {
+                            reject(ItemServiceStatus.UNABLE);
+                        }
+                        else if (_this.currentUser.user._id !== result.userId) {
+                            reject(ItemServiceStatus.ERROR);
+                        }
+                        else {
+                            resolve(result);
+                        }
+                    });
+                    return [2 /*return*/];
+                });
+            }); });
+            return promide;
+        }
+        catch (err) {
+            return err;
+        }
+    };
     ItemService.prototype.getItemList = function () {
         var _this = this;
         return todo_model_1.Items.find({ userId: this.currentUser.user._id }, function (err, result) {
