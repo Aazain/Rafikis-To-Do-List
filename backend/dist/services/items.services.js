@@ -43,70 +43,38 @@ var ItemServiceStatus;
     ItemServiceStatus["UNABLE"] = "UNABLE";
     ItemServiceStatus["ERROR"] = "ItemServiceError";
     ItemServiceStatus["SUCCESS"] = "ItemServiceSuccess";
+    ItemServiceStatus["FORBIDDEN"] = "Forbidden";
 })(ItemServiceStatus = exports.ItemServiceStatus || (exports.ItemServiceStatus = {}));
 var ItemService = /** @class */ (function () {
     function ItemService(currentUser) {
         this.currentUser = currentUser;
     }
     ItemService.prototype.checkItemId = function (params) {
-        var _this = this;
         return todo_model_1.Items.find({ _id: params }, function (err) {
             if (err) {
-                _this.itemStatus = ItemServiceStatus.ERROR;
-                return _this.itemStatus;
+                return ItemServiceStatus.ERROR;
             }
         });
     };
     ItemService.prototype.getSingleItem = function (params) {
         var _this = this;
         var id = params;
-        return todo_model_1.Items.findById(id, function (err, result) {
+        return todo_model_1.Items.findOne({ _id: id }, function (err, result) {
             if (err || result == null) {
-                _this.itemStatus = ItemServiceStatus.UNABLE;
-                return _this.itemStatus;
+                return ItemServiceStatus.UNABLE;
             }
             else if (_this.currentUser.user._id !== result.userId) {
-                _this.itemStatus = ItemServiceStatus.ERROR;
-                return _this.itemStatus;
+                return ItemServiceStatus.ERROR;
             }
             else {
                 return result;
             }
-        });
-    };
-    ItemService.prototype.getSingleItems = function (params) {
-        var _this = this;
-        var id = params;
-        try {
-            var promide = new Promise(function (reject, resolve) { return __awaiter(_this, void 0, void 0, function () {
-                var _this = this;
-                return __generator(this, function (_a) {
-                    todo_model_1.Items.findById(id, function (err, result) {
-                        if (err || result == null) {
-                            reject(ItemServiceStatus.UNABLE);
-                        }
-                        else if (_this.currentUser.user._id !== result.userId) {
-                            reject(ItemServiceStatus.ERROR);
-                        }
-                        else {
-                            resolve(result);
-                        }
-                    });
-                    return [2 /*return*/];
-                });
-            }); });
-            return promide;
-        }
-        catch (err) {
-            return err;
-        }
+        }, { new: true });
     };
     ItemService.prototype.getItemList = function () {
-        var _this = this;
         return todo_model_1.Items.find({ userId: this.currentUser.user._id }, function (err, result) {
             if (err) {
-                _this.itemStatus = ItemServiceStatus.UNABLE;
-                return _this.itemStatus;
+                return ItemServiceStatus.UNABLE;
             }
             else {
                 return result;
@@ -115,18 +83,24 @@ var ItemService = /** @class */ (function () {
     };
     ItemService.prototype.deleteItem = function (itemId) {
         var _this = this;
-        return todo_model_1.Items.findByIdAndRemove({ _id: itemId, userId: this.currentUser.user._id }, { useFindAndModify: false }, function (err, result) {
-            if (err) {
-                _this.itemStatus = ItemServiceStatus.UNABLE;
-                return _this.itemStatus;
-            }
-            else {
-                return ItemServiceStatus.SUCCESS;
-            }
+        var ItemDeletePromise = new Promise(function (reject, resolve) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                todo_model_1.Items.findByIdAndRemove({ _id: itemId, userId: this.currentUser.user._id }, { useFindAndModify: false }, function (err, result) {
+                    if (err) {
+                        reject(ItemServiceStatus.UNABLE);
+                    }
+                    else {
+                        return ItemServiceStatus.SUCCESS;
+                    }
+                });
+                return [2 /*return*/];
+            });
+        }); })
+            .catch(function (err) {
+            console.log(err);
         });
     };
     ItemService.prototype.newTask = function (userId, task, status) {
-        var _this = this;
         var itemList = new todo_model_1.Items({
             userId: userId,
             task: task,
@@ -137,8 +111,7 @@ var ItemService = /** @class */ (function () {
             return ItemServiceStatus.SUCCESS;
         })
             .catch(function (err) {
-            _this.itemStatus = ItemServiceStatus.UNABLE;
-            return _this.itemStatus;
+            return ItemServiceStatus.UNABLE;
         });
     };
     ItemService.prototype.updateTask = function (userId, itemId, task, status) {
@@ -146,7 +119,11 @@ var ItemService = /** @class */ (function () {
         var updatePromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, todo_model_1.Items.findOneAndUpdate({
+                    case 0:
+                        if (!(userId !== this.currentUser.user._id)) return [3 /*break*/, 1];
+                        reject(ItemServiceStatus.FORBIDDEN);
+                        return [3 /*break*/, 3];
+                    case 1: return [4 /*yield*/, todo_model_1.Items.findOneAndUpdate({
                             userId: userId,
                             _id: itemId
                         }, {
@@ -164,12 +141,21 @@ var ItemService = /** @class */ (function () {
                                 resolve(ItemServiceStatus.SUCCESS);
                             }
                         })];
-                    case 1:
+                    case 2:
                         _a.sent();
-                        return [2 /*return*/];
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
                 }
             });
-        }); });
+        }); })
+            .catch(function (err) {
+            if (err == "ItemServiceError") {
+                return ItemServiceStatus.ERROR;
+            }
+            else if (err == "Forbidden") {
+                return ItemServiceStatus.FORBIDDEN;
+            }
+        });
         return updatePromise;
     };
     return ItemService;

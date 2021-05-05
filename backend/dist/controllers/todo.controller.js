@@ -66,6 +66,7 @@ var todoController = /** @class */ (function () {
                         return [4 /*yield*/, itemService.getSingleItem(itemId)];
                     case 3:
                         getItem = _a.sent();
+                        console.log(getItem);
                         if (getItem == items_services_1.ItemServiceStatus.UNABLE || !getItem) {
                             return [2 /*return*/, res.status(404).send("unable to find item")];
                         }
@@ -112,7 +113,7 @@ var todoController = /** @class */ (function () {
     };
     todoController.prototype.deleteItems = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, itemId, itemService, itemIdValidity, itemCheck, deleteItem;
+            var tokenAuthentication, authHeader, accessToken, auth, itemIdValidity, itemId, itemService, itemCheck, deleteItem;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -120,20 +121,22 @@ var todoController = /** @class */ (function () {
                         authHeader = req.headers["authorization"];
                         accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
                         auth = tokenAuthentication.tokenAuth(accessToken);
-                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 1];
-                        return [2 /*return*/, res.status(403).send("forbidden")];
+                        itemIdValidity = mongoose_1.isValidObjectId(req.params.id);
+                        if (!(itemIdValidity !== true)) return [3 /*break*/, 1];
+                        return [2 /*return*/, res.status(404).send("item not found")];
                     case 1:
+                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 2];
+                        return [2 /*return*/, res.status(403).send("forbidden")];
+                    case 2:
                         itemId = req.params.id;
                         itemService = new items_services_1.ItemService(auth);
-                        itemIdValidity = mongoose_1.isValidObjectId(itemId);
-                        if (!(itemIdValidity == true)) return [3 /*break*/, 6];
                         return [4 /*yield*/, itemService.checkItemId(itemId)];
-                    case 2:
+                    case 3:
                         itemCheck = _a.sent();
-                        if (!(itemCheck.length === 0 || itemCheck === items_services_1.ItemServiceStatus.ERROR)) return [3 /*break*/, 3];
+                        if (!(itemCheck.length === 0 || itemCheck === items_services_1.ItemServiceStatus.ERROR)) return [3 /*break*/, 4];
                         return [2 /*return*/, res.status(404).send("item does not exist")];
-                    case 3: return [4 /*yield*/, itemService.deleteItem(itemId)];
-                    case 4:
+                    case 4: return [4 /*yield*/, itemService.deleteItem(itemId)];
+                    case 5:
                         deleteItem = _a.sent();
                         if (deleteItem == items_services_1.ItemServiceStatus.UNABLE || !deleteItem) {
                             return [2 /*return*/, res.status(500).send("unable to delete task")];
@@ -141,10 +144,8 @@ var todoController = /** @class */ (function () {
                         else {
                             return [2 /*return*/, res.status(202).send("successfully deleted task ")];
                         }
-                        _a.label = 5;
-                    case 5: return [3 /*break*/, 7];
-                    case 6: return [2 /*return*/, res.status(404).send("item does not exist")];
-                    case 7: return [2 /*return*/];
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -172,7 +173,7 @@ var todoController = /** @class */ (function () {
     };
     todoController.prototype.updateItem = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, itemIdValidity, itemId, itemIdValidity_1, itemService, itemCheck, task, status_2, itemService_1, patchTask;
+            var tokenAuthentication, authHeader, accessToken, auth, itemIdValidity, itemId, itemIdValidity_1, itemService, itemCheck, task, status_2, itemService_1, checkItemUserId, patchTask;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -189,7 +190,7 @@ var todoController = /** @class */ (function () {
                     case 2:
                         itemId = req.params.id;
                         itemIdValidity_1 = mongoose_1.isValidObjectId(itemId);
-                        if (!(itemIdValidity_1 == true)) return [3 /*break*/, 7];
+                        if (!(itemIdValidity_1 == true)) return [3 /*break*/, 9];
                         itemService = new items_services_1.ItemService(auth);
                         return [4 /*yield*/, itemService.checkItemId(itemId)];
                     case 3:
@@ -200,19 +201,27 @@ var todoController = /** @class */ (function () {
                         task = req.body.task;
                         status_2 = req.body.status;
                         itemService_1 = new items_services_1.ItemService(auth);
-                        return [4 /*yield*/, itemService_1.updateTask(auth.user._id, itemId, task, status_2)];
-                    case 5:
+                        if (!(!task || status_2 == (undefined || null))) return [3 /*break*/, 5];
+                        return [2 /*return*/, res.status(400).send("please enter all fields correctly")];
+                    case 5: return [4 /*yield*/, itemService_1.getSingleItem(itemId)];
+                    case 6:
+                        checkItemUserId = _a.sent();
+                        return [4 /*yield*/, itemService_1.updateTask(checkItemUserId.userId, itemId, task, status_2)];
+                    case 7:
                         patchTask = _a.sent();
                         if (patchTask == items_services_1.ItemServiceStatus.ERROR) {
                             return [2 /*return*/, res.status(400).send("failed to edit task")];
                         }
+                        else if (patchTask == items_services_1.ItemServiceStatus.FORBIDDEN) {
+                            return [2 /*return*/, res.status(403).send("forbidden")];
+                        }
                         else {
                             return [2 /*return*/, res.send("successfully edited task")];
                         }
-                        _a.label = 6;
-                    case 6: return [3 /*break*/, 8];
-                    case 7: return [2 /*return*/, res.status(404).send("item does not exist")];
-                    case 8: return [2 /*return*/];
+                        _a.label = 8;
+                    case 8: return [3 /*break*/, 10];
+                    case 9: return [2 /*return*/, res.status(404).send("item does not exist")];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

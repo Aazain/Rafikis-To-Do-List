@@ -1,8 +1,9 @@
+import e, { response } from "express";
 import { QueryOptions } from "mongoose"
 import { Items } from "../models/todo.model"
 
 export enum ItemServiceStatus{
-    UNABLE = "UNABLE", ERROR = "ItemServiceError", SUCCESS = "ItemServiceSuccess"
+    UNABLE = "UNABLE", ERROR = "ItemServiceError", SUCCESS = "ItemServiceSuccess", FORBIDDEN = "Forbidden"
 }
 
 interface CurrentUserData{
@@ -23,7 +24,6 @@ interface ItemData{
 
 export class ItemService{
     currentUser: CurrentUserData;
-    itemStatus!: ItemServiceStatus;
 
     constructor(currentUser: CurrentUserData){
         this.currentUser = currentUser
@@ -32,60 +32,30 @@ export class ItemService{
     checkItemId(params: string){
         return Items.find({_id: params}, (err: Error)=>{
             if(err){
-                this.itemStatus = ItemServiceStatus.ERROR
-                return this.itemStatus
+                return ItemServiceStatus.ERROR
             }
         })
     }
 
     getSingleItem(params: string){
         const id = params
-        return Items.findById(id, (err: Error, result: ItemData)=>{
+        return Items.findOne({_id: id}, (err: Error, result: ItemData)=>{
             if(err || result == null){
-                this.itemStatus = ItemServiceStatus.UNABLE;
-                return this.itemStatus;
+                return ItemServiceStatus.UNABLE;
             }
             else if(this.currentUser.user._id !== result.userId){
-                this.itemStatus = ItemServiceStatus.ERROR
-                return this.itemStatus
+                return ItemServiceStatus.ERROR
             }
             else{
                 return result
             }
-        })
-
+        }, {new: true});
     }
-
-    getSingleItems(params: string){
-        const id = params
-        try{
-            const promide = new Promise (async(reject, resolve)=>{
-                Items.findById(id, (err: Error, result: ItemData)=>{
-                    if(err || result == null){
-                        reject(ItemServiceStatus.UNABLE)
-        
-                    }
-                    else if(this.currentUser.user._id !== result.userId){
-                        reject(ItemServiceStatus.ERROR)
-        
-                    }
-                    else{
-                         resolve(result)
-                    }
-                })
-            })
-            return promide
-        }
-        catch(err){
-            return err
-        }
-    }
-
+    
     getItemList(){
         return Items.find({userId: this.currentUser.user._id}, (err: Error, result: object)=>{
             if(err){
-                this.itemStatus = ItemServiceStatus.UNABLE;
-                return this.itemStatus;
+                return ItemServiceStatus.UNABLE;
             }
             else{
                 return result
@@ -94,16 +64,19 @@ export class ItemService{
     }
 
     deleteItem(itemId: string){
-        return Items.findByIdAndRemove({_id: itemId, userId: this.currentUser.user._id}, {useFindAndModify: false}, (err: Error, result: any)=>{
-            if(err){
-                this.itemStatus = ItemServiceStatus.UNABLE;
-                return this.itemStatus;
-            }
-            else{
-                return ItemServiceStatus.SUCCESS
-            }
+        const ItemDeletePromise = new Promise(async(reject, resolve)=>{
+            Items.findByIdAndRemove({_id: itemId, userId: this.currentUser.user._id}, {useFindAndModify: false}, (err: Error, result: any)=>{
+                if(err){
+                    reject(ItemServiceStatus.UNABLE)
+                }
+                else{
+                    return ItemServiceStatus.SUCCESS
+                }
+            })
         })
-
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     newTask(userId: string, task: string, status: boolean){
@@ -117,13 +90,16 @@ export class ItemService{
             return ItemServiceStatus.SUCCESS
         })
         .catch((err: Error)=>{
-            this.itemStatus = ItemServiceStatus.UNABLE;
-            return this.itemStatus;
+            return ItemServiceStatus.UNABLE;
         })
     }
 
     updateTask(userId: string, itemId: string, task: string, status: boolean){
         const updatePromise = new Promise(async (resolve, reject)=>{
+            if(userId !== this.currentUser.user._id){
+                reject(ItemServiceStatus.FORBIDDEN)
+            }
+            else{
                 await Items.findOneAndUpdate({
                     userId,
                     _id: itemId
@@ -140,8 +116,16 @@ export class ItemService{
                     else{
                         resolve(ItemServiceStatus.SUCCESS)
                     }
-                }
-            )
+                })
+            }
+        })
+        .catch(err =>{
+            if(err == "ItemServiceError"){
+                return ItemServiceStatus.ERROR
+            }
+            else if(err == "Forbidden"){
+                return ItemServiceStatus.FORBIDDEN
+            }
         })
         return updatePromise
     }
