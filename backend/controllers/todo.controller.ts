@@ -28,12 +28,11 @@ export class todoController{
                 const itemId = req.params.id
                 const itemService = new ItemService(auth)
                 const getItem: any = await itemService.getSingleItem(itemId)
-                console.log(getItem)
-                if(getItem == ItemServiceStatus.UNABLE || !getItem){
-                    return res.status(404).send("unable to find item")
-                }
-                else if(getItem == ItemServiceStatus.ERROR){
+                if(getItem == ItemServiceStatus.ERROR || getItem == ItemServiceStatus.FORBIDDEN){
                     return res.status(403).send("forbidden")
+                }
+                else if(getItem == ItemServiceStatus.UNABLE || !getItem){
+                    return res.status(404).send("unable to find item")
                 }
                 else{
                     return res.status(200).send(getItem)
@@ -68,7 +67,7 @@ export class todoController{
         const auth = tokenAuthentication.tokenAuth(accessToken);
         const itemIdValidity = isValidObjectId(req.params.id)
         if(itemIdValidity !== true){
-            return res.status(404).send("item not found")
+            return res.status(404).send("item does not exist")
         }
         else{
             if (auth == TokenStatus.ERROR){
@@ -78,16 +77,20 @@ export class todoController{
                 const itemId = req.params.id;
                 const itemService = new ItemService(auth);
                     const itemCheck: any = await itemService.checkItemId(itemId)
-                    if(itemCheck.length === 0 || itemCheck === ItemServiceStatus.ERROR){
+                    if(itemCheck.length == 0){
                         return res.status(404).send("item does not exist")
                     }
                     else{
-                        const deleteItem: any = await itemService.deleteItem(itemId);
+                        const itemData = await itemService.getSingleItem(itemId)
+                        const deleteItem: any = await itemService.deleteItem(itemId, itemData.userId);
                         if (deleteItem == ItemServiceStatus.UNABLE || !deleteItem){
                             return res.status(500).send("unable to delete task")
                         }
+                        else if(deleteItem == ItemServiceStatus.FORBIDDEN){
+                            return res.status(403).send("forbidden")
+                        }
                         else{
-                            return res.status(202).send("successfully deleted task ")
+                            return res.status(202).send("successfully deleted task")
                         }
                     }
             }
@@ -146,16 +149,21 @@ export class todoController{
                             return res.status(400).send("please enter all fields correctly")
                         }
                         else{
-                            const checkItemUserId = await itemService.getSingleItem(itemId)
-                            const patchTask: any = await itemService.updateTask(checkItemUserId.userId, itemId, task, status)
-                            if(patchTask == ItemServiceStatus.ERROR){
-                                return res.status(400).send("failed to edit task")
-                            }
-                            else if(patchTask == ItemServiceStatus.FORBIDDEN){
+                            const checkItemUserId: any = await itemService.getSingleItem(itemId)
+                            if(checkItemUserId == ItemServiceStatus.FORBIDDEN){
                                 return res.status(403).send("forbidden")
                             }
                             else{
-                                return res.send("successfully edited task")
+                                const patchTask: any = await itemService.updateTask(checkItemUserId.userId, itemId, task, status)
+                                if(patchTask == ItemServiceStatus.ERROR){
+                                    return res.status(400).send("failed to edit task")
+                                }
+                                else if(patchTask == ItemServiceStatus.FORBIDDEN){
+                                    return res.status(403).send("forbidden")
+                                }
+                                else{
+                                    return res.send("successfully edited task")
+                                }
                             }
                         }
                     }

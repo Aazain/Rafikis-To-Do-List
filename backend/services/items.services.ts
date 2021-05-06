@@ -29,27 +29,40 @@ export class ItemService{
         this.currentUser = currentUser
     }
 
-    checkItemId(params: string){
-        return Items.find({_id: params}, (err: Error)=>{
-            if(err){
-                return ItemServiceStatus.ERROR
-            }
-        })
+    checkItemId(params: string = "fawfaw"){
+        return Items.find({_id: params})
     }
 
     getSingleItem(params: string){
         const id = params
-        return Items.findOne({_id: id}, (err: Error, result: ItemData)=>{
-            if(err || result == null){
-                return ItemServiceStatus.UNABLE;
+        const findOnePromise: any = new Promise(async (reject, resolve)=>{
+            await Items.findOne({_id: id}, (err: Error, result: ItemData)=>{
+                if(err || result == null){
+                    reject(ItemServiceStatus.UNABLE)
+                }
+                else if(result.userId !== this.currentUser.user._id){
+                    reject(ItemServiceStatus.FORBIDDEN)
+                }
+                else{
+                    resolve(result)
+                }
+            }, {new: true})
+        })
+        .catch((result)=>{
+            if(result == ItemServiceStatus.UNABLE){
+                return ItemServiceStatus.UNABLE
             }
-            else if(this.currentUser.user._id !== result.userId){
+            else if(result == ItemServiceStatus.FORBIDDEN){
+                return ItemServiceStatus.FORBIDDEN
+            }
+            else if(result == ItemServiceStatus.ERROR){
                 return ItemServiceStatus.ERROR
             }
             else{
                 return result
             }
-        }, {new: true});
+        })
+        return findOnePromise
     }
     
     getItemList(){
@@ -63,20 +76,35 @@ export class ItemService{
         })
     }
 
-    deleteItem(itemId: string){
+    deleteItem(itemId: string, userId: string){
         const ItemDeletePromise = new Promise(async(reject, resolve)=>{
-            Items.findByIdAndRemove({_id: itemId, userId: this.currentUser.user._id}, {useFindAndModify: false}, (err: Error, result: any)=>{
+            await Items.findOneAndDelete({_id: itemId, userId}, {useFindAndModify: false}, async (err: Error)=>{
                 if(err){
                     reject(ItemServiceStatus.UNABLE)
                 }
                 else{
-                    return ItemServiceStatus.SUCCESS
+                    const checkDelete = await Items.find({_id: itemId})
+                    if(checkDelete.length !== 0){
+                        reject(ItemServiceStatus.FORBIDDEN)
+                    }
+                    else{
+                        resolve(ItemServiceStatus.SUCCESS)
+                    }
                 }
             })
         })
         .catch(err => {
-            console.log(err)
+            if(err == ItemServiceStatus.UNABLE){
+                return ItemServiceStatus.UNABLE
+            }
+            else if(err == ItemServiceStatus.FORBIDDEN){
+                return ItemServiceStatus.FORBIDDEN
+            }
+            else{
+                return ItemServiceStatus.SUCCESS
+            }
         })
+        return ItemDeletePromise
     }
 
     newTask(userId: string, task: string, status: boolean){
@@ -120,10 +148,10 @@ export class ItemService{
             }
         })
         .catch(err =>{
-            if(err == "ItemServiceError"){
+            if(err == ItemServiceStatus.ERROR){
                 return ItemServiceStatus.ERROR
             }
-            else if(err == "Forbidden"){
+            else if(err == ItemServiceStatus.FORBIDDEN){
                 return ItemServiceStatus.FORBIDDEN
             }
         })

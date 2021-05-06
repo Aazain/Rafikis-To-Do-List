@@ -50,26 +50,48 @@ var ItemService = /** @class */ (function () {
         this.currentUser = currentUser;
     }
     ItemService.prototype.checkItemId = function (params) {
-        return todo_model_1.Items.find({ _id: params }, function (err) {
-            if (err) {
-                return ItemServiceStatus.ERROR;
-            }
-        });
+        if (params === void 0) { params = "fawfaw"; }
+        return todo_model_1.Items.find({ _id: params });
     };
     ItemService.prototype.getSingleItem = function (params) {
         var _this = this;
         var id = params;
-        return todo_model_1.Items.findOne({ _id: id }, function (err, result) {
-            if (err || result == null) {
+        var findOnePromise = new Promise(function (reject, resolve) { return __awaiter(_this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, todo_model_1.Items.findOne({ _id: id }, function (err, result) {
+                            if (err || result == null) {
+                                reject(ItemServiceStatus.UNABLE);
+                            }
+                            else if (result.userId !== _this.currentUser.user._id) {
+                                reject(ItemServiceStatus.FORBIDDEN);
+                            }
+                            else {
+                                resolve(result);
+                            }
+                        }, { new: true })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); })
+            .catch(function (result) {
+            if (result == ItemServiceStatus.UNABLE) {
                 return ItemServiceStatus.UNABLE;
             }
-            else if (_this.currentUser.user._id !== result.userId) {
+            else if (result == ItemServiceStatus.FORBIDDEN) {
+                return ItemServiceStatus.FORBIDDEN;
+            }
+            else if (result == ItemServiceStatus.ERROR) {
                 return ItemServiceStatus.ERROR;
             }
             else {
                 return result;
             }
-        }, { new: true });
+        });
+        return findOnePromise;
     };
     ItemService.prototype.getItemList = function () {
         return todo_model_1.Items.find({ userId: this.currentUser.user._id }, function (err, result) {
@@ -81,24 +103,52 @@ var ItemService = /** @class */ (function () {
             }
         });
     };
-    ItemService.prototype.deleteItem = function (itemId) {
+    ItemService.prototype.deleteItem = function (itemId, userId) {
         var _this = this;
         var ItemDeletePromise = new Promise(function (reject, resolve) { return __awaiter(_this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
-                todo_model_1.Items.findByIdAndRemove({ _id: itemId, userId: this.currentUser.user._id }, { useFindAndModify: false }, function (err, result) {
-                    if (err) {
-                        reject(ItemServiceStatus.UNABLE);
-                    }
-                    else {
-                        return ItemServiceStatus.SUCCESS;
-                    }
-                });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, todo_model_1.Items.findOneAndDelete({ _id: itemId, userId: userId }, { useFindAndModify: false }, function (err) { return __awaiter(_this, void 0, void 0, function () {
+                            var checkDelete;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        if (!err) return [3 /*break*/, 1];
+                                        reject(ItemServiceStatus.UNABLE);
+                                        return [3 /*break*/, 3];
+                                    case 1: return [4 /*yield*/, todo_model_1.Items.find({ _id: itemId })];
+                                    case 2:
+                                        checkDelete = _a.sent();
+                                        if (checkDelete.length !== 0) {
+                                            reject(ItemServiceStatus.FORBIDDEN);
+                                        }
+                                        else {
+                                            resolve(ItemServiceStatus.SUCCESS);
+                                        }
+                                        _a.label = 3;
+                                    case 3: return [2 /*return*/];
+                                }
+                            });
+                        }); })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         }); })
             .catch(function (err) {
-            console.log(err);
+            if (err == ItemServiceStatus.UNABLE) {
+                return ItemServiceStatus.UNABLE;
+            }
+            else if (err == ItemServiceStatus.FORBIDDEN) {
+                return ItemServiceStatus.FORBIDDEN;
+            }
+            else {
+                return ItemServiceStatus.SUCCESS;
+            }
         });
+        return ItemDeletePromise;
     };
     ItemService.prototype.newTask = function (userId, task, status) {
         var itemList = new todo_model_1.Items({
@@ -149,10 +199,10 @@ var ItemService = /** @class */ (function () {
             });
         }); })
             .catch(function (err) {
-            if (err == "ItemServiceError") {
+            if (err == ItemServiceStatus.ERROR) {
                 return ItemServiceStatus.ERROR;
             }
-            else if (err == "Forbidden") {
+            else if (err == ItemServiceStatus.FORBIDDEN) {
                 return ItemServiceStatus.FORBIDDEN;
             }
         });

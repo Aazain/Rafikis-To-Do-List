@@ -66,12 +66,11 @@ var todoController = /** @class */ (function () {
                         return [4 /*yield*/, itemService.getSingleItem(itemId)];
                     case 3:
                         getItem = _a.sent();
-                        console.log(getItem);
-                        if (getItem == items_services_1.ItemServiceStatus.UNABLE || !getItem) {
-                            return [2 /*return*/, res.status(404).send("unable to find item")];
-                        }
-                        else if (getItem == items_services_1.ItemServiceStatus.ERROR) {
+                        if (getItem == items_services_1.ItemServiceStatus.ERROR || getItem == items_services_1.ItemServiceStatus.FORBIDDEN) {
                             return [2 /*return*/, res.status(403).send("forbidden")];
+                        }
+                        else if (getItem == items_services_1.ItemServiceStatus.UNABLE || !getItem) {
+                            return [2 /*return*/, res.status(404).send("unable to find item")];
                         }
                         else {
                             return [2 /*return*/, res.status(200).send(getItem)];
@@ -113,7 +112,7 @@ var todoController = /** @class */ (function () {
     };
     todoController.prototype.deleteItems = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, itemIdValidity, itemId, itemService, itemCheck, deleteItem;
+            var tokenAuthentication, authHeader, accessToken, auth, itemIdValidity, itemId, itemService, itemCheck, itemData, deleteItem;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -123,7 +122,7 @@ var todoController = /** @class */ (function () {
                         auth = tokenAuthentication.tokenAuth(accessToken);
                         itemIdValidity = mongoose_1.isValidObjectId(req.params.id);
                         if (!(itemIdValidity !== true)) return [3 /*break*/, 1];
-                        return [2 /*return*/, res.status(404).send("item not found")];
+                        return [2 /*return*/, res.status(404).send("item does not exist")];
                     case 1:
                         if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 2];
                         return [2 /*return*/, res.status(403).send("forbidden")];
@@ -133,19 +132,25 @@ var todoController = /** @class */ (function () {
                         return [4 /*yield*/, itemService.checkItemId(itemId)];
                     case 3:
                         itemCheck = _a.sent();
-                        if (!(itemCheck.length === 0 || itemCheck === items_services_1.ItemServiceStatus.ERROR)) return [3 /*break*/, 4];
+                        if (!(itemCheck.length == 0)) return [3 /*break*/, 4];
                         return [2 /*return*/, res.status(404).send("item does not exist")];
-                    case 4: return [4 /*yield*/, itemService.deleteItem(itemId)];
+                    case 4: return [4 /*yield*/, itemService.getSingleItem(itemId)];
                     case 5:
+                        itemData = _a.sent();
+                        return [4 /*yield*/, itemService.deleteItem(itemId, itemData.userId)];
+                    case 6:
                         deleteItem = _a.sent();
                         if (deleteItem == items_services_1.ItemServiceStatus.UNABLE || !deleteItem) {
                             return [2 /*return*/, res.status(500).send("unable to delete task")];
                         }
-                        else {
-                            return [2 /*return*/, res.status(202).send("successfully deleted task ")];
+                        else if (deleteItem == items_services_1.ItemServiceStatus.FORBIDDEN) {
+                            return [2 /*return*/, res.status(403).send("forbidden")];
                         }
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        else {
+                            return [2 /*return*/, res.status(202).send("successfully deleted task")];
+                        }
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -190,7 +195,7 @@ var todoController = /** @class */ (function () {
                     case 2:
                         itemId = req.params.id;
                         itemIdValidity_1 = mongoose_1.isValidObjectId(itemId);
-                        if (!(itemIdValidity_1 == true)) return [3 /*break*/, 9];
+                        if (!(itemIdValidity_1 == true)) return [3 /*break*/, 10];
                         itemService = new items_services_1.ItemService(auth);
                         return [4 /*yield*/, itemService.checkItemId(itemId)];
                     case 3:
@@ -206,8 +211,10 @@ var todoController = /** @class */ (function () {
                     case 5: return [4 /*yield*/, itemService_1.getSingleItem(itemId)];
                     case 6:
                         checkItemUserId = _a.sent();
-                        return [4 /*yield*/, itemService_1.updateTask(checkItemUserId.userId, itemId, task, status_2)];
-                    case 7:
+                        if (!(checkItemUserId == items_services_1.ItemServiceStatus.FORBIDDEN)) return [3 /*break*/, 7];
+                        return [2 /*return*/, res.status(403).send("forbidden")];
+                    case 7: return [4 /*yield*/, itemService_1.updateTask(checkItemUserId.userId, itemId, task, status_2)];
+                    case 8:
                         patchTask = _a.sent();
                         if (patchTask == items_services_1.ItemServiceStatus.ERROR) {
                             return [2 /*return*/, res.status(400).send("failed to edit task")];
@@ -218,10 +225,10 @@ var todoController = /** @class */ (function () {
                         else {
                             return [2 /*return*/, res.send("successfully edited task")];
                         }
-                        _a.label = 8;
-                    case 8: return [3 /*break*/, 10];
-                    case 9: return [2 /*return*/, res.status(404).send("item does not exist")];
-                    case 10: return [2 /*return*/];
+                        _a.label = 9;
+                    case 9: return [3 /*break*/, 11];
+                    case 10: return [2 /*return*/, res.status(404).send("item does not exist")];
+                    case 11: return [2 /*return*/];
                 }
             });
         });
