@@ -62,7 +62,7 @@ var userController = /** @class */ (function () {
                     case 1:
                         getAllUsers = _a.sent();
                         if (getAllUsers == null) {
-                            return [2 /*return*/, res.status(404).send("Unable to find Users")];
+                            return [2 /*return*/, res.status(404).send({ message: "Unable to find Users" })];
                         }
                         else {
                             res.send(getAllUsers);
@@ -84,20 +84,20 @@ var userController = /** @class */ (function () {
                         validateEmail = new email_validation_1.emailValidation;
                         emailCheck = validateEmail.validate(userEmail);
                         if (!!userPassword) return [3 /*break*/, 1];
-                        return [2 /*return*/, res.status(403).send("please enter a password")];
+                        return [2 /*return*/, res.status(403).send({ message: "please enter a password" })];
                     case 1:
                         if (!(emailCheck == true)) return [3 /*break*/, 3];
                         return [4 /*yield*/, userService.createUser()];
                     case 2:
                         createUser = _a.sent();
                         if (createUser == UserControllerService.ERROR) {
-                            return [2 /*return*/, res.status(409).send("a user with this email already exists")];
+                            return [2 /*return*/, res.status(409).send({ message: "a user with this email already exists" })];
                         }
                         else {
-                            return [2 /*return*/, res.status(201).send("successfully created user")];
+                            return [2 /*return*/, res.status(201).send({ message: "successfully created user" })];
                         }
                         return [3 /*break*/, 4];
-                    case 3: return [2 /*return*/, res.status(403).send("please enter a valid email and password")];
+                    case 3: return [2 /*return*/, res.status(403).send({ message: "please enter a valid email and password" })];
                     case 4: return [2 /*return*/];
                 }
             });
@@ -119,19 +119,19 @@ var userController = /** @class */ (function () {
                     case 1:
                         loginUser = _a.sent();
                         if (loginUser == password_services_1.PasswordAuth.INCORRECT) {
-                            return [2 /*return*/, res.status(403).send("incorrect email or password")];
+                            return [2 /*return*/, res.status(403).send({ message: "incorrect email or password" })];
                         }
                         else if (!userPassword) {
-                            return [2 /*return*/, res.status(403).send("please enter a password")];
+                            return [2 /*return*/, res.status(403).send({ message: "please enter a password" })];
                         }
                         else if (loginUser == UserControllerService.ERROR) {
-                            return [2 /*return*/, res.status(404).send("user does not exist")];
+                            return [2 /*return*/, res.status(404).send({ message: "user does not exist" })];
                         }
                         else {
                             return [2 /*return*/, res.send(loginUser)];
                         }
                         return [3 /*break*/, 3];
-                    case 2: return [2 /*return*/, res.status(403).send("please enter a valid email")];
+                    case 2: return [2 /*return*/, res.status(403).send({ message: "please enter a valid email" })];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -152,10 +152,10 @@ var userController = /** @class */ (function () {
                         refreshTokenService = new token_services_1.TokenService();
                         refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser);
                         if (refreshAccess == token_services_1.TokenStatus.INVALID) {
-                            return [2 /*return*/, res.status(400).send("invalid token")];
+                            return [2 /*return*/, res.status(400).send({ message: "invalid token" })];
                         }
                         else if (refreshAccess == token_services_1.TokenStatus.ERROR) {
-                            return [2 /*return*/, res.status(400).send("please provide an access token")];
+                            return [2 /*return*/, res.status(400).send({ message: "please provide an access token" })];
                         }
                         else {
                             return [2 /*return*/, res.status(200).send(refreshAccess)];
