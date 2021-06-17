@@ -1,14 +1,14 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {BrowserRouter as Router, Route } from "react-router-dom";
 import List from './List';
-import UserInputs from './UserInputs';
+import UserRegistration from './UserRegistration';
 
 
 function App() {
   return (
     <Router>
-      <Route path={["/", "/login"]} exact component={UserInputs}></Route>
-      <Route path="/signup" component={UserInputs}></Route>
+      <Route path={["/", "/login"]} component={UserRegistration} exact></Route>
+      <Route path="/signup" component={UserRegistration}></Route>
       <Route path="/list" component={List}></Route>
     </Router>
   );

@@ -5,7 +5,7 @@ function ListItem(props: any){
         <li>
             <input type="checkbox" className="taskStatus" />
             <button className="editBtn"></button>
-            <button className="deleteBtn"></button>
+            <button onClick={props.onClick} id={props.itemId}  className="deleteBtn"></button>
             <p>{props.task}</p>
         </li>
     )
