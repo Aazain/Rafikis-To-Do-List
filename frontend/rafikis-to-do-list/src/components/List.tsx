@@ -62,6 +62,9 @@ function List(){
          if(editInputValue === "" || !editInputValue){
             swal("Error", "Please edit the task", "error");
          }
+         else{
+            
+         }
       }
    }
 
