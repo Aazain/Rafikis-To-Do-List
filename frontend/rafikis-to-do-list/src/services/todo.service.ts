@@ -47,12 +47,22 @@ export function createTask(task: string){
     }
 }
 
-export function deleteTask(id: string){
+export async function deleteTask(id: string){
     return fetch(`${env()}/todo/${id}`, {
         method: "DELETE",
         headers
+    });
+}
+
+
+export async function editTask(id: string, task: string, status: boolean){
+    return fetch(`${env()}/todo/${id}`, {
+        method: "Patch",
+        headers,
+        body: JSON.stringify({
+            task,
+            status
+        })
     })
-    .then(res => {
-        console.log(res)
-        return res})
+    .then(res=>{return res})
 }
