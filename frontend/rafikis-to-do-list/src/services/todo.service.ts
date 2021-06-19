@@ -57,7 +57,7 @@ export async function deleteTask(id: string){
 
 export async function editTask(id: string, task: string, status: boolean){
     return fetch(`${env()}/todo/${id}`, {
-        method: "Patch",
+        method: "PATCH",
         headers,
         body: JSON.stringify({
             task,

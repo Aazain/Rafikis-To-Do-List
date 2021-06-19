@@ -22,7 +22,6 @@ app.use((req, res, next) => {
     next();
 })
 
-
 const user = new userController(app)
 app.get("/users", user.getUsers);
 app.post("/users/signup", user.signUp);
