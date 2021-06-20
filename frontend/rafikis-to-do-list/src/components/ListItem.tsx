@@ -1,30 +1,34 @@
-/* eslint-disable no-sequences */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-import React, { useState } from "react";
-import { useEffect } from "react";
+import { useState } from "react";
+import Editor from "./Editor"
+
 
 function ListItem(props: any){
 
+    //Editor Modal Hooks
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     return(
         <li>
-            {/* editing ui (will be a modal in future!!!!) */}
-            <div className="editingUi">
-                <input type="text" className="editTask" 
-                    onKeyDown={props.clickOnEnter} 
-
-                />
-                <button className="confirmEdit">confirm</button> 
-                <button className="CancelEdit">Cancel</button> 
-            </div>
+            {/* editor component */}
+            <Editor 
+                createdAt={props.createdAt} 
+                updatedAt={props.updatedAt} 
+                modalShow={show} 
+                handleClose={handleClose} 
+                itemStatus={props.status} 
+            />
 
             {/* default ui */}
             <input type="checkbox" className="taskStatus" 
                 checked={props.status} 
                 onChange={(event)=>{props.editTaskStatus(props.itemId, event)}} 
             />
-            <button className="editBtn">Edit</button>
+            <button className="editBtn" onClick={handleShow}>Edit</button>
             <button className="deleteBtn" onClick={()=>{props.deleteBtnClick(props.itemId)}}>Delete</button>
             <p>{props.task}</p>
+            <hr />
         </li>
     )
 }

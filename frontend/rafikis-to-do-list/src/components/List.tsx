@@ -50,10 +50,7 @@ function List(){
 
    function enter(event: any){
       if(event.keyCode === 13) { 
-         let clickBtn: any;
-            if(event.target.className === "editTask"){
-               clickBtn = document.getElementsByClassName("confirmEdit")[0] as HTMLButtonElement
-            }
+         let clickBtn = document.getElementsByClassName("addTaskBtn")[0] as HTMLButtonElement
          clickBtn.click()
       }
    }
@@ -85,7 +82,15 @@ function List(){
            <button className="logOutButton" onClick={logOutUser}>Log Out</button>
            <ul>
               {listData.map((listData: any) => {
-                 return <ListItem deleteBtnClick={deleteTaskItem} editTaskStatus={editTaskStatus} clickOnEnter={enter} key={listData._id} itemId={listData._id} task={listData.task} status={listData.status} />;
+                 return <ListItem 
+                     deleteBtnClick={deleteTaskItem} 
+                     editTaskStatus={editTaskStatus} 
+                     clickOnEnter={enter} key={listData._id} 
+                     itemId={listData._id} task={listData.task} 
+                     status={listData.status} 
+                     createdAt={listData.createdAt} 
+                     updatedAt={listData.updatedAt} 
+                 />;
               })}
            </ul>
            <input type="text" value={inputValue} onKeyDown={enter} onChange={handleChange} className="addTask" placeholder="Enter Task"/>
