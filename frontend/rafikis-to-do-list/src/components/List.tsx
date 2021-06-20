@@ -7,13 +7,8 @@ import ListItem from "./ListItem";
 import swal from "sweetalert";
 
 function List(){
-   let [listData, setData] = useState([]);
+   let [listData, setData] = useState<any>([]);
    const [inputValue, setValue] = useState("");
-   const [editInputValue, setEditValue] = useState({
-      id: "",
-      task: "",
-      status: true || false
-  })
 
    //Loads database array when page loads
    useEffect(()=>{
@@ -53,31 +48,47 @@ function List(){
       }
    }
 
-   async function editTaskItem(event: any){
-      if(event.target.className === "taskStatus"){
-         console.log(event.target, editInputValue)
+   function enter(event: any){
+      if(event.keyCode === 13) { 
+         let clickBtn: any;
+            if(event.target.className === "editTask"){
+               clickBtn = document.getElementsByClassName("confirmEdit")[0] as HTMLButtonElement
+            }
+         clickBtn.click()
+      }
+   }
+
+
+   //Iterates over array of items and finds item based on id, if found the status is updated only
+   async function editTaskStatus(id: string, event: any){
+      let editData = null
+      for(let i = 0; i < listData.length; i++){
+         const currentListData = listData[i]
+         if(currentListData._id === id){
+            editData = currentListData
+            break
+         }
+      }
+      if(!editData){
+         swal("Error", "Error Editing Task Status", "error")
       }
       else{
-         if(!editInputValue.task|| editInputValue.task === "" || editInputValue.task === " "){
-            swal("Error", "Please edit the task", "error");
-         }
-         else{
-            await editTask(editInputValue.id, editInputValue.task, editInputValue.status)
-            const result = await getList()
-            setData(result)
-         }
-      }        //FOR LOOP
+         await editTask(id, editData.task, event.target.checked)
+         const result = await getList()
+         setData(result)
+      }
    }
+
 
     return (
         <div className="toDoListContainer">
            <button className="logOutButton" onClick={logOutUser}>Log Out</button>
            <ul>
               {listData.map((listData: any) => {
-                 return <ListItem deleteBtnClick={deleteTaskItem} setEditValue={setEditValue} confirmTaskEdit={editTaskItem} key={listData._id} itemId={listData._id} task={listData.task} status={listData.status} />;
+                 return <ListItem deleteBtnClick={deleteTaskItem} editTaskStatus={editTaskStatus} clickOnEnter={enter} key={listData._id} itemId={listData._id} task={listData.task} status={listData.status} />;
               })}
            </ul>
-           <input type="text" value={inputValue} onChange={handleChange} className="addTask" placeholder="Enter Task"/>
+           <input type="text" value={inputValue} onKeyDown={enter} onChange={handleChange} className="addTask" placeholder="Enter Task"/>
            <button onClick={createTaskItem} className="addTaskBtn">Add Task</button>
         </div>
      );

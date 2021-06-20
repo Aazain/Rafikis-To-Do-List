@@ -13,10 +13,10 @@ const headers = new Headers({
   })
 
 export function getList(){
-    if (storedToken.accessToken === "undefined" && storedToken.refreshToken === "undefined"){
+    if (storedToken.accessToken === "undefined" || storedToken.refreshToken === "undefined" || !storedToken.accessToken || !storedToken.refreshToken){
         swal('Error', 'Session Expired, Please Log In', 'error')
         .then(function(){window.location.href = "/"})
-        return([{error: "session expired"}])
+        return([{task: "session expired"}])
       }
     else{
         return fetch(`${env()}/todo`, {
