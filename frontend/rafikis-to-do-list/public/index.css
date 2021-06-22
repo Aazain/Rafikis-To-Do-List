@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Permanent+Marker&family=Montserrat&display=swap');
+
+
+    /* font-family: 'Indie Flower', sans-serif;
+    font-family: 'Permanent Marker', sans-serif; */
+
+
+/* OverAll */
+.confirmEdit, .cancelEdit{
+    font-family: 'Indie Flower', sans-serif;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.editorTextItems, .addTask, .editTask{
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-weight: bold;
+}
+
+
+/* List */
+
+
+/* ListItem */
+
+
+/* Editor */
+.modalContainer{
+    text-align: center;
+    padding: 1em;
+}
+
+.editorTextItems{
+    display: flex;
+    flex-direction: column;
+}
+
+.editorButtons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-left: 55%;
+}
+
+.cancelEdit, .confirmEdit{
+    margin-top: 0.2em;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 0.2em;
+    padding: 0.2em 0.8em;
+}
+
+

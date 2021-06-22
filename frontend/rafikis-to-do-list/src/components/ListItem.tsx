@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { editTask } from "../services/todo.service";
 import Editor from "./Editor"
 
 
@@ -13,11 +14,17 @@ function ListItem(props: any){
         <li>
             {/* editor component */}
             <Editor 
+                getList={props.getList}
+                setData={props.setData}
+                itemId={props.itemId}
                 createdAt={props.createdAt} 
                 updatedAt={props.updatedAt} 
+                itemStatus={props.status} 
+                task={props.task}
                 modalShow={show} 
                 handleClose={handleClose} 
-                itemStatus={props.status} 
+                editTask={editTask}
+                enter={props.enter}
             />
 
             {/* default ui */}

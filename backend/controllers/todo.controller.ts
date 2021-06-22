@@ -11,36 +11,6 @@ export class todoController{
         this.app = app
     }
 
-    async getSingleItem(req: Request, res: Response){
-        const tokenAuthentication = new TokenService()
-        const authHeader = req.headers["authorization"]
-        const accessToken = authHeader?.split(" ")[1]
-        const auth = tokenAuthentication.tokenAuth(accessToken);
-        const itemIdValidity = isValidObjectId(req.params.id)
-        if(itemIdValidity !== true){
-            return res.status(404).send("item not found")
-        }
-        else{
-            if(auth == TokenStatus.ERROR){
-                return res.status(403).send("forbidden")
-            }
-            else{
-                const itemId = req.params.id
-                const itemService = new ItemService(auth)
-                const getItem: any = await itemService.getSingleItem(itemId)
-                if(getItem == ItemServiceStatus.ERROR || getItem == ItemServiceStatus.FORBIDDEN){
-                    return res.status(403).send("forbidden")
-                }
-                else if(getItem == ItemServiceStatus.UNABLE || !getItem){
-                    return res.status(404).send("unable to find item")
-                }
-                else{
-                    return res.status(200).send(getItem)
-                }
-            }
-        }
-    }
-
     async getItems(req: Request, res: Response){
         const tokenAuthentication = new TokenService();
             const authHeader = req.headers["authorization"]

@@ -44,43 +44,6 @@ var todoController = /** @class */ (function () {
     function todoController(app) {
         this.app = app;
     }
-    todoController.prototype.getSingleItem = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var tokenAuthentication, authHeader, accessToken, auth, itemIdValidity, itemId, itemService, getItem;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        tokenAuthentication = new token_services_1.TokenService();
-                        authHeader = req.headers["authorization"];
-                        accessToken = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
-                        auth = tokenAuthentication.tokenAuth(accessToken);
-                        itemIdValidity = mongoose_1.isValidObjectId(req.params.id);
-                        if (!(itemIdValidity !== true)) return [3 /*break*/, 1];
-                        return [2 /*return*/, res.status(404).send("item not found")];
-                    case 1:
-                        if (!(auth == token_services_1.TokenStatus.ERROR)) return [3 /*break*/, 2];
-                        return [2 /*return*/, res.status(403).send("forbidden")];
-                    case 2:
-                        itemId = req.params.id;
-                        itemService = new items_services_1.ItemService(auth);
-                        return [4 /*yield*/, itemService.getSingleItem(itemId)];
-                    case 3:
-                        getItem = _a.sent();
-                        if (getItem == items_services_1.ItemServiceStatus.ERROR || getItem == items_services_1.ItemServiceStatus.FORBIDDEN) {
-                            return [2 /*return*/, res.status(403).send("forbidden")];
-                        }
-                        else if (getItem == items_services_1.ItemServiceStatus.UNABLE || !getItem) {
-                            return [2 /*return*/, res.status(404).send("unable to find item")];
-                        }
-                        else {
-                            return [2 /*return*/, res.status(200).send(getItem)];
-                        }
-                        _a.label = 4;
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
     todoController.prototype.getItems = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var tokenAuthentication, authHeader, accessToken, auth, itemService, getItems;

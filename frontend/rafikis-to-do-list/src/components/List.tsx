@@ -12,6 +12,7 @@ function List(){
 
    //Loads database array when page loads
    useEffect(()=>{
+      console.log("nice")
       const getListData = async ()=>{
          setData(await getList())
       }
@@ -49,8 +50,12 @@ function List(){
    }
 
    function enter(event: any){
-      if(event.keyCode === 13) { 
+      if(event.keyCode === 13 && event.target.className === "addTask") { 
          let clickBtn = document.getElementsByClassName("addTaskBtn")[0] as HTMLButtonElement
+         clickBtn.click()
+      }
+      else if(event.keyCode === 13 && event.target.className === "editTask") { 
+         let clickBtn = document.getElementsByClassName("confirmEdit")[0] as HTMLButtonElement
          clickBtn.click()
       }
    }
@@ -83,13 +88,18 @@ function List(){
            <ul>
               {listData.map((listData: any) => {
                  return <ListItem 
-                     deleteBtnClick={deleteTaskItem} 
-                     editTaskStatus={editTaskStatus} 
-                     clickOnEnter={enter} key={listData._id} 
-                     itemId={listData._id} task={listData.task} 
+                     getList={getList}
+                     setData={setData}
+                     key={listData._id} 
+                     itemId={listData._id} 
+                     task={listData.task} 
                      status={listData.status} 
                      createdAt={listData.createdAt} 
                      updatedAt={listData.updatedAt} 
+                     editTask={editTask}
+                     deleteBtnClick={deleteTaskItem} 
+                     editTaskStatus={editTaskStatus} 
+                     enter={enter}
                  />;
               })}
            </ul>
