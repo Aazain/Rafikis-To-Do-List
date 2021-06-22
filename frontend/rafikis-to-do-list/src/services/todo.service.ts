@@ -35,6 +35,9 @@ export function createTask(task: string){
         .then(function(){window.location.href = "/"})
         return([{error: "session expired"}])
     }
+    else if(!task || task === ""){
+        swal('Error', 'Do Not Leave Text Field Empty', 'error')
+    }
     else{
         return fetch(`${env()}/todo`, {
             method: "POST",
@@ -56,13 +59,33 @@ export async function deleteTask(id: string){
 
 
 export async function editTask(id: string, task: string, status: boolean){
-    return fetch(`${env()}/todo/${id}`, {
-        method: "PATCH",
-        headers,
-        body: JSON.stringify({
-            task,
-            status
+    if(!task || task === ""){
+        swal('Error', 'Do Not Leave Text Field Empty', 'error')
+        return "field empty"
+    }
+    else{
+        return fetch(`${env()}/todo/${id}`, {
+            method: "PATCH",
+            headers,
+            body: JSON.stringify({
+                task,
+                status
+            })
         })
+        .then(res=>{return res})
+    }
+}
+
+export async function refreshAccessTokens(){
+    console.log("nice")
+    return fetch(`${env()}/newAccessToken`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": `Bearer ${storedToken.refreshToken}`,
+        },
     })
-    .then(res=>{return res})
+    .then((res)=>{return res.json()})
+    .then((data)=>{localStorage.setItem("accessToken", data.accessToken)}) //handle false refresh
 }

@@ -2,7 +2,6 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { Modal } from "react-bootstrap"
 import swal from "sweetalert"
-import { editTask, getList } from "../services/todo.service"
 
 function Editor(props: any){
     let [displayItemStatus, updateStatusDisplay] = useState("")
@@ -51,9 +50,15 @@ function Editor(props: any){
             props.handleClose()
         }
         else {
-            await editTask(props.itemId, taskEdit, false)
-            const result = await props.getList()
-            props.setData(result)
+            const edit = await props.editTask(props.itemId, taskEdit, false)
+            if(edit === "field empty"){
+                setTaskEdit(props.task)
+                props.handleClose()
+            }
+            else{
+                const result = await props.getList()
+                props.setData(result)
+            }
         }
     }
 

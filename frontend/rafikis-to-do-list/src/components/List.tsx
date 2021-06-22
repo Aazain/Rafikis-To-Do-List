@@ -12,7 +12,6 @@ function List(){
 
    //Loads database array when page loads
    useEffect(()=>{
-      console.log("nice")
       const getListData = async ()=>{
          setData(await getList())
       }
