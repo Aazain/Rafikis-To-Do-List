@@ -15,6 +15,7 @@ export function createNewUser(email: string, password: string){
     })
     .then((res) => res.json())
     .then((data: any)=>{
+        console.log(data)
         if(data.message === "a user with this email already exists"){
             swal("Error", "A user with this email already Exists", 'error')
         }
@@ -23,6 +24,7 @@ export function createNewUser(email: string, password: string){
             .then(()=>{window.location.href = "/login"})
         }
     })
+    .catch((err)=>alert(err))
 }
 
 export function loginUser(email: string, password: string){

@@ -84,28 +84,33 @@ function List(){
 
 
     return (
-        <div className="toDoListContainer">
-           <button className="logOutButton" onClick={logOutUser}>Log Out</button>
-           <ul>
-              {listData.map((listData: any) => {
-                 return <ListItem 
-                     getList={getList}
-                     setData={setData}
-                     key={listData._id} 
-                     itemId={listData._id} 
-                     task={listData.task} 
-                     status={listData.status} 
-                     createdAt={listData.createdAt} 
-                     updatedAt={listData.updatedAt} 
-                     editTask={editTask}
-                     deleteBtnClick={deleteTaskItem} 
-                     editTaskStatus={editTaskStatus} 
-                     enter={enter}
-                 />;
-              })}
-           </ul>
-           <input type="text" value={inputValue} onKeyDown={enter} onChange={handleChange} className="addTask" placeholder="Enter Task"/>
-           <button onClick={createTaskItem} className="addTaskBtn">Add Task</button>
+        <div className="container">
+         <button className="logOutButton" onClick={logOutUser}>Log Out</button>
+            <div className="toDoListContainer">
+               <h1 className="headerTitle">To-Do List</h1>
+               <ul>
+                  {listData.map((listData: any) => {
+                     return <ListItem 
+                           getList={getList}
+                           setData={setData}
+                           key={listData._id} 
+                           itemId={listData._id} 
+                           task={listData.task} 
+                           status={listData.status} 
+                           createdAt={listData.createdAt} 
+                           updatedAt={listData.updatedAt} 
+                           editTask={editTask}
+                           deleteBtnClick={deleteTaskItem} 
+                           editTaskStatus={editTaskStatus} 
+                           enter={enter}
+                     />;
+                  })}
+               </ul>
+               <div className="listFooter">
+                     <input type="text" value={inputValue} onKeyDown={enter} onChange={handleChange} className="addTask" placeholder="Enter Task"/>
+                     <button onClick={createTaskItem} className="addTaskBtn">Add Task</button>
+               </div>
+            </div>
         </div>
      );
 

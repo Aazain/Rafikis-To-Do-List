@@ -28,14 +28,16 @@ function ListItem(props: any){
             />
 
             {/* default ui */}
-            <input type="checkbox" className="taskStatus" 
-                checked={props.status} 
-                onChange={(event)=>{props.editTaskStatus(props.itemId, event)}} 
-            />
-            <button className="editBtn" onClick={handleShow}>Edit</button>
-            <button className="deleteBtn" onClick={()=>{props.deleteBtnClick(props.itemId)}}>Delete</button>
-            <p>{props.task}</p>
-            <hr />
+            <div className="taskList">
+                <input type="checkbox" className="taskStatus" 
+                    checked={props.status} 
+                    onChange={(event)=>{props.editTaskStatus(props.itemId, event)}} 
+                />
+                <button className="deleteBtn" onClick={()=>{props.deleteBtnClick(props.itemId)}}><i className="fas fa-trash-alt fa-2x"></i></button>
+                <button className="editBtn" onClick={handleShow}><i className="fas fa-edit fa-2x"></i></button>
+                <p className="taskItem">{props.task}</p>
+                <hr />
+            </div>
         </li>
     )
 }
