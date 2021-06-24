@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 })
 
 const user = new userController(app)
-app.get("/users", user.getUsers);
 app.post("/users/signup", user.signUp);
 app.post("/users/login", user.logIn);
 app.post("/newAccessToken", user.refreshToken);

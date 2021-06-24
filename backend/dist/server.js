@@ -24,7 +24,6 @@ app.use(function (req, res, next) {
     next();
 });
 var user = new users_controller_1.userController(app);
-app.get("/users", user.getUsers);
 app.post("/users/signup", user.signUp);
 app.post("/users/login", user.logIn);
 app.post("/newAccessToken", user.refreshToken);

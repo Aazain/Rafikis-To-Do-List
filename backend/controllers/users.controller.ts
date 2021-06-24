@@ -17,16 +17,6 @@ export class userController{
         this.app = app;
     }
 
-    async getUsers(req: Request, res: Response) {
-            const users = new userList();
-            const getAllUsers = await users.getUserList()
-            if(getAllUsers == null){
-                return res.status(404).send({message:"Unable to find Users"})
-            }else{
-                res.send(getAllUsers)
-            }
-    }
-
     async signUp(req: Request, res: Response){
             const userEmail = req.body.email
             const userPassword = req.body.password

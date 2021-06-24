@@ -39,7 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = exports.UserControllerService = void 0;
 var user_services_1 = require("../services/user.services");
 var token_services_1 = require("../services/token.services");
-var userlist_services_1 = require("../services/userlist.services");
 var password_services_1 = require("../services/password.services");
 var email_validation_1 = require("../services/email.validation");
 var UserControllerService;
@@ -51,27 +50,6 @@ var userController = /** @class */ (function () {
     function userController(app) {
         this.app = app;
     }
-    userController.prototype.getUsers = function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var users, getAllUsers;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        users = new userlist_services_1.userList();
-                        return [4 /*yield*/, users.getUserList()];
-                    case 1:
-                        getAllUsers = _a.sent();
-                        if (getAllUsers == null) {
-                            return [2 /*return*/, res.status(404).send({ message: "Unable to find Users" })];
-                        }
-                        else {
-                            res.send(getAllUsers);
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     userController.prototype.signUp = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var userEmail, userPassword, userService, validateEmail, emailCheck, createUser;
