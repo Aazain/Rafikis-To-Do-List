@@ -32,6 +32,10 @@ var TokenService = /** @class */ (function () {
                     _this.tokenServiceStatus = TokenStatus.INVALID;
                     return _this.tokenServiceStatus;
                 }
+                else if (token.user.email != currentUser.email) {
+                    _this.tokenServiceStatus = TokenStatus.INVALID;
+                    return _this.tokenServiceStatus;
+                }
                 else {
                     var createNewToken = _this.createAccessToken(currentUser);
                     return { accessToken: createNewToken };

@@ -8,7 +8,7 @@ export class UserService{
     password: string | undefined
     userControllerService!: UserControllerService | undefined
 
-    constructor(email: string, password: string | undefined){
+    constructor(email: string, password?: string | undefined){
         this.email = email
         this.password = password
     }

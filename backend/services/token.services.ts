@@ -30,8 +30,12 @@ export class TokenService{
             return this.tokenServiceStatus
         }
         else{
-            const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err: Error, token: string)=>{
+            const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err: Error, token: any)=>{
                 if(err){
+                    this.tokenServiceStatus = TokenStatus.INVALID
+                    return this.tokenServiceStatus
+                }
+                else if(token.user.email != currentUser.email){
                     this.tokenServiceStatus = TokenStatus.INVALID
                     return this.tokenServiceStatus
                 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { createTask, deleteTask, editTask, getList } from "../services/todo.service";
+import { createTask, deleteTask, editTask, getList, refreshAccessTokens } from "../services/todo.service";
 import { logOutUser } from "../services/users.service";
 import ListItem from "./ListItem";
 import swal from "sweetalert";
@@ -9,6 +9,7 @@ import swal from "sweetalert";
 function List(){
    let [listData, setData] = useState<any>([]);
    const [inputValue, setValue] = useState("");
+   const userEmail = localStorage.getItem("email")
 
    //Loads database array when page loads
    useEffect(()=>{
@@ -16,7 +17,8 @@ function List(){
          setData(await getList())
       }
       getListData()
-   }, [])
+      setInterval(()=>{refreshAccessTokens(userEmail)}, 3600)
+   }, [userEmail])
 
    //sets value of input to use when creating task/ emptying input
    function handleChange(event: any){

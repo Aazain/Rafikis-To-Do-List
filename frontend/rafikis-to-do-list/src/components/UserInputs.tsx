@@ -20,24 +20,24 @@ function UserInputs(props: any){
       }
 
     function handleChange(event: any){
-        const { value, name } = event.target
+        const { value, className } = event.target
 
         //hooks to set email and password in fieldInput array 
         setCredentials(prevValue =>{
-            return name === "emailInput" ? {email: value, password: prevValue.password} : {email: prevValue.email, password: value}
+            return className === "emailInput" ? {email: value, password: prevValue.password} : {email: prevValue.email, password: value}
         })
     }
 
 
     //function runs when user presses login or signup button, checks if input values are valid before logging user in or signing them up
     function handleClick(){
-
         //login inpout validation
         if(history.location.pathname === "/login" || history.location.pathname === "/"){
             if(!fieldInput.email || fieldInput.email === "" || !fieldInput.password || fieldInput.password === "" || !validateEmail(fieldInput.email)){
                 swal("Error", "Please enter a valid email and password", "error");
             }
             else{
+                localStorage.setItem("email", fieldInput.email)
                 loginUser(fieldInput.email, fieldInput.password)
             }
         }
@@ -53,12 +53,19 @@ function UserInputs(props: any){
         }
     }
 
+    function enter(event: any){
+        if(event.keyCode === 13) { 
+           let clickBtn = document.getElementsByClassName("submitUser")[0] as HTMLButtonElement
+           clickBtn.click()
+        }
+     }
+
     return(
         <div>
             <h1>{props.greeting}</h1>
-            <input name="emailInput" onChange={handleChange} type="text" placeholder="Email"/>
-            <input name="passwordInput" onChange={handleChange} type="password" placeholder="Password"/>
-            <button onClick={handleClick}>{props.userCredentials}</button>
+            <input className="emailInput" onChange={handleChange} onKeyDown={enter} type="text" placeholder="Email"/>
+            <input className="passwordInput" onChange={handleChange} onKeyDown={enter} type="password" placeholder="Password"/>
+            <button className="submitUser" onClick={handleClick}>{props.userCredentials}</button>
             <p>{props.accountStatus}</p> 
             <a href={props.redirectLink}>{props.redirect}</a>
         </div>

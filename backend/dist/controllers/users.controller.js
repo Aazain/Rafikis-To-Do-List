@@ -143,7 +143,7 @@ var userController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        user = new user_services_1.UserService(req.body.email, req.body.password);
+                        user = new user_services_1.UserService(req.body.email);
                         return [4 /*yield*/, user.findUser()];
                     case 1:
                         findUser = _a.sent();

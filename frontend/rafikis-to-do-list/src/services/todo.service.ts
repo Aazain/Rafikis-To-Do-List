@@ -25,6 +25,10 @@ export function getList(){
         })
         .then(res => res.json())
         .then((data) => {return data})
+        .catch(()=>{ 
+            swal('Error', 'Session Expired, Please Log In', 'error')
+            .then(function(){window.location.href = "/"})
+        })
     }
 }
 
@@ -76,10 +80,12 @@ export async function editTask(id: string, task: string, status: boolean){
     }
 }
 
-export async function refreshAccessTokens(){
-    console.log("nice")
+export async function refreshAccessTokens(email: string | null){
     return fetch(`${env()}/newAccessToken`, {
         method: "POST",
+        body: JSON.stringify({
+            email
+        }),
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -87,5 +93,16 @@ export async function refreshAccessTokens(){
         },
     })
     .then((res)=>{return res.json()})
-    .then((data)=>{localStorage.setItem("accessToken", data.accessToken)}) //handle false refresh
+    .then((data)=>{//handle refresh
+        if(data.accessToken === "undefined" || data.message === "invalid token"){
+            localStorage.setItem("refreshToken", "undefined")
+            localStorage.setItem("accessToken", "undefined")
+            localStorage.setItem("email", "undefined")
+            swal('Error', 'Session Expired, Please Log In', 'error')
+            .then(function(){window.location.href = "/"})
+        }
+        else{
+            localStorage.setItem("accessToken", data.accessToken)}
+        }
+    )
 }

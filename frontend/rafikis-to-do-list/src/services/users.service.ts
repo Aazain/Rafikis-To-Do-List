@@ -57,5 +57,6 @@ export function loginUser(email: string, password: string){
 export function logOutUser(){
     localStorage.setItem("accessToken", "undefined")
     localStorage.setItem("refreshToken", "undefined")
+    localStorage.setItem("email", "undefined")
     window.location.href = "/"
 }

@@ -79,7 +79,7 @@ export class userController{
     }
 
     async refreshToken(req: Request, res: Response){
-            const user = new UserService(req.body.email, req.body.password)
+            const user = new UserService(req.body.email)
             const findUser = await user.findUser()
             const authHeader = req.headers["authorization"]
             const refreshToken = authHeader?.split(" ")[1]
