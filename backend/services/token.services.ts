@@ -1,3 +1,5 @@
+import e from "express";
+
 const jwt = require ('jsonwebtoken')
 
 export enum TokenStatus{
@@ -25,17 +27,21 @@ export class TokenService{
     }
 
     refreshAccessToken(refreshToken: string | undefined, currentUser: UserInfo){
-        if(!refreshToken){
-            this.tokenServiceStatus = TokenStatus.ERROR
+        if(!currentUser){
+            this.tokenServiceStatus = TokenStatus.INVALID
             return this.tokenServiceStatus
         }
         else{
             const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err: Error, token: any)=>{
+                if(!refreshToken){
+                    this.tokenServiceStatus = TokenStatus.ERROR
+                    return this.tokenServiceStatus
+                }
                 if(err){
                     this.tokenServiceStatus = TokenStatus.INVALID
                     return this.tokenServiceStatus
                 }
-                else if(token.user.email != currentUser.email){
+                else if(token.user.email != currentUser.email || currentUser === null){
                     this.tokenServiceStatus = TokenStatus.INVALID
                     return this.tokenServiceStatus
                 }

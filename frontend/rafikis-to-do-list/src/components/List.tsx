@@ -17,7 +17,7 @@ function List(){
          setData(await getList())
       }
       getListData()
-      setInterval(()=>{refreshAccessTokens(userEmail)}, 3600)
+      setInterval(()=>{refreshAccessTokens(userEmail)}, 5000)
    }, [userEmail])
 
    //sets value of input to use when creating task/ emptying input

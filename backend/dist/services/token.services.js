@@ -22,17 +22,21 @@ var TokenService = /** @class */ (function () {
     };
     TokenService.prototype.refreshAccessToken = function (refreshToken, currentUser) {
         var _this = this;
-        if (!refreshToken) {
-            this.tokenServiceStatus = TokenStatus.ERROR;
+        if (!currentUser) {
+            this.tokenServiceStatus = TokenStatus.INVALID;
             return this.tokenServiceStatus;
         }
         else {
             var newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, function (err, token) {
+                if (!refreshToken) {
+                    _this.tokenServiceStatus = TokenStatus.ERROR;
+                    return _this.tokenServiceStatus;
+                }
                 if (err) {
                     _this.tokenServiceStatus = TokenStatus.INVALID;
                     return _this.tokenServiceStatus;
                 }
-                else if (token.user.email != currentUser.email) {
+                else if (token.user.email != currentUser.email || currentUser === null) {
                     _this.tokenServiceStatus = TokenStatus.INVALID;
                     return _this.tokenServiceStatus;
                 }

@@ -5,8 +5,32 @@ export function createNewUser(email: string, password: string){
     fetch(`${env()}/users/signup`,{
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            email,
+            password
+        }),
+    })
+    .then((res) => res.json())
+    .then((data: any)=>{
+        if(data.message === "a user with this email already exists"){
+            swal("Error", "A user with this email already Exists", 'error')
+        }
+        else{
+            swal("Success", "Successfully Signed Up! Please Log In", "success")
+            .then(()=>{window.location.href = "/login"})
+        }
+    })
+}
+
+export async function loginUser(email: string, password: string){
+    await fetch(`${env()}/users/login`,{
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         body: JSON.stringify({
             email,
@@ -16,33 +40,8 @@ export function createNewUser(email: string, password: string){
     .then((res) => res.json())
     .then((data: any)=>{
         console.log(data)
-        if(data.message === "a user with this email already exists"){
-            swal("Error", "A user with this email already Exists", 'error')
-        }
-        else{
-            swal("Success", "Successfully Signed Up! Please Log In", "success")
-            .then(()=>{window.location.href = "/login"})
-        }
-    })
-    .catch((err)=>alert(err))
-}
-
-export function loginUser(email: string, password: string){
-    fetch(`${env()}/users/login`,{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify({
-            email,
-            password
-        }),
-    })
-    .then((res) => res.json())
-    .then((data: any)=>{
         if(data.message === "user does not exist"){
-            swal('Error', "An User With This Email Does Not Exist", 'error')
+            swal('Error', "A User With This Email Does Not Exist", 'error')
         }
         else if(data.message === "incorrect email or password"){
             swal('Error', "Incorrect Email or Password", 'error')
