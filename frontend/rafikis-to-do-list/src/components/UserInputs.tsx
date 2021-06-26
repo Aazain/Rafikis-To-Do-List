@@ -61,13 +61,12 @@ function UserInputs(props: any){
      }
 
     return(
-        <div>
-            <h1>{props.greeting}</h1>
+        <div className="userRegistrationContainer">
+            <h1 className="regGreeting">{props.greeting}</h1>
             <input className="emailInput" onChange={handleChange} onKeyDown={enter} type="text" placeholder="Email"/>
             <input className="passwordInput" onChange={handleChange} onKeyDown={enter} type="password" placeholder="Password"/>
             <button className="submitUser" onClick={handleClick}>{props.userCredentials}</button>
-            <p>{props.accountStatus}</p> 
-            <a href={props.redirectLink}>{props.redirect}</a>
+            <p className="regFooter">{props.accountStatus} <a className="regRedirectLink" href={props.redirectLink}>{props.redirect}</a></p> 
         </div>
     )
 }
