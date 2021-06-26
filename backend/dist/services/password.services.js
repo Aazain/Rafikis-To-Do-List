@@ -51,12 +51,10 @@ var PasswordService = /** @class */ (function () {
     }
     PasswordService.prototype.userAuth = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var passwordAuth, token, newToken, refreshToken, error_1;
+            var passwordAuth, token, newToken, refreshToken;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, bcrypt.compare(this.userPassword, this.currentUser.password)];
+                    case 0: return [4 /*yield*/, bcrypt.compare(this.userPassword, this.currentUser.password)];
                     case 1:
                         passwordAuth = _a.sent();
                         if (!passwordAuth) {
@@ -69,12 +67,7 @@ var PasswordService = /** @class */ (function () {
                             refreshToken = token.createRefreshToken({ _id: this.currentUser._id, email: this.currentUser.email });
                             return [2 /*return*/, { accessToken: newToken, refreshToken: refreshToken }];
                         }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_1 = _a.sent();
-                        console.log(error_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [2 /*return*/];
                 }
             });
         });

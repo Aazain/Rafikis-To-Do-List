@@ -47,29 +47,24 @@ export class userController{
         const userPassword = req.body.password
         const validateEmail = new emailValidation
         const emailCheck = validateEmail.validate(userEmail)
-        try{
-            if(emailCheck == true){
-                const userService = new UserService(userEmail, userPassword)
-                const loginUser = await userService.userLogin();
-                if(loginUser == PasswordAuth.INCORRECT){
-                    return res.status(403).send({message: "incorrect email or password"})
-                }
-                else if(!userPassword){
-                    return res.status(403).send({message:"please enter a password"})
-                }
-                else if(loginUser == UserControllerService.ERROR){
-                    return res.status(404).send({message:"user does not exist"})
-                }
-                else{
-                    return res.send(loginUser)
-                }
+        if(emailCheck == true){
+            const userService = new UserService(userEmail, userPassword)
+            const loginUser = await userService.userLogin();
+            if(loginUser == PasswordAuth.INCORRECT){
+                return res.status(403).send({message: "incorrect email or password"})
+            }
+            else if(!userPassword){
+                return res.status(403).send({message:"please enter a password"})
+            }
+            else if(loginUser == UserControllerService.ERROR){
+                return res.status(404).send({message:"user does not exist"})
             }
             else{
-                return res.status(403).send({message:"please enter a valid email"})
+                return res.send(loginUser)
             }
         }
-        catch(error){
-            console.log(error)
+        else{
+            return res.status(403).send({message:"please enter a valid email"})
         }
     }
 
