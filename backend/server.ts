@@ -13,15 +13,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 mongoose.connect(`${process.env.DB_PASS}`, {useNewUrlParser: true, useUnifiedTopology: true },() => console.log("Connected to DB..."));
 app.use(cors({origin: "*"}));
 app.options('*', cors()) ;
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin: *");
-    res.header("Access-Control-Allow-Methods", "GET, PATCH, POST, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    next();
-})
+
 
 app.use((req, res, next) => { 
+    res.header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by");
     res.setHeader('Access-Control-Allow-Origin', '*'); 
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE'); 
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 

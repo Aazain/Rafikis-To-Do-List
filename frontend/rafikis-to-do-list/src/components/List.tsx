@@ -89,6 +89,7 @@ function List(){
             <div className="toDoListContainer">
                <h1 className="headerTitle">To-Do List</h1>
                <ul>
+                  <hr />
                   {listData.map((listData: any) => {
                      return <ListItem 
                            getList={getList}

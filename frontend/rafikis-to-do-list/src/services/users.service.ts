@@ -26,7 +26,7 @@ export function createNewUser(email: string, password: string){
 }
 
 export async function loginUser(email: string, password: string){
-    await fetch(`${env()}/users/login`,{
+    await fetch(`https://cors-anywhere.herokuapp.com/${env()}/users/login`,{
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
