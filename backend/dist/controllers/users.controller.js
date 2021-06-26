@@ -83,7 +83,7 @@ var userController = /** @class */ (function () {
     };
     userController.prototype.logIn = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userEmail, userPassword, validateEmail, emailCheck, userService, loginUser;
+            var userEmail, userPassword, validateEmail, emailCheck, userService, loginUser, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -91,10 +91,13 @@ var userController = /** @class */ (function () {
                         userPassword = req.body.password;
                         validateEmail = new email_validation_1.emailValidation;
                         emailCheck = validateEmail.validate(userEmail);
-                        if (!(emailCheck == true)) return [3 /*break*/, 2];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 5, , 6]);
+                        if (!(emailCheck == true)) return [3 /*break*/, 3];
                         userService = new user_services_1.UserService(userEmail, userPassword);
                         return [4 /*yield*/, userService.userLogin()];
-                    case 1:
+                    case 2:
                         loginUser = _a.sent();
                         if (loginUser == password_services_1.PasswordAuth.INCORRECT) {
                             return [2 /*return*/, res.status(403).send({ message: "incorrect email or password" })];
@@ -108,9 +111,14 @@ var userController = /** @class */ (function () {
                         else {
                             return [2 /*return*/, res.send(loginUser)];
                         }
-                        return [3 /*break*/, 3];
-                    case 2: return [2 /*return*/, res.status(403).send({ message: "please enter a valid email" })];
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 3: return [2 /*return*/, res.status(403).send({ message: "please enter a valid email" })];
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
