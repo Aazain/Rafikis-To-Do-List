@@ -2,7 +2,7 @@ import express, { request, response } from "express";
 import mongoose from "mongoose";
 import { userController } from "./controllers/users.controller"
 import { todoController } from "./controllers/todo.controller"
-require('dotenv').config()
+require("dotenv/config")
 const app = express();
 const bodyParser = require('body-parser')
 const cors = require("cors")

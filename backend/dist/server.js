@@ -7,7 +7,7 @@ var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var users_controller_1 = require("./controllers/users.controller");
 var todo_controller_1 = require("./controllers/todo.controller");
-require('dotenv').config();
+require("dotenv/config");
 var app = express_1.default();
 var bodyParser = require('body-parser');
 var cors = require("cors");
