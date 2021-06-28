@@ -28,7 +28,6 @@ function UserInputs(props: any){
         })
     }
 
-
     //function runs when user presses login or signup button, checks if input values are valid before logging user in or signing them up
     function handleClick(){
         //login inpout validation
@@ -61,7 +60,7 @@ function UserInputs(props: any){
      }
 
     return(
-        <div className="userRegistrationContainer">
+        <div className="userRegistrationContainer"> 
             <h1 className="regGreeting">{props.greeting}</h1>
             <input className="emailInput" onChange={handleChange} onKeyDown={enter} type="text" placeholder="Email"/>
             <input className="passwordInput" onChange={handleChange} onKeyDown={enter} type="password" placeholder="Password"/>
