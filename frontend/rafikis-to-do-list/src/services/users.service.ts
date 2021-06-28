@@ -19,8 +19,8 @@ export function createNewUser(email: string, password: string){
             swal("Error", "A user with this email already Exists", 'error')
         }
         else{
-            swal("Success", "Successfully Signed Up! Please Log In", "success")
-            .then(()=>{window.location.href = "/login"})
+            swal({title: "Success", text: "Successfully Signed Up! Logging In...", icon: "success", timer: 1500, buttons:[""]})
+            .then(()=>{loginUser(email, password)})
         }
     })
 }
@@ -47,6 +47,7 @@ export async function loginUser(email: string, password: string){
             swal('Error', "Incorrect Email or Password", 'error')
         }
         else{
+            localStorage.setItem("email", email)
             localStorage.setItem("accessToken", data.accessToken)
             localStorage.setItem("refreshToken", data.refreshToken)
             window.location.href = "/list"
