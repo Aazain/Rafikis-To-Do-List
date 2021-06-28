@@ -35,7 +35,7 @@ function ListItem(props: any){
                 />
                 <button className="deleteBtn" onClick={()=>{props.deleteBtnClick(props.itemId)}}><i className="fas fa-trash-alt fa-2x"></i></button>
                 <button className="editBtn" onClick={handleShow}><i className="fas fa-edit fa-2x"></i></button>
-                <p className="taskItem">{props.task}</p>
+                <p className="taskItem" style={props.status === true ? {textDecoration: "line-through", color: "gray"} : {textDecoration: "none"}}>{props.task}</p>
                 <hr />
             </div>
         </li>

@@ -64,6 +64,12 @@ body{
     font-weight: bold;
 }
 
+.logOutButton, 
+.addTaskBtn,
+.submitUser{
+    background-color: #D4F1F4;
+}
+
 .headerTitle{
     font-size: 4.5em;
 }
@@ -92,7 +98,6 @@ ul{
     border-radius: 0.2em;
     padding: 0.2em 0.8em;
     border-color: black;
-    background-color: #D4F1F4;
     transition: 250ms;
 }
 
@@ -102,7 +107,7 @@ ul{
 
 .listFooter{
     margin-bottom: 6em;
-    margin-top: -2em;
+    margin-top: -1em;
 }
 
 .addTask, .addTaskBtn{
@@ -112,7 +117,6 @@ ul{
 
 .addTaskBtn{
     border-color: black;
-    background-color: #D4F1F4;
     margin-left: -0.8em;
     transition: 150ms;
 }
@@ -127,7 +131,7 @@ ul{
 .taskItem{
     display: inline-block;
     padding: 0 3em;
-    width: calc(40ch + 0.2vw);
+    width: calc(30ch + 0.2vw);
     word-wrap: break-word;
 }
 
@@ -159,6 +163,20 @@ ul{
     padding: 0.2em 0.8em;
 }
 
+.taskStatus{
+    width: 1em;
+    height: 1em;
+    background-color:#fff;
+    border-radius: 1em;
+    border: solid #ddd;
+    -webkit-appearance:none;
+    cursor:pointer;
+    border-width:.18em
+}
+
+.taskStatus:checked{
+    background-color: gray;
+}
 
 /* User Registration */
 
@@ -199,7 +217,6 @@ ul{
 .submitUser{
     margin-top: 0.4em;
     border-color: black;
-    background-color: #C3E0E5;
     padding: 0.3em 1em;
     transition: 150ms;
     border-radius: 0.6em;
@@ -207,4 +224,54 @@ ul{
 
 .submitUser:hover{
     background-color: transparent;
+}
+
+/* Media */
+
+@media only screen and (max-width: 468px) {
+    .editBtn, .deleteBtn{
+        font-size: 0.8em;
+    }
+    
+    .taskItem{
+        width: calc(25ch + 0.2vw);
+    }
+
+    .editorButtons{
+        margin-left: 1vw;
+    }
+}
+
+@media only screen and (max-width: 412px) {
+    .editBtn, .deleteBtn{
+        font-size: 0.8em;
+    }
+    
+    .taskItem{
+        padding: 0 2em;
+        width: calc(20ch + 0.2vw);
+    }
+}
+
+@media only screen and (max-width: 348px) {
+    .headerTitle{
+        font-size: 3.5em;
+    }
+
+    .taskItem{
+        padding: 0 0.5em;
+        width: calc(10ch + 0.2vw);
+    }
+}
+
+
+@media only screen and (max-width: 280px) {
+    .headerTitle{
+        font-size: 3em;
+    }
+
+    .taskItem{
+        padding: 0 0.2em;
+        width: calc(8ch + 0.2vw);
+    }
 }
