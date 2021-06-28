@@ -36,7 +36,6 @@ function UserInputs(props: any){
                 swal("Error", "Please enter a valid email and password", "error");
             }
             else{
-                localStorage.setItem("email", fieldInput.email)
                 loginUser(fieldInput.email, fieldInput.password)
             }
         }
