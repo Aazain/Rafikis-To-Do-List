@@ -7,7 +7,7 @@ This To Do List allows you to save multiple items to a list which can be crossed
 To successfully run this code, you need to make sure that you have NodeJS installed on your computer. If anything goes wrong, make sure that the following packages are installed properly using the `npm install` command.
 
 The packages used were:
-
+```
 -Body-Parser
 -Express
 -Mongoose
@@ -19,7 +19,7 @@ The packages used were:
 -sweetalert
 -typescript
 -react
-
+```
 Nodemon is recommended when working on the files, it re-runs the files anytime you make an edit.
 
 To run the React locally, cd into `frontend\rafikis-to-do-list` and then use the `npm start` command.
