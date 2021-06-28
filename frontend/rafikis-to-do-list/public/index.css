@@ -51,7 +51,8 @@ body{
 .addTask, 
 .editTask, 
 .logOutButton, 
-.addTaskBtn, 
+.addTaskBtn,
+.shortAddTaskBtn, 
 .deleteBtn, 
 .editBtn, 
 .taskItem,
@@ -66,7 +67,9 @@ body{
 
 .logOutButton, 
 .addTaskBtn,
-.submitUser{
+.submitUser,
+.shortAddTaskBtn
+{
     background-color: #D4F1F4;
 }
 
@@ -110,21 +113,24 @@ ul{
     margin-top: -1em;
 }
 
-.addTask, .addTaskBtn{
+.addTask, .addTaskBtn, .shortAddTaskBtn{
     border-radius: 0.6em;
     padding: 0.4em;
 }
 
-.addTaskBtn{
+.addTaskBtn, .shortAddTaskBtn{
     border-color: black;
     margin-left: -0.8em;
     transition: 150ms;
 }
 
-.addTaskBtn:hover{
+.addTaskBtn:hover, .shortAddTaskBtn:hover{
     background-color: white;
 }
 
+.shortAddTaskBtn{
+    visibility: hidden;
+}
 
 /* ListItem */
 
@@ -262,6 +268,16 @@ ul{
         padding: 0 0.5em;
         width: calc(10ch + 0.2vw);
     }
+
+    .shortAddTaskBtn{
+        padding: 0 0.6em;
+        font-size: 1.8em;
+        visibility: visible;
+    }
+
+    .addTaskBtn{
+        display: none;
+    }
 }
 
 
@@ -274,4 +290,16 @@ ul{
         padding: 0 0.2em;
         width: calc(8ch + 0.2vw);
     }
+
+    .shortAddTaskBtn{
+        padding: 0 0.6em;
+        font-size: 1em;
+        visibility: visible;
+    }
+
+    .addTask{
+        font-size: 0.8em;
+        padding: 1em;
+    }
+
 }

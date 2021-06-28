@@ -110,6 +110,7 @@ function List(){
                <div className="listFooter">
                      <input type="text" value={inputValue} onKeyDown={enter} onChange={handleChange} className="addTask" placeholder="Enter Task"/>
                      <button onClick={createTaskItem} className="addTaskBtn">Add Task</button>
+                     <button onClick={createTaskItem} className="shortAddTaskBtn">+</button>
                </div>
             </div>
         </div>
