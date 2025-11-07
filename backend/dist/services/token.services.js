@@ -1,66 +1,61 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TokenService = exports.TokenStatus = void 0;
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 var TokenStatus;
 (function (TokenStatus) {
     TokenStatus["INVALID"] = "INVALID";
     TokenStatus["ERROR"] = "TokenError";
 })(TokenStatus = exports.TokenStatus || (exports.TokenStatus = {}));
-var TokenService = /** @class */ (function () {
-    function TokenService() {
-    }
-    TokenService.prototype.createAccessToken = function (currentUser) {
+class TokenService {
+    createAccessToken(currentUser) {
         return jwt.sign({ user: currentUser }, process.env.ACCESSTOKEN, {
             expiresIn: "259200s"
         });
-    };
-    TokenService.prototype.createRefreshToken = function (currentUser) {
+    }
+    createRefreshToken(currentUser) {
         return jwt.sign({ user: currentUser }, process.env.REFRESHTOKEN, {
             expiresIn: "604800s"
         });
-    };
-    TokenService.prototype.refreshAccessToken = function (refreshToken, currentUser) {
-        var _this = this;
+    }
+    refreshAccessToken(refreshToken, currentUser) {
         if (!currentUser) {
             this.tokenServiceStatus = TokenStatus.INVALID;
             return this.tokenServiceStatus;
         }
         else {
-            var newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, function (err, token) {
+            const newToken = jwt.verify(refreshToken, process.env.REFRESHTOKEN, (err, token) => {
                 if (!refreshToken) {
-                    _this.tokenServiceStatus = TokenStatus.ERROR;
-                    return _this.tokenServiceStatus;
+                    this.tokenServiceStatus = TokenStatus.ERROR;
+                    return this.tokenServiceStatus;
                 }
                 if (err) {
-                    _this.tokenServiceStatus = TokenStatus.INVALID;
-                    return _this.tokenServiceStatus;
+                    this.tokenServiceStatus = TokenStatus.INVALID;
+                    return this.tokenServiceStatus;
                 }
                 else if (token.user.email != currentUser.email || currentUser === null) {
-                    _this.tokenServiceStatus = TokenStatus.INVALID;
-                    return _this.tokenServiceStatus;
+                    this.tokenServiceStatus = TokenStatus.INVALID;
+                    return this.tokenServiceStatus;
                 }
                 else {
-                    var createNewToken = _this.createAccessToken(currentUser);
+                    const createNewToken = this.createAccessToken(currentUser);
                     return { accessToken: createNewToken };
                 }
             });
             return newToken;
         }
-    };
-    TokenService.prototype.tokenAuth = function (accessToken) {
-        var _this = this;
-        var authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, function (err, user) {
+    }
+    tokenAuth(accessToken) {
+        const authenticateToken = jwt.verify(accessToken, process.env.ACCESSTOKEN, (err, user) => {
             if (err) {
-                _this.tokenServiceStatus = TokenStatus.ERROR;
-                return _this.tokenServiceStatus;
+                this.tokenServiceStatus = TokenStatus.ERROR;
+                return this.tokenServiceStatus;
             }
             else {
                 return user;
             }
         });
         return authenticateToken;
-    };
-    return TokenService;
-}());
+    }
+}
 exports.TokenService = TokenService;
