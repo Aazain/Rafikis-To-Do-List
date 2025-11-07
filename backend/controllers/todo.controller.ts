@@ -52,7 +52,20 @@ export class todoController{
                     }
                     else{
                         const itemData = await itemService.getSingleItem(itemId)
-                        const deleteItem: any = await itemService.deleteItem(itemId, itemData.userId);
+                        if (
+                            itemData === ItemServiceStatus.UNABLE ||
+                            itemData === ItemServiceStatus.FORBIDDEN ||
+                            itemData === ItemServiceStatus.ERROR
+                            ) {
+                            if (itemData === ItemServiceStatus.FORBIDDEN) {
+                                return res.status(403).send("forbidden");
+                            }
+                            return res.status(404).send("item does not exist or unable to access");
+                        }
+                        if (!itemData.userId) {
+                            return res.status(404).send("item does not have a valid userId");
+                        }
+                        const deleteItem = await itemService.deleteItem(itemId, itemData.userId);
                         if (deleteItem == ItemServiceStatus.UNABLE || !deleteItem){
                             return res.status(500).send("unable to delete task")
                         }
@@ -115,7 +128,7 @@ export class todoController{
                         const task = req.body.task
                         const status = req.body.status
                         const itemService = new ItemService(auth);
-                        if(!task || status == (undefined || null)){
+                        if(!task || status == (null)){
                             return res.status(400).send("please enter all fields correctly")
                         }
                         else{

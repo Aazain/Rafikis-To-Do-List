@@ -33,78 +33,59 @@ export class ItemService{
         return Items.find({_id: params})
     }
 
-    getSingleItem(params: string){
-        const id = params
-        const findOnePromise: any = new Promise(async (reject, resolve)=>{
-            await Items.findOne({_id: id}, (err: Error, result: ItemData)=>{
-                if(err || result == null){
-                    reject(ItemServiceStatus.UNABLE)
-                }
-                else if(result.userId !== this.currentUser.user._id){
-                    reject(ItemServiceStatus.FORBIDDEN)
-                }
-                else{
-                    resolve(result)
-                }
-            }, {new: true})
-        })
-        .catch((result)=>{
-            if(result == ItemServiceStatus.UNABLE){
-                return ItemServiceStatus.UNABLE
-            }
-            else if(result == ItemServiceStatus.FORBIDDEN){
-                return ItemServiceStatus.FORBIDDEN
-            }
-            else if(result == ItemServiceStatus.ERROR){
-                return ItemServiceStatus.ERROR
-            }
-            else{
-                return result
-            }
-        })
-        return findOnePromise
-    }
-    
-    getItemList(){
-        return Items.find({userId: this.currentUser.user._id}, (err: Error, result: object)=>{
-            if(err){
+    async getSingleItem(params: string) {
+        const id = params;
+        try {
+            const result = await Items.findOne({ _id: id });
+
+            if (!result || !result.userId) {
                 return ItemServiceStatus.UNABLE;
             }
-            else{
-                return result
+
+            if (!result) {
+                return ItemServiceStatus.UNABLE;
+            } else if (result.userId.toString() !== this.currentUser.user._id.toString()) {
+                return ItemServiceStatus.FORBIDDEN;
             }
-        })
+
+            return result;
+        } catch (err) {
+            console.error(err);
+            return ItemServiceStatus.ERROR;
+        }
     }
 
-    deleteItem(itemId: string, userId: string){
-        const ItemDeletePromise = new Promise(async(reject, resolve)=>{
-            await Items.findOneAndDelete({_id: itemId, userId}, {useFindAndModify: false}, async (err: Error)=>{
-                if(err){
-                    reject(ItemServiceStatus.UNABLE)
-                }
-                else{
-                    const checkDelete = await Items.find({_id: itemId})
-                    if(checkDelete.length !== 0){
-                        reject(ItemServiceStatus.FORBIDDEN)
-                    }
-                    else{
-                        resolve(ItemServiceStatus.SUCCESS)
-                    }
-                }
-            })
-        })
-        .catch(err => {
-            if(err == ItemServiceStatus.UNABLE){
-                return ItemServiceStatus.UNABLE
+    
+    async getItemList(): Promise<ItemServiceStatus | any[]> {
+        try {
+            const items = await Items.find({userId: this.currentUser.user._id});
+            if (!items) {
+                return ItemServiceStatus.UNABLE;
             }
-            else if(err == ItemServiceStatus.FORBIDDEN){
-                return ItemServiceStatus.FORBIDDEN
+            return items;
+        } catch (err) {
+            console.error(err);
+            return ItemServiceStatus.UNABLE;
+        }
+    }
+
+
+    async deleteItem(itemId: string, userId: string): Promise<ItemServiceStatus>{
+        try {
+            const deletedItem = await Items.findOneAndDelete({ _id: itemId, userId });
+            if (!deletedItem) {
+                return ItemServiceStatus.FORBIDDEN;
             }
-            else{
-                return ItemServiceStatus.SUCCESS
+
+            const checkDelete = await Items.find({ _id: itemId });
+            if (checkDelete.length !== 0) {
+                return ItemServiceStatus.UNABLE;
             }
-        })
-        return ItemDeletePromise
+
+            return ItemServiceStatus.SUCCESS;
+        } catch (err) {
+            return ItemServiceStatus.UNABLE;
+        }
     }
 
     newTask(userId: string, task: string, status: boolean){
@@ -122,40 +103,26 @@ export class ItemService{
         })
     }
 
-    updateTask(userId: string, itemId: string, task: string, status: boolean){
-        const updatePromise = new Promise(async (resolve, reject)=>{
-            if(userId !== this.currentUser.user._id){
-                reject(ItemServiceStatus.FORBIDDEN)
+    async updateTask(userId: string, itemId: string, task: string, status: boolean): Promise<ItemServiceStatus> {
+        try {
+            if (userId !== this.currentUser.user._id.toString()) {
+                return ItemServiceStatus.FORBIDDEN;
             }
-            else{
-                await Items.findOneAndUpdate({
-                    userId,
-                    _id: itemId
-                }, {
-                    $set:{
-                        task,
-                        status
-                }},{
-                    useFindAndModify: false
-                },(err: Error)=>{
-                    if(err){
-                        reject(ItemServiceStatus.ERROR)
-                    }
-                    else{
-                        resolve(ItemServiceStatus.SUCCESS)
-                    }
-                })
+
+            const updatedItem = await Items.findOneAndUpdate(
+                { _id: itemId, userId },
+                { $set: { task, status } },
+                { new: true }
+            );
+
+            if (!updatedItem) {
+                return ItemServiceStatus.ERROR;
             }
-        })
-        .catch(err =>{
-            if(err == ItemServiceStatus.ERROR){
-                return ItemServiceStatus.ERROR
-            }
-            else if(err == ItemServiceStatus.FORBIDDEN){
-                return ItemServiceStatus.FORBIDDEN
-            }
-        })
-        return updatePromise
+
+            return ItemServiceStatus.SUCCESS;
+        } catch (err) {
+            return ItemServiceStatus.ERROR;
+        }
     }
 
 

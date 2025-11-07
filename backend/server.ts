@@ -10,9 +10,12 @@ const cors = require("cors")
 app.use(bodyParser.json())  
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect(`${process.env.DB_PASS}`, {useNewUrlParser: true, useUnifiedTopology: true },() => console.log("Connected to DB..."));
+mongoose.connect(`${process.env.DB_PASS}`)
+  .then(() => console.log("Connected to DB..."))
+  .catch((err) => console.error("DB connection error:", err));
+
 app.use(cors({origin: "*"}));
-app.options('*', cors()) ;
+
 
 
 app.use((req, res, next) => { 

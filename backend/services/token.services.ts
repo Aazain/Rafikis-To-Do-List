@@ -6,7 +6,7 @@ export enum TokenStatus{
     INVALID = "INVALID", ERROR = "TokenError"
 }
 
-interface UserInfo{
+export interface UserInfo{
     _id: string
     email: string
 }

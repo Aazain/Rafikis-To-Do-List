@@ -1,7 +1,8 @@
 import { Users } from "../models/users.model"
-import { PasswordService } from "./password.services"
+import { PasswordService, User } from "./password.services"
 import { UserControllerService } from "../controllers/users.controller"
 const bcrypt = require ('bcrypt')
+
 
 export class UserService{
     email:string
@@ -14,7 +15,8 @@ export class UserService{
     }
 
     async createUser(){
-        const checkEmail: object = await this.findUser();
+        const checkEmail: object | null = await this.findUser();
+
         if(checkEmail !== null){
             this.userControllerService = UserControllerService.ERROR;
             return this.userControllerService;
@@ -38,7 +40,14 @@ export class UserService{
             return this.userControllerService
         }
         else{
-            const passService = new PasswordService(this.password, currentUser)
+            const userInfo: User = {
+                _id: currentUser._id.toString(),
+                email: currentUser.email ?? '',
+                password: currentUser.password ?? '',
+                __v: currentUser.__v ?? 0
+            };
+
+            const passService = new PasswordService(this.password, userInfo)
             const loginAuth = await passService.userAuth();
             return loginAuth
         }

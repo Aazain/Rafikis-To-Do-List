@@ -5,6 +5,7 @@ import { TokenService, TokenStatus } from "../services/token.services"
 import { userList } from "../services/userlist.services"
 import { PasswordAuth } from "../services/password.services"
 import { emailValidation } from "../services/email.validation"
+import { UserInfo } from "../services/token.services"
 
 export enum UserControllerService{
     ERROR = "ERROR", SUCCESS = "SUCCESS"
@@ -71,10 +72,23 @@ export class userController{
     async refreshToken(req: Request, res: Response){
             const user = new UserService(req.body.email)
             const findUser = await user.findUser()
+
+            if (!findUser) {
+                return res.status(404).send({message:"user not found"})
+            }
+
+            const userInfo: UserInfo = {
+                _id: findUser._id.toString(),
+                email: findUser.email ?? ''
+            };
+
+
             const authHeader = req.headers["authorization"]
             const refreshToken = authHeader?.split(" ")[1]
+
             const refreshTokenService = new TokenService();
-            const refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, findUser)
+
+            const refreshAccess = refreshTokenService.refreshAccessToken(refreshToken, userInfo)
             if(refreshAccess == TokenStatus.INVALID){
                 return res.status(400).send({message:"invalid token"})
             }
