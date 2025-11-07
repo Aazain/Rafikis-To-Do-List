@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Permanent+Marker&family=Montserrat&display=swap');
+
+/* OverAll */
+body{
+    background-color: #189AB4;
+}
+
+.toDoListContainer, 
+.listFooter, 
+.editorTextItems, 
+.editorButtons{
+    display: flex;
+}
+
+.editorTextItems, 
+.toDoListContainer{
+    flex-direction: column;
+}
+
+.toDoListContainer{
+    margin-top: 10em;
+    align-items: center;
+    text-align: center;
+}
+
+.editBtn, 
+.deleteBtn, 
+.cancelEdit, 
+.confirmEdit, 
+.addTask,
+.emailInput, 
+.passwordInput{
+    border: none;
+}
+
+.confirmEdit, 
+.cancelEdit, 
+.headerTitle, 
+.regGreeting{
+    font-family: 'Indie Flower', sans-serif;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.editorTextItems, 
+.addTask, 
+.editTask, 
+.logOutButton, 
+.addTaskBtn,
+.shortAddTaskBtn, 
+.deleteBtn, 
+.editBtn, 
+.taskItem,
+.passwordInput,
+.emailInput,
+.submitUser,
+.regFooter{
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.logOutButton, 
+.addTaskBtn,
+.submitUser,
+.shortAddTaskBtn
+{
+    background-color: #D4F1F4;
+}
+
+.headerTitle{
+    font-size: 4.5em;
+}
+
+/* List */
+
+li{
+    list-style-type: none;
+}
+
+ul{
+    padding: 3vw;
+}
+
+.cotainer{
+    display: flex;
+    align-items: center;
+}
+
+.logOutButton{
+    position: absolute;
+    top: 2vw;
+    right: 6vw;
+    margin-top: 0.2em;
+    font-size: 1.2em;
+    border-radius: 0.2em;
+    padding: 0.2em 0.8em;
+    border-color: black;
+    transition: 250ms;
+}
+
+.logOutButton:hover{
+    background-color: transparent;
+}
+
+.listFooter{
+    margin-bottom: 6em;
+    margin-top: -1em;
+}
+
+.addTask, .addTaskBtn, .shortAddTaskBtn{
+    border-radius: 0.6em;
+    padding: 0.4em;
+}
+
+.addTaskBtn, .shortAddTaskBtn{
+    border-color: black;
+    margin-left: -0.8em;
+    transition: 150ms;
+}
+
+.addTaskBtn:hover, .shortAddTaskBtn:hover{
+    background-color: white;
+}
+
+.shortAddTaskBtn{
+    visibility: hidden;
+}
+
+/* ListItem */
+
+.taskItem{
+    display: inline-block;
+    padding: 0 3em;
+    width: calc(30ch + 0.2vw);
+    word-wrap: break-word;
+}
+
+.editBtn, .deleteBtn{
+    background-color: transparent;
+    float: right;
+}
+
+.taskStatus{
+    float: left;
+}
+
+/* Editor */
+.modalContainer{
+    text-align: center;
+    padding: 1em;
+}
+
+.editorButtons{
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-left: 55%;
+}
+
+.cancelEdit, .confirmEdit{
+    margin-top: 0.2em;
+    font-size: 1.2em;
+    border-radius: 0.2em;
+    padding: 0.2em 0.8em;
+}
+
+.taskStatus{
+    width: 1em;
+    height: 1em;
+    background-color:#fff;
+    border-radius: 1em;
+    border: solid #ddd;
+    -webkit-appearance:none;
+    cursor:pointer;
+    border-width:.18em
+}
+
+.taskStatus:checked{
+    background-color: gray;
+}
+
+/* User Registration */
+
+.userRegistrationContainer{
+    margin-top: 5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.regGreeting{
+
+    font-size: 6em;
+}
+
+.regFooter{
+   margin-top: 1em;
+}
+
+.regRedirectLink{
+    color: white;
+    transition: 150ms;
+    text-decoration: underline;
+}
+
+.regRedirectLink:hover{
+    color: black;
+}
+
+.emailInput, .passwordInput{
+    border-radius: 0.6em;
+    margin-bottom: 0.5em;
+    padding: 0.8em;
+    text-align: center;
+}
+
+.submitUser{
+    margin-top: 0.4em;
+    border-color: black;
+    padding: 0.3em 1em;
+    transition: 150ms;
+    border-radius: 0.6em;
+}
+
+.submitUser:hover{
+    background-color: transparent;
+}
+
+/* Media */
+
+@media only screen and (max-width: 468px) {
+    .editBtn, .deleteBtn{
+        font-size: 0.8em;
+    }
+    
+    .taskItem{
+        width: calc(25ch + 0.2vw);
+    }
+
+    .editorButtons{
+        margin-left: 1vw;
+    }
+}
+
+@media only screen and (max-width: 412px) {
+    .editBtn, .deleteBtn{
+        font-size: 0.8em;
+    }
+    
+    .taskItem{
+        padding: 0 2em;
+        width: calc(20ch + 0.2vw);
+    }
+}
+
+@media only screen and (max-width: 348px) {
+    .headerTitle{
+        font-size: 3.5em;
+    }
+
+    .taskItem{
+        padding: 0 0.5em;
+        width: calc(10ch + 0.2vw);
+    }
+
+    .shortAddTaskBtn{
+        padding: 0 0.6em;
+        font-size: 1.8em;
+        visibility: visible;
+    }
+
+    .addTaskBtn{
+        display: none;
+    }
+}
+
+
+@media only screen and (max-width: 280px) {
+    .headerTitle{
+        font-size: 3em;
+    }
+
+    .taskItem{
+        padding: 0 0.2em;
+        width: calc(8ch + 0.2vw);
+    }
+
+    .shortAddTaskBtn{
+        padding: 0 0.6em;
+        font-size: 1em;
+        visibility: visible;
+    }
+
+    .addTask{
+        font-size: 0.8em;
+        padding: 1em;
+    }
+
+}
