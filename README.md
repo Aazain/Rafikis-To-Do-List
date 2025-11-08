@@ -20,12 +20,8 @@ The packages used were:
 -typescript
 -react
 ```
-Nodemon is recommended when working on the files, it re-runs the files anytime you make an edit.
-
 To run the React locally, cd into `frontend\rafikis-to-do-list` and then use the `npm start` command.
 
-To work on the backend files, cd into `backend` and use the `tsc` command. (make sure `watch: true` is in the tsconfig.json file so that is automatically runs tsc between changes)
-
-To run the server, cd into `backend\dist` and run `nodemon server.js`.
+To run the server, cd into `\backend` and run `npm start`.
 
 Live Website: https://gallant-shockley-937010.netlify.app/
